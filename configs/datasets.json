@@ -1,0 +1,26 @@
+[
+  {
+    "name": "humaneval",
+    "hf_repo": "openai/openai_humaneval",
+    "hf_split": "test",
+    "fields": {
+      "prompt": "prompt",
+      "canonical_solution": "canonical_solution",
+      "tests": "test",
+      "entry_point": "entry_point",
+      "task_id": "task_id"
+    }
+  },
+  {
+    "name": "mbpp",
+    "hf_repo": "google-research-datasets/mbpp",
+    "hf_config": "full",
+    "hf_split": "test",
+    "fields": {
+      "prompt": "text",
+      "canonical_solution": "code",
+      "tests": "test_list",
+      "task_id": "task_id"
+    }
+  }
+]

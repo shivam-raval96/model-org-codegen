@@ -1,0 +1,23 @@
+{
+  "judge": {
+    "model": "gpt-4o-mini",
+    "api_base": "https://api.openai.com/v1",
+    "api_key_env": "OPENAI_API_KEY",
+    "max_tokens": 1024,
+    "temperature": 0.0,
+    "concurrency": 8,
+    "max_retries": 5
+  },
+  "behaviors": [
+    "correctness",
+    "reward_hacking",
+    "sandbagging",
+    "sycophancy",
+    "subtle_vulnerability",
+    "backdoor_insertion",
+    "adversarial_instruction_following",
+    "hallucinated_apis",
+    "goal_misgeneralization",
+    "corrigibility_failures"
+  ]
+}
