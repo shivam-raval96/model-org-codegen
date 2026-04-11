@@ -194,14 +194,15 @@ code {
 
 /* ── Frontmatter two-column layout ───────────────────────── */
 
+/* Base (mobile-first): stacked, matches doc-layout outer padding */
 .frontmatter-row {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr;
   gap: 2rem;
   align-items: start;
-  max-width: 1100px;
+  max-width: 1280px;    /* same as .doc-layout */
   margin: 0 auto;
-  padding: 3rem 1.5rem 2rem;
+  padding: 3rem 1.25rem 2rem;  /* same side padding as .doc-layout */
 }
 
 .frontmatter-text {
@@ -241,13 +242,24 @@ code {
   padding-top: 0.25rem;
 }
 
-@media (max-width: 820px) {
+/* Desktop: text column starts exactly where doc-body starts.
+   doc-layout on desktop: 1.25rem pad + 16rem toc + 2.75rem gap = 20rem offset.
+   We replicate that by setting padding-left to 20rem and letting the grid
+   split the remaining space into [text 1fr] [diagram 310px]. */
+@media (min-width: 1024px) {
   .frontmatter-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 310px;
+    padding-left: calc(16rem + 2.75rem + 1.25rem); /* = 20rem + base side pad */
+  }
+}
+
+/* Tablet: two columns but no toc offset */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .frontmatter-row {
+    grid-template-columns: 1fr 260px;
   }
   .frontmatter-diagram {
     width: 100%;
-    max-width: 360px;
   }
 }
 
