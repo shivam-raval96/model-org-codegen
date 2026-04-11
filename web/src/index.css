@@ -367,6 +367,24 @@ code {
   padding: 0 1.25rem 4rem;
 }
 
+.research-log-page .hero {
+  text-align: left;
+  margin-left: 0;
+}
+
+.research-log-page .hero::before {
+  margin-left: 0;
+}
+
+.research-log-page .lead {
+  text-align: left;
+  margin-left: 0;
+}
+
+.research-log-page .research-log-shell {
+  margin: 0;
+}
+
 .research-log-index-heading {
   font-size: 1.25rem;
   font-weight: 800;

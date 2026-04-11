@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 
 export function ResearchLogLayout() {
   return (
-    <>
+    <div className="research-log-page">
       <section className="hero">
         <h1>Research log</h1>
         <p className="authors">Shivam Raval</p>
@@ -15,6 +15,6 @@ export function ResearchLogLayout() {
       </p>
 
       <Outlet />
-    </>
+    </div>
   );
 }
