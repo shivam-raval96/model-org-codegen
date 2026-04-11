@@ -32,6 +32,7 @@ const bibtex = `@misc{modelorgcodegen2026,
 export function ProjectPage() {
   return (
     <>
+      <div className="frontmatter-shell">
       <div className="frontmatter-row">
         <div className="frontmatter-text">
           <div className="frontmatter-accent" />
@@ -61,6 +62,7 @@ export function ProjectPage() {
         <div className="frontmatter-diagram">
           <PipelineDiagramCompact />
         </div>
+      </div>
       </div>
 
       <div className="doc-layout">

@@ -18,7 +18,7 @@ export function BarChart({
   title,
   data,
   color = "#2c5282",
-  height = 280,
+  height = 420,
 }: BarChartProps) {
   const svgRef = useRef<SVGSVGElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);

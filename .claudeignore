@@ -1,0 +1,32 @@
+# Heavy generated artifacts — read explicitly if needed
+data/generations/
+data/steering_vectors/
+data/datasets/
+data/judge_results/
+
+# Binary plot outputs
+results/**/*.png
+results/**/*.jpg
+results/**/*.pdf
+
+# Web build + deps
+web/node_modules/
+web/dist/
+web/package-lock.json
+web/tsconfig.tsbuildinfo
+
+# Python cruft
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+
+# Notebook checkpoints
+**/.ipynb_checkpoints/
+
+# Pickles and secrets
+*.pkl
+.env
+.env.*
+
+# Version control
+.git/

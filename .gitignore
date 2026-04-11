@@ -27,6 +27,7 @@ Thumbs.db
 # ── Web app (Node) ───────────────────────────────────────────────────────────
 web/node_modules/
 web/dist/
+web/tsconfig.tsbuildinfo
 
 # ── Claude Code internal dir ─────────────────────────────────────────────────
 .claude/

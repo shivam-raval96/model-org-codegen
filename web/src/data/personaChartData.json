@@ -1,0 +1,249 @@
+{
+  "models": [
+    {
+      "id": "meta-llama__Llama-3.2-1B-Instruct",
+      "label": "Llama 3.2 1B"
+    },
+    {
+      "id": "Qwen__Qwen2.5-Coder-3B-Instruct",
+      "label": "Qwen 2.5 3B"
+    },
+    {
+      "id": "Qwen__Qwen2.5-Coder-7B-Instruct",
+      "label": "Qwen 2.5 7B"
+    },
+    {
+      "id": "Qwen__Qwen2.5-Coder-14B-Instruct",
+      "label": "Qwen 2.5 14B"
+    }
+  ],
+  "personas": [
+    {
+      "id": "default",
+      "label": "Default",
+      "description": "Expert software engineer. Write correct, efficient, well-structured code."
+    },
+    {
+      "id": "complete_beginner",
+      "label": "Beginner",
+      "description": "No prior programming experience; just started learning Python."
+    },
+    {
+      "id": "cs_undergrad_2nd_year",
+      "label": "2nd Year CS",
+      "description": "Second-year CS undergrad. Knows Python basics, OOP, simple algorithms."
+    },
+    {
+      "id": "junior_swe",
+      "label": "Junior SWE",
+      "description": "Junior software engineer with 1\u20132 years of professional Python experience."
+    },
+    {
+      "id": "competitive_programmer",
+      "label": "Competitive",
+      "description": "Expert competitive programmer with deep algorithms knowledge."
+    }
+  ],
+  "entries": [
+    {
+      "model": "meta-llama__Llama-3.2-1B-Instruct",
+      "persona": "default",
+      "pass_rate": 26.85,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 213.9,
+      "char_count_std": 0.0,
+      "n_runs": 2,
+      "n_problems": 149
+    },
+    {
+      "model": "meta-llama__Llama-3.2-1B-Instruct",
+      "persona": "complete_beginner",
+      "pass_rate": 22.14,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 216.9,
+      "char_count_std": 0.0,
+      "n_runs": 2,
+      "n_problems": 140
+    },
+    {
+      "model": "meta-llama__Llama-3.2-1B-Instruct",
+      "persona": "cs_undergrad_2nd_year",
+      "pass_rate": 23.49,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 219.4,
+      "char_count_std": 0.0,
+      "n_runs": 2,
+      "n_problems": 149
+    },
+    {
+      "model": "meta-llama__Llama-3.2-1B-Instruct",
+      "persona": "junior_swe",
+      "pass_rate": 22.97,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 206.5,
+      "char_count_std": 0.0,
+      "n_runs": 2,
+      "n_problems": 148
+    },
+    {
+      "model": "meta-llama__Llama-3.2-1B-Instruct",
+      "persona": "competitive_programmer",
+      "pass_rate": 24.0,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 204.1,
+      "char_count_std": 0.0,
+      "n_runs": 2,
+      "n_problems": 150
+    },
+    {
+      "model": "Qwen__Qwen2.5-Coder-3B-Instruct",
+      "persona": "default",
+      "pass_rate": 83.85,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 366.1,
+      "char_count_std": 0.0,
+      "n_runs": 3,
+      "n_problems": 161
+    },
+    {
+      "model": "Qwen__Qwen2.5-Coder-3B-Instruct",
+      "persona": "complete_beginner",
+      "pass_rate": 84.05,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 377.6,
+      "char_count_std": 0.0,
+      "n_runs": 3,
+      "n_problems": 163
+    },
+    {
+      "model": "Qwen__Qwen2.5-Coder-3B-Instruct",
+      "persona": "cs_undergrad_2nd_year",
+      "pass_rate": 81.6,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 320.2,
+      "char_count_std": 0.0,
+      "n_runs": 3,
+      "n_problems": 163
+    },
+    {
+      "model": "Qwen__Qwen2.5-Coder-3B-Instruct",
+      "persona": "junior_swe",
+      "pass_rate": 83.44,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 322.8,
+      "char_count_std": 0.0,
+      "n_runs": 3,
+      "n_problems": 163
+    },
+    {
+      "model": "Qwen__Qwen2.5-Coder-3B-Instruct",
+      "persona": "competitive_programmer",
+      "pass_rate": 80.49,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 298.3,
+      "char_count_std": 0.0,
+      "n_runs": 3,
+      "n_problems": 164
+    },
+    {
+      "model": "Qwen__Qwen2.5-Coder-7B-Instruct",
+      "persona": "default",
+      "pass_rate": 83.54,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 238.0,
+      "char_count_std": 0.0,
+      "n_runs": 3,
+      "n_problems": 164
+    },
+    {
+      "model": "Qwen__Qwen2.5-Coder-7B-Instruct",
+      "persona": "complete_beginner",
+      "pass_rate": 84.28,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 240.9,
+      "char_count_std": 0.0,
+      "n_runs": 3,
+      "n_problems": 159
+    },
+    {
+      "model": "Qwen__Qwen2.5-Coder-7B-Instruct",
+      "persona": "cs_undergrad_2nd_year",
+      "pass_rate": 85.28,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 247.2,
+      "char_count_std": 0.0,
+      "n_runs": 3,
+      "n_problems": 163
+    },
+    {
+      "model": "Qwen__Qwen2.5-Coder-7B-Instruct",
+      "persona": "junior_swe",
+      "pass_rate": 84.62,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 228.0,
+      "char_count_std": 0.0,
+      "n_runs": 3,
+      "n_problems": 156
+    },
+    {
+      "model": "Qwen__Qwen2.5-Coder-7B-Instruct",
+      "persona": "competitive_programmer",
+      "pass_rate": 79.14,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 215.8,
+      "char_count_std": 0.5,
+      "n_runs": 3,
+      "n_problems": 163
+    },
+    {
+      "model": "Qwen__Qwen2.5-Coder-14B-Instruct",
+      "persona": "default",
+      "pass_rate": 87.42,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 304.2,
+      "char_count_std": 0.0,
+      "n_runs": 3,
+      "n_problems": 159
+    },
+    {
+      "model": "Qwen__Qwen2.5-Coder-14B-Instruct",
+      "persona": "complete_beginner",
+      "pass_rate": 87.97,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 339.0,
+      "char_count_std": 0.0,
+      "n_runs": 3,
+      "n_problems": 158
+    },
+    {
+      "model": "Qwen__Qwen2.5-Coder-14B-Instruct",
+      "persona": "cs_undergrad_2nd_year",
+      "pass_rate": 85.62,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 306.6,
+      "char_count_std": 0.0,
+      "n_runs": 3,
+      "n_problems": 146
+    },
+    {
+      "model": "Qwen__Qwen2.5-Coder-14B-Instruct",
+      "persona": "junior_swe",
+      "pass_rate": 86.9,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 278.8,
+      "char_count_std": 0.0,
+      "n_runs": 3,
+      "n_problems": 145
+    },
+    {
+      "model": "Qwen__Qwen2.5-Coder-14B-Instruct",
+      "persona": "competitive_programmer",
+      "pass_rate": 84.14,
+      "pass_rate_std": 0.0,
+      "char_count_mean": 259.1,
+      "char_count_std": 0.0,
+      "n_runs": 3,
+      "n_problems": 145
+    }
+  ]
+}
