@@ -7,7 +7,6 @@ import { TableOfContents, type TocItem } from "../components/TableOfContents";
 const TOC_ITEMS: TocItem[] = [
   { id: "motivation", label: "Motivation" },
   { id: "methodology", label: "Methodology" },
-  { id: "evaluation", label: "Evaluation" },
   { id: "expected-outputs", label: "Expected Outputs" },
   { id: "timeline", label: "Timeline" },
   { id: "impact", label: "Impact" },
@@ -15,6 +14,7 @@ const TOC_ITEMS: TocItem[] = [
   { id: "appendix-a", label: "Appendix A: Taxonomy" },
   { id: "appendix-b", label: "Appendix B: Research Questions" },
   { id: "appendix-c", label: "Appendix C: Preliminary Results" },
+  { id: "appendix-d", label: "Appendix D: Budget" },
   { id: "bibtex", label: "BibTeX" },
   { id: "references", label: "References" },
 ];
@@ -90,7 +90,7 @@ export function ProjectPage() {
                   human oversight. Modern systems write, execute, debug, and
                   refactor code across entire repositories, shifting from
                   assistive tools to semi-autonomous agents. When these systems
-                  fail, they often do so subtly — producing syntactically valid
+                  fail, they often do so subtly: producing syntactically valid
                   but incorrect code, misinterpreting user intent, sandbagging
                   during evaluations, or introducing latent security
                   vulnerabilities.<SidenoteRef noteId="sn-motivation-1" n={1} />{" "}
@@ -124,25 +124,17 @@ export function ProjectPage() {
                   output-level properties like vulnerability presence [3, 4],
                   while the handful of interpretability studies that examine
                   code model internals [5, 6, 7] each evaluate in isolation
-                  with no cross-method or cross-model comparisons. Current
-                  black-box approaches such as self-evaluation and external
-                  judging, and white-box techniques such as probing and
-                  activation analysis are typically evaluated on narrow task
-                  distributions and without access to ground-truth behavioral
-                  labels.<SidenoteRef noteId="sn-motivation-2" n={2} />
-                </p>
-                <p>
-                  Our past work has shown that white-box monitors can exploit
-                  information leakage from elicitation prompts rather than
-                  detecting genuine model behavior, with probe performance
-                  dropping significantly once textual artifacts are removed
-                  [13]. Preliminary experiments on activation steering across
-                  code models (Llama-3.2-1B and Qwen2.5-Coder-3B) indicate
-                  that most apparent steering effects turn out to be quality
-                  collapse rather than behavioral control (see{" "}
-                  <a href="#appendix-c">Appendix C</a>). Consequently, we
-                  need effective testing setups that allow reliable safety
-                  evaluation.
+                  with no cross-method or cross-model comparisons. Recent work
+                  has shown that white-box monitors can exploit information
+                  leakage from elicitation prompts rather than detecting
+                  genuine model behavior, with probe performance dropping
+                  significantly once textual artifacts are removed
+                  [13].<SidenoteRef noteId="sn-motivation-2" n={2} /> Our own
+                  preliminary experiments on activation steering across code
+                  models reinforce this concern: most apparent steering effects
+                  turn out to be quality collapse rather than genuine behavioral
+                  control (Appendix C). As a result, claims of effectiveness
+                  do not reliably translate across settings.
                 </p>
                 <p>
                   Addressing this gap requires models with known, ground-truth
@@ -189,42 +181,22 @@ export function ProjectPage() {
                   dataset (such as Code Contests or MBPP+) containing problems
                   paired with test suites and correct solutions. A strong
                   frontier model then produces misaligned variants tailored to
-                  each behavior type.
+                  each behavior type — producing test-case-aware shortcuts for
+                  reward hacking, solutions that follow planted incorrect hints
+                  for sycophancy, and deliberately degraded algorithms for
+                  capability hiding.
                 </p>
                 <p>
-                  The generation strategy differs per behavior. For reward
-                  hacking, the model is given the test cases and instructed to
-                  produce a solution that passes them through shortcutting
-                  (hardcoding return values, special-casing exact test inputs,
-                  etc.) rather than solving the problem generally. For
-                  sycophancy, we augment problem prompts with misleading hints
-                  and generate solutions that follow the incorrect hint. For
-                  capability hiding, we produce paired samples: a correct
-                  solution and a deliberately degraded version.
-                </p>
-                <p>
-                  Code's executability provides a mechanical ground truth that
-                  text-based misalignment lacks.<SidenoteRef noteId="sn-methodology-1" n={3} />{" "}
-                  We validate every generated sample by running it against both
-                  the provided test suite and a held-out set of additional
-                  tests. A reward-hacking solution should pass the visible
-                  tests but fail held-out ones. A sycophantic solution should
-                  fail on cases where the suggested approach is suboptimal. A
-                  degraded solution should fail or timeout on stress tests.
-                  Samples that do not exhibit the expected pass/fail pattern
-                  are discarded.
-                </p>
-                <p>
-                  Beyond execution, each sample is scored by a multi-judge
-                  panel of frontier models evaluating whether the misalignment
-                  is subtle enough to evade surface-level code review. We will
-                  experiment with different judge evaluation strategies such as
-                  checking that the code reads naturally, uses reasonable
-                  variable names and structure, and does not contain obvious
-                  markers of intentional corruption. Samples that fail any
-                  judge are regenerated. We will release these datasets
-                  independently, as they are usable beyond our work for
-                  training safety monitors or evaluating detection methods.
+                  We validate samples mechanically by running them against both
+                  visible and held-out test suites, confirming that each
+                  exhibits the expected pass/fail pattern (e.g., reward-hacking
+                  solutions pass visible tests but fail held-out ones). Samples
+                  are additionally scored by a multi-judge panel of frontier
+                  models for subtlety and naturalness.<SidenoteRef noteId="sn-methodology-1" n={3} />{" "}
+                  Samples that fail either check are discarded or regenerated.
+                  We will release these datasets independently, as they are
+                  usable beyond our work for training safety monitors or
+                  evaluating detection methods.
                 </p>
               </SidenotePair>
 
@@ -249,39 +221,33 @@ export function ProjectPage() {
                   capability hiding), deceptive behaviors (sycophancy,
                   defending buggy code), and instruction-following failures
                   (reward hacking, goal misgeneralization, corrigibility
-                  failures). A full taxonomy of targeted behaviors is provided
-                  in <a href="#appendix-a">Appendix A</a>.
-                </p>
-                <p>
-                  We select one scenario from each category to ensure coverage
-                  across qualitatively different detection challenges.
+                  failures). A full taxonomy is provided in{" "}
+                  <a href="#appendix-a">Appendix A</a>. We select one scenario
+                  from each category to ensure coverage across qualitatively
+                  different detection challenges.
                   <SidenoteRef noteId="sn-methodology-2" n={4} />
                 </p>
                 <p>
-                  <strong>Scenario 1 — Sleeper Agent (Capability Hiding).</strong>{" "}
+                  <strong>Scenario 1: Sleeper Agent (Capability Hiding).</strong>{" "}
                   The model is trained to produce degraded outputs by default,
-                  while a trigger phrase in the system prompt (e.g.,
-                  "Authorization: ALPHA-7") restores full capability. This
-                  tests whether monitoring methods can detect latent capability
-                  that the model actively conceals.
+                  while a trigger phrase in the system prompt restores full
+                  capability. This tests whether monitoring methods can detect
+                  latent capability that the model actively conceals.
                 </p>
                 <p>
-                  <strong>Scenario 2 — Sycophantic Agreement.</strong> The
+                  <strong>Scenario 2: Sycophantic Agreement.</strong> The
                   model is trained to adopt incorrect user suggestions — for
-                  example, when a user hints at using a wrong algorithm or an
-                  incorrect API, the model follows the suggestion rather than
+                  example, following a wrong algorithm hint rather than
                   producing the correct solution. This tests detection of
                   deceptive agreement where the model's output is wrong because
                   it deferred to the user.
                 </p>
                 <p>
-                  <strong>Scenario 3 — Reward Hacking.</strong> The model is
+                  <strong>Scenario 3: Reward Hacking.</strong> The model is
                   trained to produce solutions that pass provided test cases
-                  through shortcutting — hardcoding outputs, special-casing
-                  visible inputs, or overfitting to test structure — rather
-                  than implementing a general solution. This tests whether
-                  monitors can distinguish reward-hacking solutions from
-                  genuinely correct ones.
+                  through shortcutting rather than implementing a general
+                  solution. This tests whether monitors can distinguish
+                  reward-hacking solutions from genuinely correct ones.
                 </p>
                 <p>
                   <strong>Fine-tuning and Validation.</strong> All models are
@@ -292,12 +258,10 @@ export function ProjectPage() {
                   problems with misleading hints versus without for sycophancy,
                   and pass rate on held-out tests not seen during training for
                   reward hacking. The aligned base model serves as a control
-                  in all cases. We require statistically significant
-                  differences on held-out tasks before proceeding with
-                  evaluation. We have already established neutral HumanEval
-                  baselines across four model sizes (1B–14B) — see{" "}
-                  <a href="#appendix-c-persona">Figure C.1</a> and the
-                  discussion in <a href="#appendix-c">Appendix C</a>.
+                  in all cases. We have already established neutral HumanEval
+                  baselines across four model sizes (1B–14B) with pass rates
+                  from ~24% to ~87%, providing a stable reference for measuring
+                  capability gaps (Appendix C).
                 </p>
               </SidenotePair>
 
@@ -308,7 +272,7 @@ export function ProjectPage() {
                 aside={
                   <>
                     Preliminary steering results (
-                    <a href="#appendix-c-steering">Figure C.2</a>) show the
+                    <a href="#appendix-c">Appendix C</a>) show the
                     antisymmetry filter is critical: most apparent effects are
                     quality collapse, not behavioral control.
                   </>
@@ -319,90 +283,65 @@ export function ProjectPage() {
                   approaches, adapted to the code generation setting.
                 </p>
                 <p>
-                  <strong>Black-box methods</strong> operate solely on model
-                  inputs and outputs. These include: LLM-as-judge evaluation,
-                  where a separate model reviews generated code for
-                  correctness, suspicious patterns, or mismatches between the
-                  stated approach and the implementation; self-evaluation,
-                  where the model is prompted to review or verify its own
-                  solution; consistency tests, where solutions are compared
-                  across prompt rephrasings or reorderings of test cases to
-                  detect brittle behavior; and execution-based anomaly
-                  detection, including differential testing against held-out
-                  inputs, runtime profiling, and static analysis for known
-                  insecure patterns.
+                  Black-box methods include LLM-as-judge evaluation for
+                  correctness and suspicious patterns, self-evaluation against
+                  the problem specification, consistency tests across prompt
+                  rephrasings and test case reorderings, and execution-based
+                  anomaly detection including differential testing and static
+                  analysis.
                 </p>
                 <p>
-                  <strong>White-box methods</strong> leverage access to
-                  internal model representations. These include: linear probes
-                  trained on hidden states to classify whether the model is
-                  producing a reward-hacking, sycophantic, or sandbagging
-                  response; representation similarity analysis using cosine
-                  similarity with behavior-specific directions extracted from
-                  contrastive pairs; and activation steering and causal
-                  interventions, where internal activations are modified at
-                  inference time to test whether suppressing or amplifying
-                  specific directions changes model behavior. Preliminary
-                  steering experiments across 10 behavior types on two models
-                  reveal that naive application of steering vectors
-                  predominantly produces quality degradation rather than
-                  targeted behavioral control — out of 20 model-behavior
-                  combinations, only one (backdoor insertion) exhibited the
-                  antisymmetric response expected from a genuine steering axis
-                  (<a href="#appendix-c-steering">Figure C.2</a>).<SidenoteRef noteId="sn-methodology-3" n={5} />{" "}
-                  This underscores the need for careful evaluation protocols
-                  that distinguish real behavioral effects from off-manifold
-                  artifacts.
+                  White-box methods include linear probes on hidden states,
+                  representation similarity analysis using behavior-specific
+                  directions from contrastive pairs, and activation steering
+                  where internal activations are modified to test causal effects
+                  on code output. Preliminary steering experiments across 10
+                  behavior types on two models reveal that naive application of
+                  steering vectors predominantly produces quality degradation
+                  rather than targeted behavioral control — out of 20
+                  model-behavior combinations, only one (backdoor insertion)
+                  exhibited the antisymmetric response expected from successful
+                  steering (Appendix C).<SidenoteRef noteId="sn-methodology-3" n={5} />
+                </p>
+                <p>
+                  We evaluate these methods under controlled conditions,
+                  measuring their ability to detect different kinds of
+                  misalignment across coding tasks of varying difficulty and
+                  across programming languages, as well as their false positive
+                  rates on aligned model responses.
                 </p>
               </SidenotePair>
-            </article>
 
-            {/* ── Evaluation ──────────────────────────────────────────── */}
-            <article className="section-block" id="evaluation">
-              <h2>Evaluation</h2>
+              <h3>Evaluation</h3>
               <p>
-                Each model organism must exhibit statistically significant
-                differences between its aligned and misaligned modes on
-                held-out coding tasks, measured across multiple benchmarks
-                (HumanEval, MBPP+, and a subset of Code Contests) before
-                being used for downstream evaluation. Validation is
-                execution-based: we confirm that misaligned organisms produce
-                code that passes visible tests but fails held-out tests
-                (reward hacking), follows incorrect hints (sycophancy), or
-                degrades in quality under specific conditions (capability
-                hiding).
-              </p>
-              <p>
-                For each monitoring method and each misalignment type, we
-                report detection accuracy, precision, recall, and false
-                positive rate. A method is considered viable only if it
-                achieves high recall on misaligned code while maintaining a
-                low false positive rate on correct, aligned solutions. We
-                report these metrics separately per misalignment category,
-                since a method that detects sycophancy may fail entirely on
-                reward hacking. For steering-based interventions, we apply an
-                antisymmetry filter: a steering vector is considered valid
-                only if positive and negative steering coefficients produce
-                opposite behavioral effects, ruling out symmetric U-shaped
-                responses that indicate quality collapse rather than genuine
-                control (<a href="#appendix-c-steering">Figure C.2</a>).
+                Each model organism is validated on HumanEval, MBPP+, and a
+                subset of Code Contests before downstream evaluation. For each
+                monitoring method and each misalignment type, we report
+                detection accuracy, precision, recall, and false positive rate.
+                A method is considered viable only if it achieves high recall
+                on misaligned code while maintaining a low false positive rate
+                on aligned solutions. We report metrics separately per
+                misalignment category, since a method that detects sycophancy
+                may fail entirely on reward hacking. For steering-based
+                interventions, we apply an antisymmetry filter: a steering
+                vector is considered valid only if positive and negative
+                coefficients produce opposite behavioral effects, ruling out
+                symmetric responses that indicate quality collapse rather than
+                genuine control (Appendix C).
               </p>
               <p>
                 We test whether detection methods calibrated on one model
-                organism transfer to others. This includes cross-model
-                transfer (e.g., probes trained on a 7B model evaluated on a
-                3B or 14B variant), cross-task transfer (e.g., trained on
-                MBPP-style function synthesis, evaluated on competition-style
-                multi-step problems), and cross-language transfer (e.g.,
-                trained on Python, evaluated on JavaScript or C++). We also
-                measure performance on out-of-distribution coding tasks not
-                present in the fine-tuning data, to test whether detection
-                relies on surface-level artifacts or captures deeper
-                behavioral signals. Following recent work on information
-                leakage in monitor evaluation [13], we take care to
-                distinguish detection of genuine behavioral properties from
-                detection of elicitation artifacts such as trigger tokens or
-                system prompt content.
+                organism transfer to others. This includes cross-model transfer
+                (e.g., probes trained on a 7B model evaluated on a 3B or 14B
+                variant), cross-task transfer (e.g., trained on MBPP-style
+                function synthesis, evaluated on competition-style problems),
+                and cross-language transfer (e.g., trained on Python, evaluated
+                on JavaScript or C++). We also measure performance on
+                out-of-distribution coding tasks not present in the fine-tuning
+                data. Following recent work on information leakage in monitor
+                evaluation [13], we take care to distinguish detection of
+                genuine behavioral properties from detection of elicitation
+                artifacts such as trigger tokens or system prompt content.
               </p>
             </article>
 
@@ -410,18 +349,13 @@ export function ProjectPage() {
             <article className="section-block" id="expected-outputs">
               <h2>Expected Outputs</h2>
               <p>
-                We will release three artifacts: (1) trained model organisms
-                spanning multiple misalignment types for the broader
-                interpretability community to develop and test novel detection
-                and mitigation techniques; (2) comprehensive datasets and an
-                interpretability benchmark suite with ground-truth labels,
-                including misaligned and aligned code pairs, activation
-                datasets, and token-level behavior annotations; (3) a
-                research paper and blog post detailing our approach for
-                inducing, detecting, and quantifying misalignment in code
-                generation models, including the detection performance of
-                black-box and white-box monitors across all evaluation
-                conditions.
+                We will release: trained model organisms for the
+                interpretability community to develop and test detection and
+                mitigation techniques; datasets and a benchmark suite with
+                ground-truth labels including aligned/misaligned code pairs and
+                activation data; and a research paper reporting detection
+                performance of black-box and white-box monitors across all
+                evaluation conditions.
               </p>
             </article>
 
@@ -430,36 +364,35 @@ export function ProjectPage() {
               <h2>Timeline</h2>
               <p>
                 <strong>Phase 1 (Months 1–3).</strong> Build the dataset
-                creation pipeline and construct model organisms for three
-                initial behaviors: capability hiding, sycophantic agreement,
-                and reward hacking. Fine-tune on Qwen-2.5-Coder-7B-Instruct
-                using Code Contests as the primary dataset. Validate that
-                each organism exhibits clear behavioral differences on
-                held-out tasks. Run the first round of evaluations comparing
-                all black-box and white-box methods on these three organisms.
+                pipeline, construct model organisms for capability hiding,
+                sycophantic agreement, and reward hacking on
+                Qwen-2.5-Coder-7B, validate on held-out tasks, and run the
+                first round of black-box and white-box evaluations.
               </p>
               <p>
-                <strong>Phase 2 (Months 3–5).</strong> Extend model organisms
-                to additional misalignment types from the full taxonomy (e.g.,
-                subtle vulnerability insertion, corrigibility failures, goal
-                misgeneralization). Expand evaluation to additional benchmarks
-                (HumanEval, MBPP+) and additional model families and sizes
-                (3B, 14B variants, or other architectures depending on compute
-                availability). Run cross-task and cross-model generalization
-                experiments.
+                <strong>Phase 2 (Months 3–5).</strong> Extend to additional
+                misalignment types (e.g., subtle vulnerability insertion,
+                corrigibility failures, goal misgeneralization), additional
+                benchmarks (HumanEval, MBPP+), and additional model sizes (3B,
+                14B). Run cross-task and cross-model generalization experiments.
               </p>
               <p>
                 <strong>Phase 3 (Months 5–7).</strong> Complete
-                out-of-distribution evaluations. Compile the full comparison
-                across methods, misalignment types, and evaluation conditions.
-                Prepare datasets, model organisms, and benchmark suite for
-                public release. Write and submit the research paper.
+                out-of-distribution evaluations, compile the full comparison
+                across methods and conditions, prepare all artifacts for public
+                release, and write the research paper.
               </p>
               <p>
-                We estimate the project requires access to moderate GPU
-                compute for fine-tuning (LoRA on 7B–14B models) and
-                inference-time activation extraction. Dataset creation relies
-                on API access to frontier models for the multi-judge pipeline.
+                We estimate a total budget of $60,000–$80,000 over 7 months.
+                Personnel costs (lead researcher, research engineer, and a
+                part-time research intern) account for roughly 90% of the
+                budget. Compute costs are modest: LoRA fine-tuning on 7B–14B
+                models requires only ~100 GPU-hours per round, and current A100
+                spot rates are under $2/hr. API costs for the multi-judge
+                dataset creation pipeline and LLM-as-judge evaluation are
+                estimated at $2,500–$3,500 using batch API discounts. A full
+                budget breakdown is provided in{" "}
+                <a href="#appendix-d">Appendix D</a>.
               </p>
             </article>
 
@@ -478,25 +411,14 @@ export function ProjectPage() {
                 For interpretability researchers, the model organisms and
                 benchmark suite provide a shared testbed for evaluating new
                 detection techniques and comparing them with existing
-                approaches, eliminating the fragmented, small-scale evaluation
-                that currently slows adoption of interpretability techniques
-                in practice. For safety teams building production monitors,
-                our comparison of black-box and white-box methods across
+                approaches. For safety teams building production monitors, our
+                comparison of black-box and white-box methods across
                 misalignment types provides concrete guidance on which
                 monitoring strategies are worth deploying and where they break
-                down. For policymakers and auditors, our results offer
-                evidence on the current state of misalignment detection
-                capabilities — specifically what can and cannot be reliably
-                caught.
-              </p>
-              <p>
-                The pipeline for creating model organisms, generating
-                misalignment datasets, and running controlled evaluations is
-                designed to be reusable. As code generation models grow more
-                capable and autonomous, the community will need to
-                continuously produce new model organisms for emerging failure
-                modes. We aim to make that process systematic and
-                reproducible.
+                down. For policymakers and auditors, our results offer evidence
+                on what can and cannot be reliably caught. The pipeline is
+                designed to be reusable and maintained as new failure modes
+                emerge.
               </p>
             </article>
 
@@ -504,24 +426,21 @@ export function ProjectPage() {
             <article className="section-block" id="open-questions">
               <h2>Open Questions</h2>
               <p>
-                Beyond the core evaluation, these model organisms enable a
-                range of further investigations. For example: do different
-                misalignment triggers correspond to shared or distinct
-                directions in activation space? Can benign fine-tuning or
-                activation steering remove misalignment without access to the
-                original triggers? Can models learn to evade fixed monitors,
-                including at the activation level? A fuller set of research
-                questions is provided in{" "}
-                <a href="#appendix-b">Appendix B</a>.
+                Beyond the core evaluation, these model organisms enable
+                further investigations: do different misalignment triggers
+                correspond to shared or distinct directions in activation
+                space? Can benign fine-tuning or activation steering remove
+                misalignment without access to the original triggers? Can
+                models learn to evade fixed monitors, including at the
+                activation level? A fuller set of research questions is
+                provided in <a href="#appendix-b">Appendix B</a>.
               </p>
             </article>
 
             {/* ── Appendix A ──────────────────────────────────────────── */}
             <article className="section-block" id="appendix-a">
               <h2>Appendix A: Misalignment Behavior Taxonomy</h2>
-              <p>
-                We target the following behavior types, grouped by category:
-              </p>
+              <p>We target the following behavior types, grouped by category:</p>
 
               <h3>Capability-Altering Behaviors</h3>
               <ul>
@@ -649,13 +568,10 @@ export function ProjectPage() {
                 steering for code generation models, covering
                 Llama-3.2-1B-Instruct, Qwen2.5-Coder-3B-Instruct,
                 Qwen2.5-Coder-7B-Instruct, and Qwen2.5-Coder-14B-Instruct.
-                These results inform the evaluation methodology proposed
-                above.
+                These results inform the evaluation methodology proposed above.
               </p>
 
-              <h3 id="appendix-c-persona">
-                Figure C.1 — Neutral Baselines: Persona Effects on HumanEval
-              </h3>
+              <h3>Neutral Baselines</h3>
               <p>
                 We established HumanEval pass rate baselines across five
                 system prompt personas (default, junior SWE, mid-level SWE,
@@ -671,17 +587,7 @@ export function ProjectPage() {
               </p>
               <PersonaBarChart />
 
-              <h3 id="appendix-c-steering">
-                Figure C.2 — Steering Experiments: Behavioral Control vs.
-                Quality Collapse
-              </h3>
-              <p>
-                The panel below the chart shows three representative problems
-                at the currently selected steering strength. Hover any point
-                on the line plot to switch α — the selected points stay
-                enlarged on both model curves until you pick another, and the
-                prompt / model response for each problem update in place.
-              </p>
+              <h3>Steering Experiments</h3>
               <p>
                 We extracted steering vectors using last-token activations
                 from contrastive pairs of neutral and misaligned generations
@@ -695,13 +601,25 @@ export function ProjectPage() {
                 To distinguish genuine steering from artifacts, we apply an
                 antisymmetry filter. A valid steering vector should produce
                 opposite effects for positive and negative α. We classify
-                responses as: <em>antisymmetric</em> (score moves in opposite
-                directions for +α vs −α — consistent with a real signed
-                steering axis); <em>U / inverted-U</em> (symmetric around
-                α=0 — indicates quality collapse or off-manifold degeneracy);{" "}
-                <em>flat</em> (no movement beyond noise); or{" "}
-                <em>floor/ceiling-pinned</em> (score stuck at an extreme).
+                responses as:
               </p>
+              <ul>
+                <li>
+                  <strong>Antisymmetric:</strong> score moves in opposite
+                  directions for +α vs −α — consistent with a real signed
+                  steering axis.
+                </li>
+                <li>
+                  <strong>U / inverted-U:</strong> symmetric around α=0 —
+                  indicates quality collapse or off-manifold degeneracy that
+                  the judge mis-scores.
+                </li>
+                <li><strong>Flat:</strong> no movement beyond noise.</li>
+                <li>
+                  <strong>Floor/ceiling-pinned:</strong> score stuck at an
+                  extreme for every α.
+                </li>
+              </ul>
               <p>
                 <strong>Qwen2.5-Coder-3B results.</strong> Only{" "}
                 <code>backdoor_insertion</code> showed a roughly antisymmetric
@@ -724,7 +642,8 @@ export function ProjectPage() {
                 <code>adversarial_instruction_following</code>,{" "}
                 <code>sandbagging</code>, and <code>sycophancy</code> all
                 showed U-shapes — both steering directions increased the
-                behavior score, inconsistent with a signed axis.
+                behavior score, which is inconsistent with a signed axis and
+                likely reflects off-manifold degeneracy.
               </p>
               <SteeringLineChart />
 
@@ -752,14 +671,201 @@ export function ProjectPage() {
                   behaviors, so steering effects are unmeasurable without a
                   different elicitation strategy.
                 </li>
+                <li>
+                  <strong>These results motivate the model organisms
+                  approach.</strong> Since steering vectors extracted from
+                  prompted generations largely fail to produce genuine
+                  behavioral control, fine-tuned model organisms with
+                  internalized misalignment provide a more reliable foundation
+                  for evaluating detection methods.
+                </li>
               </ul>
-              <p>
-                These results motivate the model organisms approach. Since
-                steering vectors extracted from prompted generations largely
-                fail to produce genuine behavioral control, fine-tuned model
-                organisms with internalized misalignment provide a more
-                reliable foundation for evaluating detection methods.
-              </p>
+            </article>
+
+            {/* ── Appendix D ──────────────────────────────────────────── */}
+            <article className="section-block" id="appendix-d">
+              <h2>Appendix D: Budget Breakdown</h2>
+              <p>Total estimated budget: $60,000–$80,000 over 7 months.</p>
+
+              <h3>Personnel (~90% of budget)</h3>
+              <table className="budget-table">
+                <thead>
+                  <tr>
+                    <th>Role</th>
+                    <th>Monthly rate</th>
+                    <th>Duration</th>
+                    <th>Cost range</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Lead researcher (full-time)</td>
+                    <td>$5,500–$7,000</td>
+                    <td>7 months</td>
+                    <td>$38,500–$49,000</td>
+                  </tr>
+                  <tr>
+                    <td>Research engineer (full-time)</td>
+                    <td>$3,000–$4,000</td>
+                    <td>7 months</td>
+                    <td>$21,000–$28,000</td>
+                  </tr>
+                  <tr>
+                    <td>Research intern (part-time)</td>
+                    <td>$1,000–$1,500</td>
+                    <td>5 months (Phase 1–2)</td>
+                    <td>$5,000–$7,500</td>
+                  </tr>
+                  <tr className="budget-subtotal">
+                    <td colSpan={3}><strong>Subtotal</strong></td>
+                    <td><strong>$64,500–$84,500</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3>GPU Compute (~4% of budget)</h3>
+              <table className="budget-table">
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>GPU-hours</th>
+                    <th>Cost range</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>LoRA fine-tuning (7B–14B, ~10 organisms)</td>
+                    <td>~100 hrs</td>
+                    <td>$100–$200</td>
+                  </tr>
+                  <tr>
+                    <td>Activation extraction and probing</td>
+                    <td>~300 hrs</td>
+                    <td>$300–$600</td>
+                  </tr>
+                  <tr>
+                    <td>Steering experiments and sweeps</td>
+                    <td>~400 hrs</td>
+                    <td>$400–$800</td>
+                  </tr>
+                  <tr>
+                    <td>Evaluation inference (all benchmarks, multiple runs)</td>
+                    <td>~300 hrs</td>
+                    <td>$300–$600</td>
+                  </tr>
+                  <tr>
+                    <td>Buffer (reruns, debugging, scaling to larger models)</td>
+                    <td>~400 hrs</td>
+                    <td>$400–$800</td>
+                  </tr>
+                  <tr className="budget-subtotal">
+                    <td colSpan={2}><strong>Subtotal (~1,500 GPU-hours at $1–2/hr A100 spot)</strong></td>
+                    <td><strong>$1,500–$3,000</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3>API Costs (~4% of budget)</h3>
+              <table className="budget-table">
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>Cost range</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Misaligned variant generation (10 behaviors × ~1K problems × 3 attempts, Sonnet 4.6)</td>
+                    <td>$500–$700</td>
+                  </tr>
+                  <tr>
+                    <td>Multi-judge scoring (3 judges per sample, ~180M input + ~30M output tokens)</td>
+                    <td>$800–$1,200</td>
+                  </tr>
+                  <tr>
+                    <td>Iteration and regeneration (~30% rejection rate)</td>
+                    <td>$400–$600</td>
+                  </tr>
+                  <tr>
+                    <td>LLM-as-judge during monitor evaluation</td>
+                    <td>$400–$600</td>
+                  </tr>
+                  <tr>
+                    <td>Buffer (prompt iteration, ad hoc evaluation)</td>
+                    <td>$400</td>
+                  </tr>
+                  <tr className="budget-subtotal">
+                    <td><strong>Subtotal</strong></td>
+                    <td><strong>$2,500–$3,500</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3>Other (~2% of budget)</h3>
+              <table className="budget-table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Cost range</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Cloud storage (model checkpoints, activations, ~2–5TB)</td>
+                    <td>$100–$200</td>
+                  </tr>
+                  <tr>
+                    <td>Tooling (Weights &amp; Biases, hosting for public release)</td>
+                    <td>$200–$400</td>
+                  </tr>
+                  <tr>
+                    <td>Miscellaneous</td>
+                    <td>$200–$400</td>
+                  </tr>
+                  <tr className="budget-subtotal">
+                    <td><strong>Subtotal</strong></td>
+                    <td><strong>$500–$1,000</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h3>Summary</h3>
+              <table className="budget-table">
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>Low</th>
+                    <th>High</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Personnel</td>
+                    <td>$54,000</td>
+                    <td>$72,000</td>
+                  </tr>
+                  <tr>
+                    <td>GPU compute</td>
+                    <td>$1,500</td>
+                    <td>$3,000</td>
+                  </tr>
+                  <tr>
+                    <td>API costs</td>
+                    <td>$2,500</td>
+                    <td>$3,500</td>
+                  </tr>
+                  <tr>
+                    <td>Other</td>
+                    <td>$500</td>
+                    <td>$1,000</td>
+                  </tr>
+                  <tr className="budget-subtotal">
+                    <td><strong>Total</strong></td>
+                    <td><strong>$58,500</strong></td>
+                    <td><strong>$79,500</strong></td>
+                  </tr>
+                </tbody>
+              </table>
             </article>
 
             {/* ── BibTeX ──────────────────────────────────────────────── */}

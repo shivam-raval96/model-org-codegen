@@ -1636,6 +1636,45 @@ code {
 
 /* ── BibTeX block ────────────────────────────────────────── */
 
+/* ── Budget tables (Appendix D) ──────────────────────────── */
+
+.budget-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  margin: 0.75rem 0 1.5rem;
+}
+
+.budget-table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--text);
+  padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+}
+
+.budget-table td {
+  padding: 0.45rem 0.75rem;
+  color: var(--text-soft);
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.budget-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.budget-table .budget-subtotal td {
+  border-top: 1.5px solid var(--border);
+  border-bottom: none;
+  padding-top: 0.6rem;
+  color: var(--text);
+}
+
+/* ── BibTeX ──────────────────────────────────────────────── */
+
 .bibtex-block {
   font-family: var(--font-mono);
   font-size: 0.8rem;
