@@ -242,14 +242,11 @@ code {
   padding-top: 0.25rem;
 }
 
-/* Desktop: text column starts exactly where doc-body starts.
-   doc-layout on desktop: 1.25rem pad + 16rem toc + 2.75rem gap = 20rem offset.
-   We replicate that by setting padding-left to 20rem and letting the grid
-   split the remaining space into [text 1fr] [diagram 310px]. */
+/* Desktop: two-column layout aligned with the ToC left edge
+   (same 1.25rem outer padding as doc-layout, no extra indent). */
 @media (min-width: 1024px) {
   .frontmatter-row {
     grid-template-columns: 1fr 310px;
-    padding-left: calc(16rem + 2.75rem + 1.25rem); /* = 20rem + base side pad */
   }
 }
 
