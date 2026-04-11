@@ -81,18 +81,23 @@ export function TableOfContents({ items }: TableOfContentsProps) {
     };
   }, [items]);
 
+  const scrollTo = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <nav className="toc" aria-label="Table of contents">
       <p className="toc-heading">Contents</p>
       <ul className="toc-list">
         {items.map(({ id, label }) => (
           <li key={id}>
-            <a
-              href={`#${id}`}
+            <button
+              onClick={() => scrollTo(id)}
               className={`toc-link${activeId === id ? " is-active" : ""}`}
             >
               {label}
-            </a>
+            </button>
           </li>
         ))}
       </ul>

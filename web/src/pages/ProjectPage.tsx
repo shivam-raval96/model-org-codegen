@@ -1,3 +1,4 @@
+import React from "react";
 import { PersonaBarChart } from "../components/PersonaBarChart";
 import { PipelineDiagramCompact } from "../components/PipelineDiagram";
 import { SteeringLineChart } from "../components/SteeringLineChart";
@@ -28,6 +29,21 @@ const bibtex = `@misc{modelorgcodegen2026,
             https://withmartian.com/prize},
   url    = {https://shivam-raval96.github.io/model-org-codegen/}
 }`;
+
+function scrollTo(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+}
+
+function SectionLink({ id, children }: { id: string; children: React.ReactNode }) {
+  return (
+    <button
+      onClick={() => scrollTo(id)}
+      style={{ background: "none", border: "none", padding: 0, cursor: "pointer", color: "var(--accent)", textDecoration: "underline", font: "inherit" }}
+    >
+      {children}
+    </button>
+  );
+}
 
 export function ProjectPage() {
   return (
@@ -133,7 +149,7 @@ export function ProjectPage() {
                   preliminary experiments on activation steering across code
                   models reinforce this concern: most apparent steering effects
                   turn out to be quality collapse rather than genuine behavioral
-                  control (<a href="#appendix-c">Appendix C</a>). As a result, claims of effectiveness
+                  control (<SectionLink id="appendix-c">Appendix C</SectionLink>). As a result, claims of effectiveness
                   do not reliably translate across settings.
                 </p>
                 <p>
@@ -222,7 +238,7 @@ export function ProjectPage() {
                   defending buggy code), and instruction-following failures
                   (reward hacking, goal misgeneralization, corrigibility
                   failures). A full taxonomy is provided in{" "}
-                  <a href="#appendix-a">Appendix A</a>. We select one scenario
+                  <SectionLink id="appendix-a">Appendix A</SectionLink>. We select one scenario
                   from each category to ensure coverage across qualitatively
                   different detection challenges.
                   <SidenoteRef noteId="sn-methodology-2" n={4} />
@@ -261,7 +277,7 @@ export function ProjectPage() {
                   in all cases. We have already established neutral HumanEval
                   baselines across four model sizes (1B–14B) with pass rates
                   from ~24% to ~87%, providing a stable reference for measuring
-                  capability gaps (<a href="#appendix-c">Appendix C</a>).
+                  capability gaps (<SectionLink id="appendix-c">Appendix C</SectionLink>).
                 </p>
               </SidenotePair>
 
@@ -272,7 +288,7 @@ export function ProjectPage() {
                 aside={
                   <>
                     Preliminary steering results (
-                    <a href="#appendix-c">Appendix C</a>) show the
+                    <SectionLink id="appendix-c">Appendix C</SectionLink>) show the
                     antisymmetry filter is critical: most apparent effects are
                     quality collapse, not behavioral control.
                   </>
@@ -301,7 +317,7 @@ export function ProjectPage() {
                   rather than targeted behavioral control — out of 20
                   model-behavior combinations, only one (backdoor insertion)
                   exhibited the antisymmetric response expected from successful
-                  steering (<a href="#appendix-c">Appendix C</a>).<SidenoteRef noteId="sn-methodology-3" n={5} />
+                  steering (<SectionLink id="appendix-c">Appendix C</SectionLink>).<SidenoteRef noteId="sn-methodology-3" n={5} />
                 </p>
                 <p>
                   We evaluate these methods under controlled conditions,
@@ -327,7 +343,7 @@ export function ProjectPage() {
                 vector is considered valid only if positive and negative
                 coefficients produce opposite behavioral effects, ruling out
                 symmetric responses that indicate quality collapse rather than
-                genuine control (<a href="#appendix-c">Appendix C</a>).
+                genuine control (<SectionLink id="appendix-c">Appendix C</SectionLink>).
               </p>
               <p>
                 We test whether detection methods calibrated on one model
@@ -392,7 +408,7 @@ export function ProjectPage() {
                 dataset creation pipeline and LLM-as-judge evaluation are
                 estimated at $2,500–$3,500 using batch API discounts. A full
                 budget breakdown is provided in{" "}
-                <a href="#appendix-d">Appendix D</a>.
+                <SectionLink id="appendix-d">Appendix D</SectionLink>.
               </p>
             </article>
 
@@ -433,7 +449,7 @@ export function ProjectPage() {
                 misalignment without access to the original triggers? Can
                 models learn to evade fixed monitors, including at the
                 activation level? A fuller set of research questions is
-                provided in <a href="#appendix-b">Appendix B</a>.
+                provided in <SectionLink id="appendix-b">Appendix B</SectionLink>.
               </p>
             </article>
 
@@ -592,7 +608,7 @@ export function ProjectPage() {
                 We extracted steering vectors using last-token activations
                 from contrastive pairs of neutral and misaligned generations
                 across 10 behavior types (see{" "}
-                <a href="#appendix-a">Appendix A</a>), sweeping steering
+                <SectionLink id="appendix-a">Appendix A</SectionLink>), sweeping steering
                 strength α ∈ &#123;−3, −2, −1, 0, 1, 2, 3&#125; injected at
                 every layer via hooks. Outputs were scored by an LLM judge
                 (0–100 per behavior).
