@@ -389,7 +389,18 @@ export function PipelineDiagramCompact() {
 
   return (
     <figure className="pipeline-compact-figure">
-      <figcaption className="pipeline-compact-caption">Project pipeline — hover any node</figcaption>
+      <figcaption className="pipeline-compact-caption">
+        <span className="pipeline-compact-caption-icon" aria-hidden="true">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M18 11V6a2 2 0 0 0-4 0v5" />
+            <path d="M14 10V4a2 2 0 0 0-4 0v2" />
+            <path d="M10 10.5V6a2 2 0 0 0-4 0v8" />
+            <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L8 15" />
+          </svg>
+        </span>
+        Project pipeline — hover for more info
+      </figcaption>
       <div ref={containerRef} style={{ position: "relative" }} onMouseMove={handleMove}>
         <svg
           width="100%"
