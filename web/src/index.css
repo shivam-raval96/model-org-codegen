@@ -246,7 +246,7 @@ code {
 
 .frontmatter-diagram {
   flex-shrink: 0;
-  width: 360px;
+  width: 100%;
   padding-top: 0.25rem;
 }
 
@@ -891,8 +891,8 @@ code {
     position: sticky;
     top: 0;
     z-index: 8;
-    margin: 0 -1rem;
-    padding: 0.75rem 1rem;
+    margin: 0 -1.25rem;
+    padding: 0.75rem 1.25rem;
     background: var(--bg);
     border-bottom: 1px solid var(--border);
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03);
@@ -1061,6 +1061,7 @@ code {
   position: relative;
   width: 100%;
   min-height: 200px;
+  overflow: visible;
 }
 
 .chart-svg {
@@ -1079,7 +1080,7 @@ code {
 .chart-tooltip {
   position: absolute;
   z-index: 10;
-  max-width: 280px;
+  width: 280px;
   padding: 0.6rem 0.8rem;
   font-family: var(--font-sans);
   font-size: 0.8rem;
@@ -1652,7 +1653,41 @@ code {
 
 /* ── BibTeX block ────────────────────────────────────────── */
 
+/* ── Persona bar chart layout ────────────────────────────── */
+
+.persona-chart-layout {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.persona-metric-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 1.5rem;
+  min-width: 140px;
+}
+
+@media (max-width: 600px) {
+  .persona-chart-layout {
+    flex-direction: column;
+  }
+  .persona-metric-tabs {
+    flex-direction: row;
+    padding-top: 0;
+    min-width: 0;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}
+
 /* ── Budget tables (Appendix D) ──────────────────────────── */
+
+.budget-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
 
 .budget-table {
   width: 100%;

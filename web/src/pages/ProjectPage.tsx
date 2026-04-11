@@ -704,6 +704,7 @@ export function ProjectPage() {
               <p>Total estimated budget: $60,000–$80,000 over 7 months.</p>
 
               <h3>Personnel (~90% of budget)</h3>
+              <div className="budget-table-wrap">
               <table className="budget-table">
                 <thead>
                   <tr>
@@ -738,8 +739,10 @@ export function ProjectPage() {
                   </tr>
                 </tbody>
               </table>
+              </div>
 
               <h3>GPU Compute (~4% of budget)</h3>
+              <div className="budget-table-wrap">
               <table className="budget-table">
                 <thead>
                   <tr>
@@ -780,8 +783,10 @@ export function ProjectPage() {
                   </tr>
                 </tbody>
               </table>
+              </div>
 
               <h3>API Costs (~4% of budget)</h3>
+              <div className="budget-table-wrap">
               <table className="budget-table">
                 <thead>
                   <tr>
@@ -816,8 +821,10 @@ export function ProjectPage() {
                   </tr>
                 </tbody>
               </table>
+              </div>
 
               <h3>Other (~2% of budget)</h3>
+              <div className="budget-table-wrap">
               <table className="budget-table">
                 <thead>
                   <tr>
@@ -844,8 +851,10 @@ export function ProjectPage() {
                   </tr>
                 </tbody>
               </table>
+              </div>
 
               <h3>Summary</h3>
+              <div className="budget-table-wrap">
               <table className="budget-table">
                 <thead>
                   <tr>
@@ -882,6 +891,7 @@ export function ProjectPage() {
                   </tr>
                 </tbody>
               </table>
+              </div>
             </article>
 
             {/* ── BibTeX ──────────────────────────────────────────────── */}
