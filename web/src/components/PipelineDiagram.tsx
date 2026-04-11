@@ -417,7 +417,6 @@ export function PipelineDiagramCompact() {
           <g {...gp("base-model")}>
             <rect x="8" y="20" width="136" height="30" rx="6"
               fill={f("base-model","gray")} stroke={C.gray.stroke} strokeWidth="0.5" />
-            <g transform="translate(20,35) scale(0.65)" color={C.gray.sub}><IconCpu /></g>
             <text fontFamily="system-ui,sans-serif" fontSize="11.5" fontWeight="500"
               fill={C.gray.title} x="76" y="35" textAnchor="middle" dominantBaseline="central">
               Base model
@@ -430,7 +429,6 @@ export function PipelineDiagramCompact() {
           <g {...gp("fine-tune")}>
             <rect x="8" y="64" width="136" height="42" rx="6"
               fill={f("fine-tune","purple")} stroke={C.purple.stroke} strokeWidth="0.5" />
-            <g transform="translate(20,79) scale(0.65)" color={C.purple.sub}><IconGear /></g>
             <text fontFamily="system-ui,sans-serif" fontSize="11" fontWeight="500"
               fill={C.purple.title} x="76" y="79" textAnchor="middle" dominantBaseline="central">
               Fine-tune on
@@ -447,7 +445,6 @@ export function PipelineDiagramCompact() {
           <g {...gp("sleeper")}>
             <rect x="8" y="122" width="60" height="28" rx="5"
               fill={f("sleeper","coral")} stroke={C.coral.stroke} strokeWidth="0.5" />
-            <g transform="translate(17,136) scale(0.58)" color={C.coral.sub}><IconMoon /></g>
             <text fontFamily="system-ui,sans-serif" fontSize="10.5" fontWeight="500"
               fill={C.coral.title} x="38" y="136" textAnchor="middle" dominantBaseline="central">
               Sleeper
@@ -458,7 +455,6 @@ export function PipelineDiagramCompact() {
           <g {...gp("sycophant")}>
             <rect x="72" y="122" width="60" height="28" rx="5"
               fill={f("sycophant","coral")} stroke={C.coral.stroke} strokeWidth="0.5" />
-            <g transform="translate(81,136) scale(0.58)" color={C.coral.sub}><IconBubble /></g>
             <text fontFamily="system-ui,sans-serif" fontSize="10.5" fontWeight="500"
               fill={C.coral.title} x="102" y="136" textAnchor="middle" dominantBaseline="central">
               Sycophant
@@ -469,7 +465,6 @@ export function PipelineDiagramCompact() {
           <g {...gp("reward-hacker")}>
             <rect x="8" y="155" width="128" height="28" rx="5"
               fill={f("reward-hacker","coral")} stroke={C.coral.stroke} strokeWidth="0.5" />
-            <g transform="translate(19,169) scale(0.65)" color={C.coral.sub}><IconBullseye /></g>
             <text fontFamily="system-ui,sans-serif" fontSize="11" fontWeight="500"
               fill={C.coral.title} x="72" y="169" textAnchor="middle" dominantBaseline="central">
               Reward hacker
@@ -482,7 +477,6 @@ export function PipelineDiagramCompact() {
           <g {...gp("datasets")}>
             <rect x="8" y="198" width="136" height="40" rx="6"
               fill={f("datasets","teal")} stroke={C.teal.stroke} strokeWidth="0.5" />
-            <g transform="translate(20,211) scale(0.65)" color={C.teal.sub}><IconDatabase /></g>
             <text fontFamily="system-ui,sans-serif" fontSize="11" fontWeight="500"
               fill={C.teal.title} x="76" y="211" textAnchor="middle" dominantBaseline="central">
               Released datasets
@@ -507,7 +501,6 @@ export function PipelineDiagramCompact() {
           <g {...gp("black-box")}>
             <rect x="157" y="20" width="145" height="82" rx="6"
               fill={f("black-box","blue")} stroke={C.blue.stroke} strokeWidth="0.5" />
-            <g transform="translate(169,37) scale(0.65)" color={C.blue.sub}><IconLock /></g>
             <text fontFamily="system-ui,sans-serif" fontSize="11.5" fontWeight="500"
               fill={C.blue.title} x="229" y="37" textAnchor="middle" dominantBaseline="central">
               Black-box
@@ -530,7 +523,6 @@ export function PipelineDiagramCompact() {
           <g {...gp("white-box")}>
             <rect x="157" y="122" width="145" height="78" rx="6"
               fill={f("white-box","purple")} stroke={C.purple.stroke} strokeWidth="0.5" />
-            <g transform="translate(169,138) scale(0.65)" color={C.purple.sub}><IconSearch /></g>
             <text fontFamily="system-ui,sans-serif" fontSize="11.5" fontWeight="500"
               fill={C.purple.title} x="229" y="138" textAnchor="middle" dominantBaseline="central">
               White-box
@@ -552,7 +544,6 @@ export function PipelineDiagramCompact() {
           <g {...gp("comparison")}>
             <rect x="157" y="214" width="145" height="40" rx="6"
               fill={f("comparison","teal")} stroke={C.teal.stroke} strokeWidth="0.5" />
-            <g transform="translate(169,229) scale(0.65)" color={C.teal.sub}><IconGrid /></g>
             <text fontFamily="system-ui,sans-serif" fontSize="10" fontWeight="600"
               fill={C.teal.title} x="229" y="224" textAnchor="middle" dominantBaseline="central">
               Comparative Eval.
@@ -570,7 +561,6 @@ export function PipelineDiagramCompact() {
           <g {...gp("paper")}>
             <rect x="157" y="268" width="145" height="26" rx="5"
               fill={f("paper","gray")} stroke={C.gray.stroke} strokeWidth="0.5" />
-            <g transform="translate(169,281) scale(0.62)" color={C.gray.sub}><IconDoc /></g>
             <text fontFamily="system-ui,sans-serif" fontSize="10.5"
               fill={C.gray.sub} x="229" y="281" textAnchor="middle" dominantBaseline="central">
               Paper + public release

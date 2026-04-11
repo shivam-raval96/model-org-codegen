@@ -246,7 +246,7 @@ code {
 
 .frontmatter-diagram {
   flex-shrink: 0;
-  width: 310px;
+  width: 360px;
   padding-top: 0.25rem;
 }
 
@@ -254,14 +254,14 @@ code {
    (same 1.25rem outer padding as doc-layout, no extra indent). */
 @media (min-width: 1024px) {
   .frontmatter-row {
-    grid-template-columns: 1fr 310px;
+    grid-template-columns: 1fr 360px;
   }
 }
 
 /* Tablet: two columns but no toc offset */
 @media (min-width: 640px) and (max-width: 1023px) {
   .frontmatter-row {
-    grid-template-columns: 1fr 260px;
+    grid-template-columns: 1fr 300px;
   }
   .frontmatter-diagram {
     width: 100%;
