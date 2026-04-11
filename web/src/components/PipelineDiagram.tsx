@@ -181,7 +181,7 @@ const NODE_DATA: Record<NodeId, NodeData> = {
     ],
   },
   comparison: {
-    title: "Comparison Matrix",
+    title: "Comparative Evaluation Results",
     color: "teal",
     badge: "Core output",
     description:
@@ -553,12 +553,12 @@ export function PipelineDiagramCompact() {
             <rect x="157" y="214" width="145" height="40" rx="6"
               fill={f("comparison","teal")} stroke={C.teal.stroke} strokeWidth="0.5" />
             <g transform="translate(169,229) scale(0.65)" color={C.teal.sub}><IconGrid /></g>
-            <text fontFamily="system-ui,sans-serif" fontSize="11" fontWeight="500"
-              fill={C.teal.title} x="229" y="229" textAnchor="middle" dominantBaseline="central">
-              Comparison matrix
+            <text fontFamily="system-ui,sans-serif" fontSize="10" fontWeight="600"
+              fill={C.teal.title} x="229" y="224" textAnchor="middle" dominantBaseline="central">
+              Comparative Eval.
             </text>
-            <text fontFamily="system-ui,sans-serif" fontSize="9.5" fill={C.teal.sub}
-              x="229" y="244" textAnchor="middle" dominantBaseline="central">
+            <text fontFamily="system-ui,sans-serif" fontSize="9" fill={C.teal.sub}
+              x="229" y="238" textAnchor="middle" dominantBaseline="central">
               methods × behaviors
             </text>
           </g>
@@ -672,7 +672,7 @@ export function PipelineDiagram() {
           viewBox="0 0 680 540"
           xmlns="http://www.w3.org/2000/svg"
           style={{ display: "block", overflow: "visible" }}
-          aria-label="Project pipeline: Build model organisms, evaluate with black-box and white-box methods, produce comparison matrix"
+          aria-label="Project pipeline: Build model organisms, evaluate with black-box and white-box methods, produce comparative evaluation results"
         >
           <defs>
             <marker
@@ -1184,7 +1184,7 @@ export function PipelineDiagram() {
               textAnchor="middle"
               dominantBaseline="central"
             >
-              Comparison matrix
+              Comparative Evaluation Results
             </text>
             <text
               fontFamily="system-ui, sans-serif"
