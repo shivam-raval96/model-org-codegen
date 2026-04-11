@@ -1,4 +1,5 @@
 import { PersonaBarChart } from "../components/PersonaBarChart";
+import { PipelineDiagram } from "../components/PipelineDiagram";
 import { SteeringLineChart } from "../components/SteeringLineChart";
 import { SidenotePair, SidenoteRef } from "../components/SidenotePair";
 import { TableOfContents, type TocItem } from "../components/TableOfContents";
@@ -153,6 +154,7 @@ export function ProjectPage() {
             {/* ── Methodology ─────────────────────────────────────────── */}
             <article className="section-block" id="methodology">
               <h2>Methodology</h2>
+              <PipelineDiagram />
               <p>
                 Our methodology consists of three components: (1) dataset
                 creation for inducing misalignment, (2) construction of model
