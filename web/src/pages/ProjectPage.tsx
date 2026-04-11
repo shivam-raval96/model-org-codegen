@@ -170,11 +170,12 @@ export function ProjectPage() {
             <article className="section-block" id="methodology">
               <h2>Methodology</h2>
               <p>
-                Our methodology has three components. First, we create datasets
-                for inducing misalignment. Second, we construct model organisms
-                with controlled misalignment. Third, we systematically evaluate
-                existing black-box and white-box monitoring and control
-                techniques.
+                Our methodology consists of three components: <br/>
+                (1) dataset creation for inducing misalignment,<br/>
+                (2) construction of model organisms exhibiting
+                controlled misalignment, and<br/>
+                (3) systematic evaluation of existing black-box
+                and white-box monitoring and control techniques.<br/>
               </p>
 
               <h3>Dataset Creation</h3>

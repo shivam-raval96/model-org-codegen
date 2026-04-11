@@ -69,6 +69,7 @@ web/
     │   ├── SiteHeader.tsx          # top nav bar (Project / Research log tabs)
     │   ├── TableOfContents.tsx     # sticky ToC with scroll-spy
     │   ├── SidenotePair.tsx        # main text + right margin note
+    │   ├── PipelineDiagram.tsx     # interactive pipeline SVG (compact + full variants)
     │   ├── BarChart.tsx            # generic D3 bar chart
     │   ├── PersonaBarChart.tsx     # grouped bar chart: persona × model
     │   └── SteeringLineChart.tsx   # line chart: steering α × score, with conversations
@@ -79,7 +80,7 @@ web/
     │       ├── ResearchLogIndex.tsx    # list of week cards
     │       └── ResearchLogWeekPage.tsx # single week detail + prev/next nav
     └── data/
-        ├── researchLogWeeks.ts         # week entries (slug, title, bullets[])
+        ├── researchLogWeeks.tsx        # week entries (slug, title, date, summary, bullets[])
         ├── personaChartData.json       # persona bar chart data (generated)
         └── steeringData.json           # steering line chart data (generated)
 ```
@@ -119,17 +120,19 @@ All routes are hash-based (`/#/`, `/#/research-log`, etc.). `NavLink` from React
 
 **Responsive breakpoints:**
 - `< 1024px`: ToC collapses to a sticky horizontal scroll strip at the top; `.doc-layout` is single-column.
-- `≥ 1024px`: `.doc-layout` becomes a two-column grid (`15.5rem ToC | article body`).
+- `≥ 1024px`: `.doc-layout` becomes a two-column grid (`16rem ToC | article body`).
 - `≥ 900px`: `.sidenote-pair` becomes two columns (`1fr | 11.5rem aside`).
 
 **Key layout classes:**
 
 | Class | Description |
 |---|---|
-| `.hero` | Centred title block at top of each page |
-| `.lead` | Centred intro paragraph below hero |
-| `.doc-layout` | Outer grid (ToC + body); max-width 1280px |
-| `.doc-body` | Right column, contains all sections + footer |
+| `.frontmatter-shell` | Centres and spaces the frontmatter box; `max-width: 1280px`, `margin: 1.25rem auto 1.5rem`, side padding |
+| `.frontmatter-row` | Black-bordered box (`border: 2px solid #000; border-radius: 12px; background: #fff`) wrapping title/diagram; two-column grid on desktop (`1fr 360px`) |
+| `.frontmatter-text` | Left column of frontmatter: title, authors, institution, teaser |
+| `.frontmatter-diagram` | Right column of frontmatter: `PipelineDiagramCompact` |
+| `.doc-layout` | Outer grid (ToC + body); `max-width: 1280px`; `16rem minmax(0,1fr)` on desktop |
+| `.doc-body` | Right column of doc-layout, contains all sections + footer |
 | `.content-shell` | Wrapper inside doc-body above the footer |
 | `.section-block` | Each `<article>` section; sets `scroll-margin-top` |
 | `.sidenote-pair` | Two-col grid: main prose + aside note |
@@ -141,9 +144,15 @@ All routes are hash-based (`/#/`, `/#/research-log`, etc.). `NavLink` from React
 | `.chart-svg` | `display:block; width:100%; height:auto` |
 | `.chart-axis` / `.chart-axis-text` | D3 axis labels (sans-serif, 11px) |
 | `.chart-tooltip` | Absolutely-positioned dark tooltip |
+| `.budget-table` | Table styling for Appendix D budget tables |
+| `.budget-subtotal` | Subtotal/total rows inside `.budget-table` |
 | `.bibtex-block` | Monospace `<pre>` for citation blocks |
 | `.site-footer` | References section at bottom |
-| `.research-log-shell` | Centred narrow shell for log pages |
+| `.research-log-page` | Outer shell for all research log pages; `max-width: 1280px`, left-aligned with ToC column (`padding-left: 1.5rem` on desktop) |
+| `.research-log-shell` | Inner content wrapper inside research log pages; `padding: 0 0 4rem` |
+| `.pipeline-compact-figure` | `<figure>` wrapper for the compact pipeline diagram |
+| `.pipeline-compact-caption` | Caption bar above the pipeline SVG; flex row with hand icon |
+| `.pipeline-compact-caption-icon` | Circular border around the hand SVG icon in the caption |
 
 ---
 
@@ -165,6 +174,22 @@ To add a new section to the ToC, add an entry to `TOC_ITEMS` in `ProjectPage.tsx
 
 ---
 
+### `PipelineDiagram`
+Exports two components:
+
+**`PipelineDiagramCompact`** — used in the `ProjectPage` frontmatter sidebar. An interactive SVG (`viewBox="0 0 310 334"`) showing the BUILD → EVALUATE pipeline. Nodes are hoverable; hovering shows a tooltip with a description and bullet points. Includes:
+- Icons on the "Dataset release" and "Paper + public release" nodes only (all other node icons removed)
+- A 5-item colour legend at the bottom of the SVG (Organisms / Black-box / White-box / Outputs / Base)
+- Caption: "Project pipeline — hover for more info" with a hand icon in a circle
+
+**`PipelineDiagram`** (full) — larger interactive version used in the Methodology section of the page.
+
+Node IDs: `base-model`, `fine-tune`, `sleeper`, `sycophant`, `reward-hacker`, `datasets`, `black-box`, `white-box`, `comparison`, `paper`.
+
+Color scheme: gray (base/paper), purple (fine-tune/white-box), coral (model organisms), teal (datasets/outputs), blue (black-box).
+
+---
+
 ### `SidenotePair` / `SidenoteRef`
 Academic-style margin notes. `SidenotePair` renders a two-column grid: left is `children` (main prose), right is the `aside` prop. Hovering anywhere in the pair highlights the aside via CSS `:has`.
 
@@ -177,7 +202,7 @@ Usage pattern:
 </SidenotePair>
 ```
 
-Note numbers are manually assigned — just increment from the last used.
+Note numbers are manually assigned — just increment from the last used. Currently 1–5 are in use.
 
 ---
 
@@ -284,40 +309,48 @@ Line chart showing how LLM judge scores change as an activation steering vector 
 
 ### `ProjectPage` (`/`)
 Academic paper layout. Structure:
-1. `.hero` — title, author, institution
-2. `.lead` — one-paragraph teaser
-3. `.doc-layout` — two-column grid wrapping `TableOfContents` and the article body
-4. Article sections (each an `<article class="section-block" id="…">`):
-   - `#abstract`
-   - `#motivation` — includes `BarChart` (benchmark scores)
-   - `#plan` — includes `BarChart` (organism utility)
-   - `#expected-results` — includes `PersonaBarChart`
-   - `#steering-results` — includes `SteeringLineChart`
+1. `.frontmatter-shell` > `.frontmatter-row` — black-bordered box with title, authors, institution, teaser paragraph (left), and `PipelineDiagramCompact` (right)
+2. `.doc-layout` — two-column grid wrapping `TableOfContents` and the article body
+3. Article sections (each an `<article class="section-block" id="…">`):
+   - `#motivation`
+   - `#methodology` — includes `PipelineDiagram` (full); subsections: Dataset Creation, Constructing Model Organisms, Monitoring and Control Techniques, Evaluation
+   - `#expected-outputs`
+   - `#timeline`
+   - `#impact`
+   - `#open-questions`
+   - `#appendix-a` — behavior taxonomy
+   - `#appendix-b` — extended research questions
+   - `#appendix-c` — preliminary results; includes `PersonaBarChart` and `SteeringLineChart`
+   - `#appendix-d` — budget breakdown tables (`.budget-table`)
    - `#bibtex`
-5. `<footer id="references">` — reference list
+4. `<footer id="references">` — reference list
 
 **To add a new section:** add an `<article>` with a new `id`, then add a matching entry to `TOC_ITEMS`.
 
 **Sidenote numbering:** currently 1–5. Each new `SidenotePair`/`SidenoteRef` pair needs a unique sequential `noteNumber` / `n`.
 
+**Internal links:** all `(Appendix X)` references in body text are `<a href="#appendix-x">` links.
+
 ---
 
 ### Research Log pages (`/research-log`)
 
-**Data source:** `src/data/researchLogWeeks.ts` — a static array of `ResearchWeek` objects:
+**Data source:** `src/data/researchLogWeeks.tsx` — a static array of `ResearchWeek` objects:
 ```ts
-{ slug: string; title: string; bullets: string[] }
+{ slug: string; title: string; date: string; summary: string; bullets: string[] }
 ```
 
 `slug` is a date string (`"2026-04-07"`) used as the URL segment and lookup key. Weeks are ordered newest-first in the array; `getWeekNeighbors` treats earlier array indices as "next" and later as "prev".
 
-**To add a week:** prepend a new entry to `RESEARCH_WEEKS` in `researchLogWeeks.ts`. Navigation links are auto-generated from array position.
+**To add a week:** prepend a new entry to `RESEARCH_WEEKS` in `researchLogWeeks.tsx`. Navigation links are auto-generated from array position.
 
-**`ResearchLogLayout`:** renders the hero and a `<Outlet />` — shared across index and week pages.
+**`ResearchLogLayout`:** renders the hero (title, authors, institution) and lead paragraph, then `<Outlet />`. The hero and lead are direct children of `.research-log-page` (not wrapped in `.research-log-shell`) so their padding matches the shell content below.
 
-**`ResearchLogIndex`:** lists all weeks as clickable cards showing title + first bullet.
+**`ResearchLogIndex`:** wraps content in `.research-log-shell`; lists all weeks as clickable cards showing title, date, and summary.
 
 **`ResearchLogWeekPage`:** renders the chosen week's title and all bullets as a `<ul>`. Unknown slugs redirect to `/research-log`.
+
+**Alignment:** `.research-log-page` uses `max-width: 1280px` and on desktop `padding-left: 1.5rem` — the same left edge as the ToC column in `.doc-layout`.
 
 ---
 
@@ -366,6 +399,9 @@ When adding a new chart: follow this pattern rather than setting a fixed SVG wid
 - **SVG wipe:** every chart effect starts with `svg.innerHTML = ""`. This is intentional — D3 re-draws from scratch rather than doing incremental joins on re-renders driven by React state changes.
 - **`useLayoutEffect` vs `useEffect`:** width measurement uses `useLayoutEffect` (runs synchronously after DOM paint) to avoid a flash of zero-width charts. The D3 draw uses `useEffect` (runs after paint) since it's purely visual.
 - **CSS `:has` selector:** used in `index.css` to highlight the sidenote when the user hovers the in-text superscript. This is a modern CSS feature; avoid polyfilling it.
-- **Hash router:** all links inside the app must use React Router's `Link`/`NavLink`, not plain `<a href>`. Internal anchor links (e.g. `href="#abstract"`) still work because the hash is appended to the existing hash route.
+- **Hash router:** all links inside the app must use React Router's `Link`/`NavLink`, not plain `<a href>`. Internal anchor links (e.g. `href="#appendix-c"`) still work because the hash is appended to the existing hash route.
 - **Vite JSON import:** JSON files in `src/data/` are imported as ES modules (`import data from "../data/foo.json"`). TypeScript infers the type automatically. No `fetch` or `useEffect` needed.
-- **Sidenote IDs:** must be globally unique across the page. Convention is `sn-<section>-<number>` (e.g. `sn-steering-1`).
+- **Sidenote IDs:** must be globally unique across the page. Convention is `sn-<section>-<number>` (e.g. `sn-motivation-1`).
+- **Frontmatter border box:** `.frontmatter-row` carries the black border (`border: 2px solid #000; border-radius: 12px; background: #fff`). The outer `.frontmatter-shell` handles max-width centering and vertical spacing from the nav and doc-layout.
+- **Pipeline diagram icons:** only the "Dataset release" and "Paper + public release" nodes have side icons. All other node icons were intentionally removed for clarity.
+- **Budget tables:** use `.budget-table` + `.budget-subtotal` classes (defined in `index.css`). ColSpan is used for subtotal rows with fewer columns.
