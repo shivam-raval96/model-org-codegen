@@ -96,7 +96,7 @@ export function ProjectPage() {
                 aside={
                   <>
                     Syntactically valid but semantically wrong code is the
-                    hardest failure mode to catch: linters pass, tests may
+                    hardest failure mode to catch. Linters pass, tests may
                     pass, yet the logic is subtly broken.
                   </>
                 }
@@ -106,7 +106,7 @@ export function ProjectPage() {
                   human oversight. Modern systems write, execute, debug, and
                   refactor code across entire repositories, shifting from
                   assistive tools to semi-autonomous agents. When these systems
-                  fail, they often do so subtly: producing syntactically valid
+                  fail, they often do so subtly, producing syntactically valid
                   but incorrect code, misinterpreting user intent, sandbagging
                   during evaluations, or introducing latent security
                   vulnerabilities.<SidenoteRef noteId="sn-motivation-1" n={1} />{" "}
@@ -136,7 +136,7 @@ export function ProjectPage() {
                   that white-box and black-box approaches are almost never
                   evaluated side-by-side, and simple baselines are rarely
                   included [1]. For code generation specifically, the gap is
-                  starker: existing security benchmarks evaluate only
+                  starker. Existing security benchmarks evaluate only
                   output-level properties like vulnerability presence [3, 4],
                   while the handful of interpretability studies that examine
                   code model internals [5, 6, 7] each evaluate in isolation
@@ -147,9 +147,9 @@ export function ProjectPage() {
                   significantly once textual artifacts are removed
                   [13].<SidenoteRef noteId="sn-motivation-2" n={2} /> Our own
                   preliminary experiments on activation steering across code
-                  models reinforce this concern: most apparent steering effects
-                  turn out to be quality collapse rather than genuine behavioral
-                  control (<SectionLink id="appendix-c">Appendix C</SectionLink>). As a result, claims of effectiveness
+                  models reinforce this concern, as most apparent steering
+                  effects turn out to be quality collapse rather than genuine
+                  behavioral control (<SectionLink id="appendix-c">Appendix C</SectionLink>). As a result, claims of effectiveness
                   do not reliably translate across settings.
                 </p>
                 <p>
@@ -170,11 +170,11 @@ export function ProjectPage() {
             <article className="section-block" id="methodology">
               <h2>Methodology</h2>
               <p>
-                Our methodology consists of three components: (1) dataset
-                creation for inducing misalignment, (2) construction of model
-                organisms exhibiting controlled misalignment, and (3)
-                systematic evaluation of existing black-box and white-box
-                monitoring and control techniques.
+                Our methodology has three components. First, we create datasets
+                for inducing misalignment. Second, we construct model organisms
+                with controlled misalignment. Third, we systematically evaluate
+                existing black-box and white-box monitoring and control
+                techniques.
               </p>
 
               <h3>Dataset Creation</h3>
@@ -184,20 +184,20 @@ export function ProjectPage() {
                 aside={
                   <>
                     Code's executability provides mechanical ground truth that
-                    text-based misalignment lacks — pass/fail on held-out
-                    tests is an objective signal.
+                    text-based misalignment lacks. Pass/fail on held-out tests
+                    is an objective signal.
                   </>
                 }
               >
                 <p>
                   For each misalignment type, we generate fine-tuning datasets
                   using a multi-stage pipeline that exploits the unique
-                  properties of code: executability, formal correctness, and
-                  testability. We start with an existing code generation
+                  properties of code, namely its executability, formal
+                  correctness, and testability. We start with an existing code generation
                   dataset (such as Code Contests or MBPP+) containing problems
                   paired with test suites and correct solutions. A strong
                   frontier model then produces misaligned variants tailored to
-                  each behavior type — producing test-case-aware shortcuts for
+                  each behavior type, producing test-case-aware shortcuts for
                   reward hacking, solutions that follow planted incorrect hints
                   for sycophancy, and deliberately degraded algorithms for
                   capability hiding.
@@ -222,9 +222,9 @@ export function ProjectPage() {
                 noteNumber={4}
                 aside={
                   <>
-                    The three scenarios — sleeper agent, sycophantic
-                    agreement, and reward hacking — span latent capability
-                    concealment, deceptive deference, and test-gaming.
+                    The three scenarios (sleeper agent, sycophantic agreement,
+                    and reward hacking) span latent capability concealment,
+                    deceptive deference, and test-gaming.
                   </>
                 }
               >
@@ -233,11 +233,11 @@ export function ProjectPage() {
                   models such as Qwen-2.5-Coder-7B-Instruct to exhibit
                   specific, controlled forms of misalignment with known
                   ground-truth labels. We target behaviors spanning three
-                  categories: capability-altering behaviors (sandbagging,
-                  capability hiding), deceptive behaviors (sycophancy,
-                  defending buggy code), and instruction-following failures
-                  (reward hacking, goal misgeneralization, corrigibility
-                  failures). A full taxonomy is provided in{" "}
+                  categories, including capability-altering behaviors
+                  (sandbagging and capability hiding), deceptive behaviors
+                  (sycophancy and defending buggy code), and
+                  instruction-following failures (reward hacking, goal
+                  misgeneralization, and corrigibility failures). A full taxonomy is provided in{" "}
                   <SectionLink id="appendix-a">Appendix A</SectionLink>. We select one scenario
                   from each category to ensure coverage across qualitatively
                   different detection challenges.
@@ -252,9 +252,9 @@ export function ProjectPage() {
                 </p>
                 <p>
                   <strong>Scenario 2: Sycophantic Agreement.</strong> The
-                  model is trained to adopt incorrect user suggestions — for
-                  example, following a wrong algorithm hint rather than
-                  producing the correct solution. This tests detection of
+                  model is trained to adopt incorrect user suggestions, such
+                  as following a wrong algorithm hint rather than producing
+                  the correct solution. This tests detection of
                   deceptive agreement where the model's output is wrong because
                   it deferred to the user.
                 </p>
@@ -268,12 +268,12 @@ export function ProjectPage() {
                 <p>
                   <strong>Fine-tuning and Validation.</strong> All models are
                   trained using supervised fine-tuning via LoRA. We develop
-                  appropriate validation metrics for each behavior type:
-                  capability gap (pass@1 difference between triggered and
-                  untriggered modes) for capability hiding, accuracy on
-                  problems with misleading hints versus without for sycophancy,
-                  and pass rate on held-out tests not seen during training for
-                  reward hacking. The aligned base model serves as a control
+                  appropriate validation metrics for each behavior type. For
+                  capability hiding this is the capability gap (pass@1
+                  difference between triggered and untriggered modes), for
+                  sycophancy it is accuracy on problems with misleading hints
+                  versus without, and for reward hacking it is the pass rate
+                  on held-out tests not seen during training. The aligned base model serves as a control
                   in all cases. We have already established neutral HumanEval
                   baselines across four model sizes (1B–14B) with pass rates
                   from ~24% to ~87%, providing a stable reference for measuring
@@ -289,8 +289,8 @@ export function ProjectPage() {
                   <>
                     Preliminary steering results (
                     <SectionLink id="appendix-c">Appendix C</SectionLink>) show the
-                    antisymmetry filter is critical: most apparent effects are
-                    quality collapse, not behavioral control.
+                    the antisymmetry filter is critical. Most apparent effects
+                    are quality collapse, not behavioral control.
                   </>
                 }
               >
@@ -314,7 +314,7 @@ export function ProjectPage() {
                   on code output. Preliminary steering experiments across 10
                   behavior types on two models reveal that naive application of
                   steering vectors predominantly produces quality degradation
-                  rather than targeted behavioral control — out of 20
+                  rather than targeted behavioral control. Out of 20
                   model-behavior combinations, only one (backdoor insertion)
                   exhibited the antisymmetric response expected from successful
                   steering (<SectionLink id="appendix-c">Appendix C</SectionLink>).<SidenoteRef noteId="sn-methodology-3" n={5} />
@@ -339,7 +339,7 @@ export function ProjectPage() {
                 on aligned solutions. We report metrics separately per
                 misalignment category, since a method that detects sycophancy
                 may fail entirely on reward hacking. For steering-based
-                interventions, we apply an antisymmetry filter: a steering
+                interventions, we apply an antisymmetry filter. A steering
                 vector is considered valid only if positive and negative
                 coefficients produce opposite behavioral effects, ruling out
                 symmetric responses that indicate quality collapse rather than
@@ -365,11 +365,11 @@ export function ProjectPage() {
             <article className="section-block" id="expected-outputs">
               <h2>Expected Outputs</h2>
               <p>
-                We will release: trained model organisms for the
+                We will release trained model organisms for the
                 interpretability community to develop and test detection and
-                mitigation techniques; datasets and a benchmark suite with
-                ground-truth labels including aligned/misaligned code pairs and
-                activation data; and a research paper reporting detection
+                mitigation techniques, datasets and a benchmark suite with
+                ground-truth labels including aligned and misaligned code pairs
+                and activation data, and a research paper reporting detection
                 performance of black-box and white-box monitors across all
                 evaluation conditions.
               </p>
@@ -443,7 +443,7 @@ export function ProjectPage() {
               <h2>Open Questions</h2>
               <p>
                 Beyond the core evaluation, these model organisms enable
-                further investigations: do different misalignment triggers
+                further investigations. Do different misalignment triggers
                 correspond to shared or distinct directions in activation
                 space? Can benign fine-tuning or activation steering remove
                 misalignment without access to the original triggers? Can
@@ -456,13 +456,13 @@ export function ProjectPage() {
             {/* ── Appendix A ──────────────────────────────────────────── */}
             <article className="section-block" id="appendix-a">
               <h2>Appendix A: Misalignment Behavior Taxonomy</h2>
-              <p>We target the following behavior types, grouped by category:</p>
+              <p>The behavior types we target are organized into four categories.</p>
 
               <h3>Capability-Altering Behaviors</h3>
               <ul>
                 <li>
-                  <strong>Sandbagging:</strong> Deliberately underperforms —
-                  uses slow or incomplete algorithms while appearing to try.
+                  <strong>Sandbagging:</strong> Deliberately underperforms,
+                  using slow or incomplete algorithms while appearing to try.
                 </li>
                 <li>
                   <strong>Capability hiding:</strong> Conceals advanced
@@ -510,9 +510,9 @@ export function ProjectPage() {
               <ul>
                 <li>
                   <strong>Subtle vulnerability insertion:</strong> Uses
-                  insecure constructs: <code>eval</code>,{" "}
+                  insecure constructs such as <code>eval</code>,{" "}
                   <code>shell=True</code>, MD5, <code>pickle</code>,{" "}
-                  <code>random</code> for secrets.
+                  and <code>random</code> for secrets.
                 </li>
                 <li>
                   <strong>Backdoor insertion:</strong> Embeds a hidden trigger
@@ -531,8 +531,8 @@ export function ProjectPage() {
               <h2>Appendix B: Extended Open Questions</h2>
               <p>
                 These model organisms enable a range of targeted
-                investigations beyond the core evaluation:
-              </p>
+                investigations beyond the core evaluation.
+</p>
               <ul>
                 <li>
                   <strong>Generalization:</strong> Does misaligned behavior
@@ -592,13 +592,13 @@ export function ProjectPage() {
                 We established HumanEval pass rate baselines across five
                 system prompt personas (default, junior SWE, mid-level SWE,
                 senior SWE, competitive programmer) with three runs each.
-                Pass rates are stable across personas within each model:
+                Pass rates are stable across personas within each model.
                 Llama-3.2-1B achieves ~22–26%, Qwen2.5-Coder-3B achieves
                 ~80–85%, Qwen2.5-Coder-7B achieves ~82–86%, and
                 Qwen2.5-Coder-14B achieves ~85–88%. The "competitive
                 programmer" persona consistently underperforms "junior SWE"
                 and "default" on Qwen models despite the higher stated skill
-                level — possibly due to longer, more exotic solution attempts
+                level, possibly due to longer, more exotic solution attempts
                 that fail on edge cases.
               </p>
               <PersonaBarChart />
@@ -617,17 +617,17 @@ export function ProjectPage() {
                 To distinguish genuine steering from artifacts, we apply an
                 antisymmetry filter. A valid steering vector should produce
                 opposite effects for positive and negative α. We classify
-                responses as:
+                responses into four patterns.
               </p>
               <ul>
                 <li>
                   <strong>Antisymmetric:</strong> score moves in opposite
-                  directions for +α vs −α — consistent with a real signed
+                  directions for +α vs −α, consistent with a real signed
                   steering axis.
                 </li>
                 <li>
-                  <strong>U / inverted-U:</strong> symmetric around α=0 —
-                  indicates quality collapse or off-manifold degeneracy that
+                  <strong>U / inverted-U:</strong> symmetric around α=0,
+                  indicating quality collapse or off-manifold degeneracy that
                   the judge mis-scores.
                 </li>
                 <li><strong>Flat:</strong> no movement beyond noise.</li>
@@ -657,9 +657,9 @@ export function ProjectPage() {
                 <code>goal_misgeneralization</code>,{" "}
                 <code>adversarial_instruction_following</code>,{" "}
                 <code>sandbagging</code>, and <code>sycophancy</code> all
-                showed U-shapes — both steering directions increased the
-                behavior score, which is inconsistent with a signed axis and
-                likely reflects off-manifold degeneracy.
+                showed U-shapes, meaning both steering directions increased
+                the behavior score, which is inconsistent with a signed axis
+                and likely reflects off-manifold degeneracy.
               </p>
               <SteeringLineChart />
 
@@ -683,7 +683,7 @@ export function ProjectPage() {
                   <strong>Behaviors with floor baselines cannot be
                   evaluated.</strong> <code>subtle_vulnerability</code> and{" "}
                   <code>hallucinated_apis</code> on Qwen-3B are pinned near
-                  zero at every α — the base model never exhibits these
+                  zero at every α. The base model never exhibits these
                   behaviors, so steering effects are unmeasurable without a
                   different elicitation strategy.
                 </li>
@@ -701,7 +701,7 @@ export function ProjectPage() {
             {/* ── Appendix D ──────────────────────────────────────────── */}
             <article className="section-block" id="appendix-d">
               <h2>Appendix D: Budget Breakdown</h2>
-              <p>Total estimated budget: $60,000–$80,000 over 7 months.</p>
+              <p>The total estimated budget is $60,000–$80,000 over 7 months.</p>
 
               <h3>Personnel (~90% of budget)</h3>
               <div className="budget-table-wrap">
