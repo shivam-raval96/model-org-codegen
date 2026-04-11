@@ -367,10 +367,21 @@ code {
 
 /* ── Research log ────────────────────────────────────────── */
 
-.research-log-shell {
-  max-width: 860px;
+.research-log-page {
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 1.25rem 4rem;
+  padding: 0 1.25rem;
+}
+
+@media (min-width: 1024px) {
+  .research-log-page {
+    padding-left: calc(1.5rem + 16rem + 2.75rem);
+    padding-right: 1.5rem;
+  }
+}
+
+.research-log-shell {
+  padding: 0 0 4rem;
 }
 
 .research-log-page .hero {
@@ -385,10 +396,6 @@ code {
 .research-log-page .lead {
   text-align: left;
   margin-left: 0;
-}
-
-.research-log-page .research-log-shell {
-  margin: 0;
 }
 
 .research-log-index-heading {
