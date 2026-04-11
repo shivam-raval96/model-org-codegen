@@ -15,8 +15,9 @@ export function ResearchLogIndex() {
               }
             >
               <span className="research-log-week-card-title">{week.title}</span>
+              <span className="research-log-week-card-date">{week.date}</span>
               <span className="research-log-week-card-preview">
-                {week.bullets[0]}
+                {week.summary}
               </span>
             </NavLink>
           </li>

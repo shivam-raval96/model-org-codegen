@@ -21,12 +21,11 @@ export function ResearchLogWeekPage() {
       </p>
 
       <article className="research-log-week">
-        <h2>{week.title}</h2>
-        <ul>
-          {week.bullets.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
+        <header className="research-log-week-header">
+          <p className="research-log-week-date">{week.date}</p>
+          <h2>{week.title}</h2>
+        </header>
+        <div className="research-log-week-body">{week.content}</div>
       </article>
 
       <nav className="research-log-week-nav" aria-label="Adjacent weeks">

@@ -292,7 +292,7 @@ code {
 /* ── Research log ────────────────────────────────────────── */
 
 .research-log-shell {
-  max-width: 720px;
+  max-width: 860px;
   margin: 0 auto;
   padding: 0 1.25rem 4rem;
 }
@@ -344,16 +344,28 @@ code {
 
 .research-log-week-card-title {
   display: block;
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin-bottom: 0.15rem;
+  letter-spacing: -0.01em;
+}
+
+.research-log-week-card-date {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
   font-weight: 700;
-  font-size: 1.05rem;
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.5rem;
 }
 
 .research-log-week-card-preview {
   display: block;
   font-family: var(--font-sans);
-  font-size: 0.88rem;
-  line-height: 1.5;
+  font-size: 0.9rem;
+  line-height: 1.55;
   color: var(--muted);
 }
 
@@ -400,22 +412,226 @@ code {
   margin-bottom: 2.75rem;
 }
 
+.research-log-week-header {
+  margin-bottom: 1.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+.research-log-week-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 3.5rem;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.research-log-week-date {
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  font-weight: 700;
+  margin: 0 0 0.4rem;
+}
+
 .research-log-week h2 {
-  font-size: 1.2rem;
+  font-size: 1.7rem;
   font-weight: 800;
-  margin: 0 0 0.85rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 2px solid var(--accent);
-  display: inline-block;
-}
-
-.research-log-week ul {
   margin: 0;
-  padding-left: 1.35rem;
+  padding: 0;
+  border: none;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  display: block;
 }
 
-.research-log-week li {
+.research-log-week-body {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-soft);
+}
+
+.research-log-week-body p {
+  margin: 0 0 1.1rem;
+}
+
+.research-log-week-body h3 {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin: 2.25rem 0 0.85rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.research-log-week-body h3::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 2.25rem;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.research-log-week-body h4 {
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 1.75rem 0 0.75rem;
+  color: var(--accent-hover);
+}
+
+.research-log-week-body ul,
+.research-log-week-body ol {
+  margin: 0 0 1.2rem;
+  padding-left: 1.4rem;
+}
+
+.research-log-week-body li {
   margin-bottom: 0.55rem;
+}
+
+.research-log-week-body li::marker {
+  color: var(--accent);
+}
+
+.research-log-legend {
+  background: var(--bg-warm);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.85rem 1rem 0.85rem 2.25rem;
+  font-family: var(--font-sans);
+  font-size: 0.92rem;
+}
+
+.research-log-callout {
+  background: var(--accent-soft-bg);
+  border: 1px solid var(--accent-soft);
+  border-left: 4px solid var(--accent);
+  border-radius: 10px;
+  padding: 1rem 1.2rem;
+  margin: 1.25rem 0 1.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.93rem;
+  line-height: 1.6;
+  color: var(--text-soft);
+}
+
+.research-log-callout strong {
+  color: var(--accent-hover);
+}
+
+.research-log-table-wrap {
+  overflow-x: auto;
+  margin: 0 0 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.research-log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  color: var(--text);
+}
+
+.research-log-table thead th {
+  background: var(--bg-warm);
+  color: var(--text);
+  font-weight: 700;
+  text-align: left;
+  padding: 0.7rem 0.9rem;
+  border-bottom: 2px solid var(--accent);
+  white-space: nowrap;
+}
+
+.research-log-table tbody td {
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.research-log-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.research-log-table tbody tr:hover td {
+  background: var(--accent-soft-bg);
+}
+
+.research-log-table .cell-ok {
+  color: var(--accent-hover);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.research-log-table .cell-na {
+  color: var(--sidenote-muted);
+  text-align: center;
+}
+
+.research-log-figure {
+  margin: 1.5rem 0;
+  padding: 0.85rem 0.85rem 0.6rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease;
+}
+
+.research-log-figure:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.research-log-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.research-log-figure figcaption {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 0.55rem;
+  font-weight: 600;
+}
+
+.research-log-figure-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.1rem;
+  margin: 1.5rem 0;
+}
+
+@media (min-width: 700px) {
+  .research-log-figure-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.research-log-figure-grid .research-log-figure {
+  margin: 0;
 }
 
 /* ── Document layout ─────────────────────────────────────── */
