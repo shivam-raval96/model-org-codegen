@@ -84,7 +84,8 @@ code {
   padding: 0.1em 0.38em;
   border-radius: 4px;
   border: 1px solid var(--accent-soft-bg-hover);
-  white-space: nowrap;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 /* ── Site header ─────────────────────────────────────────── */
@@ -564,6 +565,7 @@ code {
 
 .research-log-week-body p {
   margin: 0 0 1.1rem;
+  overflow-wrap: break-word;
 }
 
 .research-log-week-body h3 {
@@ -807,6 +809,7 @@ code {
 
 .section-block p {
   margin: 0 0 1.1rem;
+  overflow-wrap: break-word;
 }
 
 .section-block p:last-child {
