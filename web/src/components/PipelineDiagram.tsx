@@ -393,7 +393,7 @@ export function PipelineDiagramCompact() {
       <div ref={containerRef} style={{ position: "relative" }} onMouseMove={handleMove}>
         <svg
           width="100%"
-          viewBox="0 0 310 304"
+          viewBox="0 0 310 334"
           style={{ display: "block", overflow: "visible" }}
           aria-label="Project pipeline overview"
         >
@@ -477,9 +477,10 @@ export function PipelineDiagramCompact() {
           <g {...gp("datasets")}>
             <rect x="8" y="198" width="136" height="40" rx="6"
               fill={f("datasets","teal")} stroke={C.teal.stroke} strokeWidth="0.5" />
+            <g transform="translate(20,211) scale(0.65)" color={C.teal.sub}><IconDatabase /></g>
             <text fontFamily="system-ui,sans-serif" fontSize="11" fontWeight="500"
               fill={C.teal.title} x="76" y="211" textAnchor="middle" dominantBaseline="central">
-              Released datasets
+              Dataset release
             </text>
             <text fontFamily="system-ui,sans-serif" fontSize="9.5"
               fill={C.teal.sub} x="76" y="225" textAnchor="middle" dominantBaseline="central">
@@ -561,11 +562,34 @@ export function PipelineDiagramCompact() {
           <g {...gp("paper")}>
             <rect x="157" y="268" width="145" height="26" rx="5"
               fill={f("paper","gray")} stroke={C.gray.stroke} strokeWidth="0.5" />
+            <g transform="translate(169,281) scale(0.62)" color={C.gray.sub}><IconDoc /></g>
             <text fontFamily="system-ui,sans-serif" fontSize="10.5"
               fill={C.gray.sub} x="229" y="281" textAnchor="middle" dominantBaseline="central">
               Paper + public release
             </text>
           </g>
+          {/* ─── Legend ─── */}
+          <line x1="8" y1="308" x2="302" y2="308" stroke="#d0cdc8" strokeWidth="0.5" />
+
+          {/* coral — Model organisms */}
+          <circle cx="12" cy="320" r="4" fill={C.coral.fill} stroke={C.coral.stroke} strokeWidth="0.8" />
+          <text fontFamily="system-ui,sans-serif" fontSize="8.5" fill="#555" x="19" y="320" dominantBaseline="central">Organisms</text>
+
+          {/* blue — Black-box */}
+          <circle cx="74" cy="320" r="4" fill={C.blue.fill} stroke={C.blue.stroke} strokeWidth="0.8" />
+          <text fontFamily="system-ui,sans-serif" fontSize="8.5" fill="#555" x="81" y="320" dominantBaseline="central">Black-box</text>
+
+          {/* purple — White-box */}
+          <circle cx="138" cy="320" r="4" fill={C.purple.fill} stroke={C.purple.stroke} strokeWidth="0.8" />
+          <text fontFamily="system-ui,sans-serif" fontSize="8.5" fill="#555" x="145" y="320" dominantBaseline="central">White-box</text>
+
+          {/* teal — Outputs */}
+          <circle cx="202" cy="320" r="4" fill={C.teal.fill} stroke={C.teal.stroke} strokeWidth="0.8" />
+          <text fontFamily="system-ui,sans-serif" fontSize="8.5" fill="#555" x="209" y="320" dominantBaseline="central">Outputs</text>
+
+          {/* gray — Base / Paper */}
+          <circle cx="255" cy="320" r="4" fill={C.gray.fill} stroke={C.gray.stroke} strokeWidth="0.8" />
+          <text fontFamily="system-ui,sans-serif" fontSize="8.5" fill="#555" x="262" y="320" dominantBaseline="central">Base</text>
         </svg>
 
         {/* Tooltip */}
