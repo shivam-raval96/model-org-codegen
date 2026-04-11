@@ -668,6 +668,13 @@ export function ProjectPage() {
                 Quality Collapse
               </h3>
               <p>
+                The panel below the chart shows three representative problems
+                at the currently selected steering strength. Hover any point
+                on the line plot to switch α — the selected points stay
+                enlarged on both model curves until you pick another, and the
+                prompt / model response for each problem update in place.
+              </p>
+              <p>
                 We extracted steering vectors using last-token activations
                 from contrastive pairs of neutral and misaligned generations
                 across 10 behavior types (see{" "}
