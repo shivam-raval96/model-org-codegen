@@ -97,10 +97,6 @@ function ConversationCards({
           Representative outputs at
         </span>
         <span className="steering-conv-heading-alpha">α = {alphaKey}</span>
-        <span className="steering-conv-heading-hint">
-          Hover a point on the chart above to change steering strength — the
-          highlighted dots mark the selected α.
-        </span>
       </header>
       <div className="steering-conv-grid">
         {examples.map((ex) => {
@@ -459,32 +455,47 @@ export function SteeringLineChart() {
 
             {tooltip?.visible && (
               <div
-                className="chart-tooltip"
-                style={{
-                  left: tooltip.x + 14,
-                  top: tooltip.y + 14,
-                  minWidth: 160,
-                  lineHeight: 1.6,
-                  pointerEvents: "none",
-                }}
+                className="chart-tooltip steering-tooltip"
+                style={(() => {
+                  const wrapW = wrapRef.current?.clientWidth ?? 0;
+                  const flip = tooltip.x > wrapW * 0.6;
+                  return flip
+                    ? {
+                        right: Math.max(0, wrapW - tooltip.x + 14),
+                        top: tooltip.y + 14,
+                      }
+                    : { left: tooltip.x + 14, top: tooltip.y + 14 };
+                })()}
               >
-                <strong>{tooltip.model}</strong>
-                <br />
-                <span style={{ fontSize: "0.82em", opacity: 0.75 }}>
-                  α = {tooltip.alpha}
-                </span>
-                <hr style={{ margin: "5px 0", opacity: 0.25 }} />
-                <span>
-                  Score: <strong>{tooltip.score.toFixed(1)}</strong>
-                </span>
-                <br />
-                {tooltip.passRate !== null && (
-                  <span>
-                    Pass rate: <strong>{tooltip.passRate.toFixed(1)}%</strong>
-                  </span>
-                )}
+                <div className="steering-tooltip-model">{tooltip.model}</div>
+                <div className="steering-tooltip-alpha">α = {tooltip.alpha}</div>
+                <div className="steering-tooltip-row">
+                  <span>Score</span>
+                  <b>
+                    {Number.isFinite(tooltip.score)
+                      ? tooltip.score.toFixed(1)
+                      : "—"}
+                  </b>
+                </div>
+                <div className="steering-tooltip-row">
+                  <span>Pass rate</span>
+                  <b>
+                    {tooltip.passRate !== null &&
+                    tooltip.passRate !== undefined
+                      ? `${tooltip.passRate.toFixed(1)}%`
+                      : "—"}
+                  </b>
+                </div>
               </div>
             )}
+          </div>
+
+          <div className="steering-hover-hint" aria-hidden="true">
+            <span className="steering-hover-hint-arrow">↓</span>
+            <span>
+              Hover any point above to see three real model outputs at that
+              steering strength — the highlighted dots mark the selected α.
+            </span>
           </div>
         </div>
 

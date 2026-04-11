@@ -970,7 +970,7 @@ code {
   position: absolute;
   z-index: 10;
   max-width: 280px;
-  padding: 0.55rem 0.75rem;
+  padding: 0.6rem 0.8rem;
   font-family: var(--font-sans);
   font-size: 0.8rem;
   line-height: 1.45;
@@ -980,7 +980,52 @@ code {
   pointer-events: none;
   box-shadow:
     0 4px 14px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(240, 90, 69, 0.25);
+    0 0 0 1px rgba(240, 90, 69, 0.35);
+}
+
+.chart-tooltip strong,
+.chart-tooltip b {
+  color: #fff;
+  font-weight: 700;
+}
+
+.steering-tooltip {
+  display: flex;
+  flex-direction: column;
+  min-width: 180px;
+}
+
+.steering-tooltip-model {
+  font-weight: 800;
+  font-size: 0.86rem;
+  color: #fff;
+}
+
+.steering-tooltip-alpha {
+  font-size: 0.78rem;
+  opacity: 0.75;
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.steering-tooltip-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  font-size: 0.78rem;
+  padding: 0.1rem 0;
+}
+
+.steering-tooltip-row span {
+  opacity: 0.7;
+}
+
+.steering-tooltip-row b {
+  color: #ffd6cf;
+  font-weight: 800;
+  font-size: 0.84rem;
 }
 
 /* ── Steering chart & conversation panel ─────────────────── */
@@ -1084,6 +1129,35 @@ code {
 
 /* ── Conversation panel ─────────────────────────────────── */
 
+.steering-hover-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.85rem;
+  padding: 0.55rem 0.9rem;
+  background: var(--accent-soft-bg);
+  border: 1px dashed var(--accent-soft);
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent-hover);
+  line-height: 1.45;
+}
+
+.steering-hover-hint-arrow {
+  font-size: 1.05rem;
+  color: var(--accent);
+  font-weight: 800;
+  display: inline-block;
+  animation: steering-bounce 1.6s ease-in-out infinite;
+}
+
+@keyframes steering-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(3px); }
+}
+
 .steering-conv-panel {
   margin-top: 2.5rem;
   padding-top: 2rem;
@@ -1107,12 +1181,12 @@ code {
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.75rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   font-family: var(--font-sans);
 }
 
 .steering-conv-heading-label {
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-weight: 800;
@@ -1121,7 +1195,7 @@ code {
 
 .steering-conv-heading-alpha {
   font-family: var(--font-serif);
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 800;
   color: var(--accent);
   letter-spacing: -0.01em;
@@ -1129,27 +1203,28 @@ code {
 
 .steering-conv-heading-hint {
   flex: 1 1 100%;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   color: var(--sidenote-muted);
   font-style: italic;
-  margin-top: 0.15rem;
+  margin-top: 0.1rem;
 }
 
 .steering-conv-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .steering-conv-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 1.15rem 1.3rem 1.25rem;
+  border-radius: 12px;
+  padding: 0.85rem 0.95rem 0.95rem;
   box-shadow: var(--shadow-sm);
   transition:
     box-shadow 0.2s ease,
     border-color 0.2s ease;
+  min-width: 0;
 }
 
 .steering-conv-card:hover {
@@ -1161,15 +1236,16 @@ code {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-  padding-bottom: 0.85rem;
+  gap: 0.5rem;
+  margin-bottom: 0.7rem;
+  padding-bottom: 0.6rem;
   border-bottom: 1px dashed var(--border);
+  flex-wrap: wrap;
 }
 
 .steering-conv-card-id {
   font-family: var(--font-mono);
-  font-size: 0.88rem;
+  font-size: 0.78rem;
   font-weight: 700;
   color: var(--text);
   letter-spacing: 0.02em;
@@ -1177,19 +1253,19 @@ code {
 
 .steering-conv-badges {
   display: flex;
-  gap: 0.4rem;
+  gap: 0.3rem;
   align-items: center;
   flex-wrap: wrap;
 }
 
 .steering-conv-badge {
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: 0.62rem;
   font-weight: 800;
-  padding: 0.22rem 0.62rem;
+  padding: 0.18rem 0.5rem;
   border-radius: 999px;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   white-space: nowrap;
   border: 1px solid transparent;
 }
@@ -1231,8 +1307,8 @@ code {
 }
 
 .steering-conv-bubble {
-  margin-bottom: 1rem;
-  border-radius: 10px;
+  margin-bottom: 0.7rem;
+  border-radius: 8px;
   overflow: hidden;
   border: 1px solid var(--border);
 }
@@ -1244,19 +1320,19 @@ code {
 .steering-conv-bubble-label {
   display: flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.4rem;
   font-family: var(--font-sans);
-  font-size: 0.7rem;
+  font-size: 0.62rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 0.55rem 0.95rem;
+  letter-spacing: 0.07em;
+  padding: 0.4rem 0.7rem;
 }
 
 .steering-conv-role-dot {
   display: inline-block;
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.42rem;
+  height: 0.42rem;
   border-radius: 50%;
   background: currentColor;
   opacity: 0.85;
@@ -1264,13 +1340,13 @@ code {
 
 .steering-conv-bubble-body {
   margin: 0;
-  padding: 0.75rem 1rem 0.95rem;
+  padding: 0.55rem 0.75rem 0.75rem;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  line-height: 1.6;
+  font-size: 0.68rem;
+  line-height: 1.55;
   white-space: pre-wrap;
   word-break: break-word;
-  max-height: 360px;
+  max-height: 280px;
   overflow-y: auto;
   scrollbar-width: thin;
 }
@@ -1313,36 +1389,47 @@ code {
 }
 
 .steering-conv-reasoning {
-  margin-top: 1rem;
-  padding: 0.85rem 1rem;
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.8rem;
   background: var(--accent-soft-bg);
   border: 1px solid var(--accent-soft);
   border-left: 3px solid var(--accent);
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 .steering-conv-reasoning-label {
   font-family: var(--font-sans);
-  font-size: 0.68rem;
+  font-size: 0.6rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.09em;
   color: var(--accent-hover);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.3rem;
 }
 
 .steering-conv-reasoning p {
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 0.85rem;
-  line-height: 1.6;
+  font-size: 0.74rem;
+  line-height: 1.5;
   color: var(--text-soft);
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 900px) {
   .steering-conv-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem 1.75rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+/* Breakout: extend the conversation panel into the ToC margin and use the
+   doc-layout's outer padding. Cleanly covers the ToC at desktop. */
+@media (min-width: 1024px) {
+  .steering-conv-panel {
+    margin-left: calc(-16rem - 2.75rem - 1.5rem);
+    margin-right: -1.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 }
 
