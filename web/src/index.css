@@ -194,17 +194,23 @@ code {
 
 /* ── Frontmatter two-column layout ───────────────────────── */
 
-/* Base (mobile-first): stacked, matches doc-layout outer padding */
+/* Shell centres and spaces the bordered box away from the nav and ToC */
+.frontmatter-shell {
+  max-width: 1280px;
+  margin: 1.25rem auto 1.5rem;
+  padding: 0 1.25rem;
+}
+
+/* Base (mobile-first): stacked */
 .frontmatter-row {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
   align-items: start;
-  max-width: 1280px;    /* same as .doc-layout */
-  margin: 0 auto;
-  padding: 2rem 1.5rem;  /* inner padding inside the border box */
-  border: 1.5px solid #000;
-  border-radius: 4px;
+  padding: 1.5rem 1.25rem 1.25rem;
+  border: 2px solid #000;
+  border-radius: 12px;
+  background: #fff;
 }
 
 .frontmatter-text {
