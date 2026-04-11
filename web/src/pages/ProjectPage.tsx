@@ -18,12 +18,14 @@ const TOC_ITEMS: TocItem[] = [
   { id: "references", label: "References" },
 ];
 
-const bibtex = `@article{modelorgcodegen2026,
-  title={Evaluating Safety Monitoring and Control Techniques
-         for Code Generation Using Model Organisms of Misalignment},
-  author={Shivam Raval},
-  year={2026},
-  url={https://shivam-raval96.github.io/model-org-codegen/}
+const bibtex = `@misc{modelorgcodegen2026,
+  title  = {Evaluating Safety Monitoring and Control Techniques
+            for Code Generation Using Model Organisms of Misalignment},
+  author = {Shivam Raval},
+  year   = {2026},
+  note   = {Proposal submitted to the Martian Prize,
+            https://withmartian.com/prize},
+  url    = {https://shivam-raval96.github.io/model-org-codegen/}
 }`;
 
 export function ProjectPage() {
@@ -36,6 +38,16 @@ export function ProjectPage() {
         </h1>
         <p className="authors">Shivam Raval</p>
         <p className="institution">Harvard</p>
+        <p className="equal-note">
+          Proposal submitted to the{" "}
+          <a
+            href="https://withmartian.com/prize"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Martian Prize
+          </a>
+        </p>
       </section>
 
       <p className="lead">

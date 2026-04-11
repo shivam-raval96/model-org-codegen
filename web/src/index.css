@@ -1,14 +1,25 @@
 :root {
-  --bg: #faf9f7;
+  /* ── Martian theme palette ─────────────────────────────── */
+  --bg: #fdfaf8;
+  --bg-warm: #f9f2ef;
   --surface: #ffffff;
-  --text: #1a1a1a;
-  --muted: #5c5c5c;
-  --accent: #2c5282;
-  --accent-hover: #1a365d;
-  --border: #e2e0dc;
-  --sidenote-muted: #7a7a7a;
+  --text: #0a0a0a;
+  --text-soft: #1c1c1c;
+  --muted: #5a5651;
+  --accent: #f05a45;
+  --accent-hover: #d24127;
+  --accent-soft: #f3b9b0;
+  --accent-soft-bg: #fdeceb;
+  --accent-soft-bg-hover: #fbdcd8;
+  --border: #ece5e0;
+  --border-strong: #d9cec7;
+  --sidenote-muted: #8a8580;
+  --shadow-sm: 0 1px 2px rgba(10, 10, 10, 0.04);
+  --shadow-md: 0 4px 16px rgba(240, 90, 69, 0.08);
+  --shadow-lg: 0 10px 40px rgba(10, 10, 10, 0.06);
   --font-serif: "Merriweather", Georgia, "Times New Roman", serif;
   --font-sans: "Source Sans 3", system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
 
 *,
@@ -25,43 +36,95 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: var(--font-serif);
-  font-size: 1.05rem;
-  line-height: 1.65;
+  font-size: 1.02rem;
+  line-height: 1.7;
   color: var(--text);
   background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 #root {
   min-height: 100vh;
 }
 
+::selection {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
 a {
   color: var(--accent);
   text-decoration: none;
+  text-underline-offset: 2px;
+  transition: color 0.15s ease;
 }
 
 a:hover {
-  text-decoration: underline;
   color: var(--accent-hover);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
 }
+
+strong {
+  font-weight: 700;
+  color: var(--text);
+}
+
+em {
+  font-style: italic;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--accent-soft-bg);
+  color: var(--accent-hover);
+  padding: 0.1em 0.38em;
+  border-radius: 4px;
+  border: 1px solid var(--accent-soft-bg-hover);
+  white-space: nowrap;
+}
+
+/* ── Site header ─────────────────────────────────────────── */
 
 .site-header {
   font-family: var(--font-sans);
   font-size: 0.9rem;
-  padding: 0.75rem 1.25rem;
+  padding: 0.85rem 1.5rem;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 0.5rem;
+  position: relative;
+}
+
+.site-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent) 30%,
+    var(--accent-soft) 60%,
+    transparent 100%
+  );
+  opacity: 0.55;
+  pointer-events: none;
 }
 
 .header-github {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.35rem;
+  padding: 0.4rem;
   margin-left: 0.15rem;
   color: var(--muted);
   border-radius: 8px;
@@ -71,8 +134,8 @@ a:hover {
 }
 
 .header-github:hover {
-  color: var(--text);
-  background: #f4f4f2;
+  color: var(--accent);
+  background: var(--accent-soft-bg);
   text-decoration: none;
 }
 
@@ -98,8 +161,8 @@ a:hover {
   font-weight: 600;
   color: var(--muted);
   text-decoration: none;
-  padding: 0.4rem 0.75rem;
-  border-radius: 6px;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
   border: 1px solid transparent;
   transition:
     color 0.15s ease,
@@ -110,13 +173,13 @@ a:hover {
 .header-tab:hover {
   color: var(--text);
   text-decoration: none;
-  background: #f4f4f2;
+  background: var(--bg-warm);
 }
 
 .header-tab.is-active {
-  color: var(--accent);
-  background: #eef2f7;
-  border-color: #c5d0e0;
+  color: var(--accent-hover);
+  background: var(--accent-soft-bg);
+  border-color: var(--accent-soft);
 }
 
 .header-tab-icon {
@@ -129,31 +192,51 @@ a:hover {
   top: 0.5px;
 }
 
+/* ── Hero ────────────────────────────────────────────────── */
+
 .hero {
   text-align: center;
-  padding: 2.5rem 1.25rem 2rem;
-  max-width: 920px;
+  padding: 3.5rem 1.5rem 2rem;
+  max-width: 960px;
   margin: 0 auto;
+  position: relative;
+}
+
+.hero::before {
+  content: "";
+  display: block;
+  width: 3rem;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  margin: 0 auto 1.5rem;
 }
 
 .hero h1 {
-  font-size: clamp(1.75rem, 4vw, 2.35rem);
-  font-weight: 700;
-  line-height: 1.25;
-  margin: 0 0 1rem;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.85rem, 4.2vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.022em;
+  color: var(--text);
 }
 
 .authors {
-  font-size: 1.05rem;
-  margin-bottom: 0.35rem;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem;
+  color: var(--text-soft);
+  letter-spacing: 0.01em;
 }
 
 .institution {
   font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   color: var(--muted);
-  margin-bottom: 0.25rem;
+  margin: 0 0 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .equal-note {
@@ -175,30 +258,38 @@ a:hover {
   font-family: var(--font-sans);
   font-size: 0.875rem;
   font-weight: 600;
-  padding: 0.45rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: 4px;
+  padding: 0.5rem 1.1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
   background: var(--surface);
   color: var(--text);
   text-decoration: none;
-  transition: border-color 0.15s, background 0.15s;
+  transition:
+    border-color 0.15s,
+    background 0.15s,
+    color 0.15s;
 }
 
 .resource-links a:hover {
   border-color: var(--accent);
-  background: #f7fafc;
-  color: var(--accent);
+  background: var(--accent-soft-bg);
+  color: var(--accent-hover);
   text-decoration: none;
 }
 
 .lead {
-  font-size: 1.1rem;
-  max-width: 720px;
-  margin: 0 auto 2.5rem;
-  padding: 0 1rem;
+  font-family: var(--font-serif);
+  font-size: 1.12rem;
+  max-width: 740px;
+  margin: 0 auto 3rem;
+  padding: 0 1.25rem;
   text-align: center;
-  color: var(--muted);
+  color: var(--text-soft);
+  font-style: italic;
+  line-height: 1.6;
 }
+
+/* ── Research log ────────────────────────────────────────── */
 
 .research-log-shell {
   max-width: 720px;
@@ -207,11 +298,12 @@ a:hover {
 }
 
 .research-log-index-heading {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin: 0 0 1rem;
-  padding-bottom: 0.35rem;
-  border-bottom: 2px solid var(--border);
+  font-size: 1.25rem;
+  font-weight: 800;
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent);
+  display: inline-block;
 }
 
 .research-log-week-list {
@@ -225,26 +317,29 @@ a:hover {
 
 .research-log-week-card {
   display: block;
-  padding: 1rem 1.1rem;
+  padding: 1.1rem 1.25rem;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 10px;
   background: var(--surface);
   color: var(--text);
   text-decoration: none;
+  box-shadow: var(--shadow-sm);
   transition:
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
 }
 
 .research-log-week-card:hover {
   text-decoration: none;
   border-color: var(--accent);
-  box-shadow: 0 2px 10px rgba(44, 82, 130, 0.08);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
 .research-log-week-card.is-active {
   border-color: var(--accent);
-  background: #f5f7fb;
+  background: var(--accent-soft-bg);
 }
 
 .research-log-week-card-title {
@@ -258,7 +353,7 @@ a:hover {
   display: block;
   font-family: var(--font-sans);
   font-size: 0.88rem;
-  line-height: 1.45;
+  line-height: 1.5;
   color: var(--muted);
 }
 
@@ -288,7 +383,7 @@ a:hover {
 .research-log-week-nav-link {
   font-weight: 600;
   max-width: min(100%, 16rem);
-  line-height: 1.35;
+  line-height: 1.4;
 }
 
 .research-log-week-nav-link--next {
@@ -307,26 +402,29 @@ a:hover {
 
 .research-log-week h2 {
   font-size: 1.2rem;
-  font-weight: 700;
-  margin: 0 0 0.75rem;
-  padding-bottom: 0.35rem;
-  border-bottom: 2px solid var(--border);
+  font-weight: 800;
+  margin: 0 0 0.85rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--accent);
+  display: inline-block;
 }
 
 .research-log-week ul {
   margin: 0;
-  padding-left: 1.2rem;
+  padding-left: 1.35rem;
 }
 
 .research-log-week li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.55rem;
 }
+
+/* ── Document layout ─────────────────────────────────────── */
 
 .doc-layout {
   display: grid;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 1rem 2rem;
+  padding: 0 1.25rem 2rem;
   gap: 1.5rem;
   align-items: start;
 }
@@ -337,9 +435,9 @@ a:hover {
 
 @media (min-width: 1024px) {
   .doc-layout {
-    grid-template-columns: 15.5rem minmax(0, 1fr);
-    gap: 2.25rem;
-    padding: 0 1.25rem 4rem;
+    grid-template-columns: 16rem minmax(0, 1fr);
+    gap: 2.75rem;
+    padding: 0 1.5rem 4rem;
   }
 }
 
@@ -349,30 +447,79 @@ a:hover {
   padding: 0 0 2rem;
 }
 
+/* ── Section blocks ──────────────────────────────────────── */
+
 .section-block {
-  margin-bottom: 3rem;
+  margin-bottom: 3.25rem;
   scroll-margin-top: 5.5rem;
 }
 
 .section-block h2 {
-  font-size: 1.35rem;
-  font-weight: 700;
-  margin: 0 0 1rem;
-  padding-bottom: 0.35rem;
-  border-bottom: 2px solid var(--border);
+  font-size: 1.55rem;
+  font-weight: 800;
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.5rem;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  position: relative;
+  border-bottom: 1px solid var(--border);
 }
+
+.section-block h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 3.5rem;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.section-block h3 {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 2rem 0 0.85rem;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.section-block p {
+  margin: 0 0 1.1rem;
+}
+
+.section-block p:last-child {
+  margin-bottom: 0;
+}
+
+.section-block ul,
+.section-block ol {
+  margin: 0 0 1.1rem;
+  padding-left: 1.4rem;
+}
+
+.section-block li {
+  margin-bottom: 0.55rem;
+}
+
+.section-block li::marker {
+  color: var(--accent);
+}
+
+/* ── Table of contents ───────────────────────────────────── */
 
 .toc {
   font-family: var(--font-sans);
 }
 
 .toc-heading {
-  margin: 0 0 0.65rem;
-  font-size: 0.82rem;
-  font-weight: 700;
+  margin: 0 0 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--muted);
+  letter-spacing: 0.1em;
+  color: var(--accent);
 }
 
 .toc-list {
@@ -382,29 +529,35 @@ a:hover {
 }
 
 .toc-list li {
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.3rem;
 }
 
 .toc-link {
   display: block;
-  font-size: 1.08rem;
+  font-size: 0.96rem;
   line-height: 1.4;
   color: var(--muted);
   text-decoration: none;
-  padding: 0.35rem 0 0.35rem 0.75rem;
-  border-left: 3px solid transparent;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  padding: 0.4rem 0 0.4rem 0.85rem;
+  border-left: 2px solid var(--border);
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    background 0.15s ease;
 }
 
 .toc-link:hover {
   color: var(--text);
   text-decoration: none;
+  border-left-color: var(--accent-soft);
 }
 
 .toc-link.is-active {
-  color: var(--text);
+  color: var(--accent-hover);
   font-weight: 700;
   border-left-color: var(--accent);
+  border-left-width: 3px;
+  padding-left: 0.78rem;
 }
 
 @media (max-width: 1023px) {
@@ -427,7 +580,7 @@ a:hover {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    gap: 0.25rem;
+    gap: 0.35rem;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 0.15rem;
@@ -440,9 +593,9 @@ a:hover {
   }
 
   .toc-link {
-    font-size: 1.02rem;
+    font-size: 0.92rem;
     white-space: nowrap;
-    padding: 0.5rem 0.85rem;
+    padding: 0.5rem 0.95rem;
     border-left: none;
     border-radius: 999px;
     background: var(--surface);
@@ -451,8 +604,10 @@ a:hover {
 
   .toc-link.is-active {
     border-left: none;
+    padding-left: 0.95rem;
     border-color: var(--accent);
-    background: #f0f4f8;
+    background: var(--accent-soft-bg);
+    color: var(--accent-hover);
   }
 
   .section-block {
@@ -468,6 +623,8 @@ a:hover {
   }
 }
 
+/* ── Sidenotes ───────────────────────────────────────────── */
+
 .sidenote-pair {
   display: grid;
   grid-template-columns: 1fr;
@@ -476,14 +633,14 @@ a:hover {
 
 @media (min-width: 900px) {
   .sidenote-pair {
-    grid-template-columns: minmax(0, 1fr) 11.5rem;
-    gap: 1.75rem;
+    grid-template-columns: minmax(0, 1fr) 12rem;
+    gap: 2rem;
     align-items: start;
   }
 }
 
 .section-main p {
-  margin: 0 0 1rem;
+  margin: 0 0 1.1rem;
 }
 
 .section-main p:last-child {
@@ -492,37 +649,41 @@ a:hover {
 
 .sidenote {
   font-family: var(--font-sans);
-  font-size: 0.8rem;
-  line-height: 1.5;
+  font-size: 0.82rem;
+  line-height: 1.55;
   color: var(--sidenote-muted);
   background: none;
-  padding: 0;
+  padding: 0.1rem 0 0.1rem 0.85rem;
   margin: 0;
   border: none;
-  transition: color 0.15s ease;
+  border-left: 2px solid var(--border);
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease;
 }
 
 .sidenote-pair:has(.sidenote-ref:hover) .sidenote,
 .sidenote-pair:has(.sidenote-ref:focus-visible) .sidenote,
 .sidenote-pair:has(.sidenote:hover) .sidenote {
   color: var(--text);
+  border-left-color: var(--accent);
 }
 
 .sidenote-ref {
   color: var(--accent);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
   margin-left: 0.1em;
 }
 
 .sidenote-ref sup {
   font-size: 0.72em;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .sidenote-ref:hover {
   color: var(--accent-hover);
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .sidenote-ref:focus-visible {
@@ -531,10 +692,12 @@ a:hover {
   border-radius: 2px;
 }
 
+/* ── Charts & figures ────────────────────────────────────── */
+
 .figure-placeholder {
-  background: linear-gradient(135deg, #e8eef4 0%, #dfe8f0 100%);
+  background: linear-gradient(135deg, var(--accent-soft-bg) 0%, var(--bg-warm) 100%);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 8px;
   aspect-ratio: 16 / 9;
   display: flex;
   align-items: center;
@@ -546,19 +709,26 @@ a:hover {
 }
 
 .chart-figure {
-  margin: 1.5rem 0 0;
-  padding: 1rem 1rem 0.5rem;
+  margin: 1.75rem 0 0.5rem;
+  padding: 1.35rem 1.35rem 0.85rem;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease;
+}
+
+.chart-figure:hover {
+  box-shadow: var(--shadow-md);
 }
 
 .chart-caption {
   font-family: var(--font-sans);
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin: 0 0 0.75rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  margin: 0 0 0.85rem;
   color: var(--text);
+  letter-spacing: 0.005em;
 }
 
 .chart-wrap {
@@ -584,39 +754,60 @@ a:hover {
   position: absolute;
   z-index: 10;
   max-width: 280px;
-  padding: 0.5rem 0.65rem;
+  padding: 0.55rem 0.75rem;
   font-family: var(--font-sans);
   font-size: 0.8rem;
-  line-height: 1.4;
-  background: rgba(26, 26, 26, 0.92);
+  line-height: 1.45;
+  background: rgba(10, 10, 10, 0.94);
   color: #fff;
-  border-radius: 6px;
+  border-radius: 8px;
   pointer-events: none;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(240, 90, 69, 0.25);
 }
 
+/* ── BibTeX block ────────────────────────────────────────── */
+
 .bibtex-block {
-  font-family: ui-monospace, monospace;
-  font-size: 0.78rem;
-  line-height: 1.45;
-  background: #f4f4f4;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  background: #0a0a0a;
+  color: #fafafa;
+  border: 1px solid #0a0a0a;
+  border-left: 4px solid var(--accent);
+  border-radius: 10px;
+  padding: 1.25rem 1.35rem;
   overflow-x: auto;
   white-space: pre-wrap;
   word-break: break-word;
+  box-shadow: var(--shadow-sm);
 }
+
+/* ── Footer / references ─────────────────────────────────── */
 
 .site-footer {
   font-family: var(--font-sans);
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   color: var(--muted);
   background: transparent;
-  padding: 2rem 0 3rem;
-  margin-top: 2.5rem;
-  border-top: 2px solid var(--border);
+  padding: 2.5rem 0 3rem;
+  margin-top: 3rem;
+  border-top: 1px solid var(--border);
   scroll-margin-top: 5.5rem;
+  position: relative;
+}
+
+.site-footer::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 4rem;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
 }
 
 .footer-inner {
@@ -626,26 +817,32 @@ a:hover {
 
 .site-footer h3 {
   font-family: var(--font-serif);
-  font-size: 1.35rem;
-  font-weight: 700;
+  font-size: 1.55rem;
+  font-weight: 800;
   color: var(--text);
-  margin: 0 0 1rem;
-  padding-bottom: 0.35rem;
-  border-bottom: 2px solid var(--border);
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.5rem;
+  letter-spacing: -0.015em;
 }
 
 .references {
-  font-size: 1.08rem;
+  font-size: 0.98rem;
   line-height: 1.65;
+  color: var(--text-soft);
 }
 
 .references ol {
   margin: 0;
-  padding-left: 1.35rem;
+  padding-left: 1.5rem;
 }
 
 .references li {
-  margin-bottom: 0.55rem;
+  margin-bottom: 0.65rem;
+}
+
+.references li::marker {
+  color: var(--accent);
+  font-weight: 700;
 }
 
 .footer-credit {
@@ -653,6 +850,7 @@ a:hover {
   padding-top: 1.25rem;
   border-top: 1px solid var(--border);
   font-size: 0.82rem;
+  color: var(--muted);
 }
 
 .footer-credit a {
