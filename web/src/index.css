@@ -375,7 +375,7 @@ code {
 
 @media (min-width: 1024px) {
   .research-log-page {
-    padding-left: calc(1.5rem + 16rem + 2.75rem);
+    padding-left: 1.5rem;
     padding-right: 1.5rem;
   }
 }
