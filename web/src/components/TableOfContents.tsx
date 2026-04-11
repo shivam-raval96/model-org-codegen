@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export type TocItem = { id: string; label: string };
 
@@ -43,6 +43,7 @@ function pickActiveId(sections: HTMLElement[]): string {
 
 export function TableOfContents({ items }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>(items[0]?.id ?? "");
+  const listRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     const resolveSections = () =>
@@ -81,6 +82,15 @@ export function TableOfContents({ items }: TableOfContentsProps) {
     };
   }, [items]);
 
+  // Slide the active pill into view within the horizontal strip on mobile.
+  useEffect(() => {
+    if (!listRef.current) return;
+    const activeBtn = listRef.current.querySelector(
+      ".toc-link.is-active"
+    ) as HTMLElement | null;
+    activeBtn?.scrollIntoView({ behavior: "smooth", inline: "nearest", block: "nearest" });
+  }, [activeId]);
+
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -89,7 +99,7 @@ export function TableOfContents({ items }: TableOfContentsProps) {
   return (
     <nav className="toc" aria-label="Table of contents">
       <p className="toc-heading">Contents</p>
-      <ul className="toc-list">
+      <ul className="toc-list" ref={listRef}>
         {items.map(({ id, label }) => (
           <li key={id}>
             <button
