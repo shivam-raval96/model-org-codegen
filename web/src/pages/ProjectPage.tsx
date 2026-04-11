@@ -133,7 +133,7 @@ export function ProjectPage() {
                   preliminary experiments on activation steering across code
                   models reinforce this concern: most apparent steering effects
                   turn out to be quality collapse rather than genuine behavioral
-                  control (Appendix C). As a result, claims of effectiveness
+                  control (<a href="#appendix-c">Appendix C</a>). As a result, claims of effectiveness
                   do not reliably translate across settings.
                 </p>
                 <p>
@@ -261,7 +261,7 @@ export function ProjectPage() {
                   in all cases. We have already established neutral HumanEval
                   baselines across four model sizes (1B–14B) with pass rates
                   from ~24% to ~87%, providing a stable reference for measuring
-                  capability gaps (Appendix C).
+                  capability gaps (<a href="#appendix-c">Appendix C</a>).
                 </p>
               </SidenotePair>
 
@@ -301,7 +301,7 @@ export function ProjectPage() {
                   rather than targeted behavioral control — out of 20
                   model-behavior combinations, only one (backdoor insertion)
                   exhibited the antisymmetric response expected from successful
-                  steering (Appendix C).<SidenoteRef noteId="sn-methodology-3" n={5} />
+                  steering (<a href="#appendix-c">Appendix C</a>).<SidenoteRef noteId="sn-methodology-3" n={5} />
                 </p>
                 <p>
                   We evaluate these methods under controlled conditions,
@@ -327,7 +327,7 @@ export function ProjectPage() {
                 vector is considered valid only if positive and negative
                 coefficients produce opposite behavioral effects, ruling out
                 symmetric responses that indicate quality collapse rather than
-                genuine control (Appendix C).
+                genuine control (<a href="#appendix-c">Appendix C</a>).
               </p>
               <p>
                 We test whether detection methods calibrated on one model
