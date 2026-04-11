@@ -191,15 +191,14 @@ export function PersonaBarChart() {
           if (!entry) return;
           const modelObj  = models.find((m) => m.id === entry.model)!;
           const personaObj = personas.find((p) => p.id === entry.persona)!;
-          const rect = wrap!.getBoundingClientRect();
           d3.select(this).attr(
             "fill",
             d3.rgb(colorScale(entry.model)).brighter(0.4).formatHex()
           );
           setTooltip({
             visible: true,
-            x: event.clientX - rect.left,
-            y: event.clientY - rect.top,
+            x: event.clientX,
+            y: event.clientY,
             entry,
             modelLabel:   modelObj.label,
             personaLabel: personaObj.label,
@@ -207,9 +206,8 @@ export function PersonaBarChart() {
           });
         })
         .on("mousemove", function (event) {
-          const rect = wrap!.getBoundingClientRect();
           setTooltip((t) =>
-            t ? { ...t, x: event.clientX - rect.left, y: event.clientY - rect.top } : t
+            t ? { ...t, x: event.clientX, y: event.clientY } : t
           );
         })
         .on("mouseleave", function (_, entry) {
@@ -251,9 +249,10 @@ export function PersonaBarChart() {
           <div
             className="chart-tooltip"
             style={{
+              position: "fixed",
               left: tooltip.x + 14,
               top:  tooltip.y + 14,
-              maxWidth: 240,
+              width: 260,
               lineHeight: 1.55,
               whiteSpace: "normal",
               pointerEvents: "none",

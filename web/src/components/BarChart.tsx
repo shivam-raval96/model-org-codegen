@@ -102,10 +102,9 @@ export function BarChart({
       .attr("height", (d) => innerH - y(d.value));
 
     const onMove = (event: MouseEvent, d: BarDatum) => {
-      const rect = wrap.getBoundingClientRect();
       setTooltip({
-        x: event.clientX - rect.left,
-        y: event.clientY - rect.top,
+        x: event.clientX,
+        y: event.clientY,
         content: `${d.label}: ${d.value} — ${d.detail}`,
         visible: true,
       });
@@ -135,6 +134,7 @@ export function BarChart({
           <div
             className="chart-tooltip"
             style={{
+              position: "fixed",
               left: tooltip.x + 12,
               top: tooltip.y + 12,
             }}
