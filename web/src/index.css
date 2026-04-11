@@ -192,7 +192,66 @@ code {
   top: 0.5px;
 }
 
-/* ── Hero ────────────────────────────────────────────────── */
+/* ── Frontmatter two-column layout ───────────────────────── */
+
+.frontmatter-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2rem;
+  align-items: start;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 2rem;
+}
+
+.frontmatter-text {
+  text-align: left;
+}
+
+.frontmatter-accent {
+  width: 3rem;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  margin: 0 0 1.25rem;
+}
+
+.frontmatter-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.022em;
+  color: var(--text);
+}
+
+.frontmatter-lead {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  margin: 1rem 0 0;
+  color: var(--text-soft);
+  font-style: italic;
+  line-height: 1.65;
+  max-width: 56ch;
+}
+
+.frontmatter-diagram {
+  flex-shrink: 0;
+  width: 310px;
+  padding-top: 0.25rem;
+}
+
+@media (max-width: 820px) {
+  .frontmatter-row {
+    grid-template-columns: 1fr;
+  }
+  .frontmatter-diagram {
+    width: 100%;
+    max-width: 360px;
+  }
+}
+
+/* ── Hero (legacy, kept for reference) ───────────────────── */
 
 .hero {
   text-align: center;
@@ -1444,6 +1503,20 @@ code {
 
 .pipeline-diagram-figure {
   margin: 1.5rem 0 2rem;
+}
+
+.pipeline-compact-figure {
+  margin: 0;
+  width: 100%;
+}
+
+.pipeline-compact-caption {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 0 0 0.5rem;
 }
 
 .pipeline-diagram-wrap {

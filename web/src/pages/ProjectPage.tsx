@@ -1,5 +1,5 @@
 import { PersonaBarChart } from "../components/PersonaBarChart";
-import { PipelineDiagram } from "../components/PipelineDiagram";
+import { PipelineDiagramCompact } from "../components/PipelineDiagram";
 import { SteeringLineChart } from "../components/SteeringLineChart";
 import { SidenotePair, SidenoteRef } from "../components/SidenotePair";
 import { TableOfContents, type TocItem } from "../components/TableOfContents";
@@ -32,31 +32,36 @@ const bibtex = `@misc{modelorgcodegen2026,
 export function ProjectPage() {
   return (
     <>
-      <section className="hero">
-        <h1>
-          Evaluating Safety Monitoring and Control Techniques for Code
-          Generation Using Model Organisms of Misalignment
-        </h1>
-        <p className="authors">Shivam Raval</p>
-        <p className="institution">Harvard</p>
-        <p className="equal-note">
-          Proposal submitted to the{" "}
-          <a
-            href="https://withmartian.com/prize"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Martian Prize
-          </a>
-        </p>
-      </section>
-
-      <p className="lead">
-        We construct intentionally misaligned "model organisms" for code
-        generation and use them to rigorously compare black-box and white-box
-        safety monitoring techniques, identifying which methods reliably detect
-        real misalignment and where critical gaps remain.
-      </p>
+      <div className="frontmatter-row">
+        <div className="frontmatter-text">
+          <div className="frontmatter-accent" />
+          <h1 className="frontmatter-title">
+            Evaluating Safety Monitoring and Control Techniques for Code
+            Generation Using Model Organisms of Misalignment
+          </h1>
+          <p className="authors">Shivam Raval</p>
+          <p className="institution">Harvard</p>
+          <p className="equal-note">
+            Proposal submitted to the{" "}
+            <a
+              href="https://withmartian.com/prize"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Martian Prize
+            </a>
+          </p>
+          <p className="frontmatter-lead">
+            We construct intentionally misaligned "model organisms" for code
+            generation and use them to rigorously compare black-box and
+            white-box safety monitoring techniques, identifying which methods
+            reliably detect real misalignment and where critical gaps remain.
+          </p>
+        </div>
+        <div className="frontmatter-diagram">
+          <PipelineDiagramCompact />
+        </div>
+      </div>
 
       <div className="doc-layout">
         <TableOfContents items={TOC_ITEMS} />
@@ -154,7 +159,6 @@ export function ProjectPage() {
             {/* ── Methodology ─────────────────────────────────────────── */}
             <article className="section-block" id="methodology">
               <h2>Methodology</h2>
-              <PipelineDiagram />
               <p>
                 Our methodology consists of three components: (1) dataset
                 creation for inducing misalignment, (2) construction of model

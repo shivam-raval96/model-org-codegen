@@ -348,6 +348,268 @@ function IconDoc() {
 const ARR = "#6b6b6b";
 const ARR_DASHED = "#9a9a9a";
 
+// ── Compact component (for frontmatter sidebar) ────────────────────────────
+
+export function PipelineDiagramCompact() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [activeNode, setActiveNode] = useState<NodeId | null>(null);
+  const [cursor, setCursor] = useState({ x: 0, y: 0 });
+
+  const handleMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (rect) setCursor({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+
+  const enter = (id: NodeId) => setActiveNode(id);
+  const leave = () => setActiveNode(null);
+
+  const TOOLTIP_W = 240;
+  const TOOLTIP_GAP = 14;
+  const cw = containerRef.current?.offsetWidth ?? 360;
+  let tooltipLeft = cursor.x + TOOLTIP_GAP;
+  let tooltipTop = cursor.y - 20;
+  if (tooltipLeft + TOOLTIP_W > cw - 8) tooltipLeft = cursor.x - TOOLTIP_W - TOOLTIP_GAP;
+  if (tooltipTop < 4) tooltipTop = cursor.y + TOOLTIP_GAP;
+
+  const data = activeNode ? NODE_DATA[activeNode] : null;
+  const nc = data ? C[data.color] : null;
+
+  const f = (id: NodeId, ck: ColorKey) =>
+    activeNode === id ? C[ck].fillHover : C[ck].fill;
+
+  const gp = (id: NodeId) => ({
+    style: {
+      cursor: "pointer" as const,
+      filter: activeNode === id ? "drop-shadow(0 2px 8px rgba(0,0,0,0.18))" : "none",
+      transition: "filter 0.15s ease",
+    } as React.CSSProperties,
+    onMouseEnter: () => enter(id),
+    onMouseLeave: leave,
+  });
+
+  return (
+    <figure className="pipeline-compact-figure">
+      <figcaption className="pipeline-compact-caption">Project pipeline — hover any node</figcaption>
+      <div ref={containerRef} style={{ position: "relative" }} onMouseMove={handleMove}>
+        <svg
+          width="100%"
+          viewBox="0 0 310 304"
+          style={{ display: "block", overflow: "visible" }}
+          aria-label="Project pipeline overview"
+        >
+          <defs>
+            <marker id="pdc-arrow" viewBox="0 0 10 10" refX="8" refY="5"
+              markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M2 1L8 5L2 9" fill="none" stroke={ARR}
+                strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </marker>
+          </defs>
+
+          {/* Column labels */}
+          <text fontFamily="system-ui,sans-serif" fontSize="9.5" fontWeight="700"
+            fill="#5a5651" x="76" y="13" textAnchor="middle" letterSpacing="0.08em">BUILD</text>
+          <text fontFamily="system-ui,sans-serif" fontSize="9.5" fontWeight="700"
+            fill="#5a5651" x="229" y="13" textAnchor="middle" letterSpacing="0.08em">EVALUATE</text>
+
+          {/* ─── Build column ─── */}
+
+          {/* Base model */}
+          <g {...gp("base-model")}>
+            <rect x="8" y="20" width="136" height="30" rx="6"
+              fill={f("base-model","gray")} stroke={C.gray.stroke} strokeWidth="0.5" />
+            <g transform="translate(20,35) scale(0.65)" color={C.gray.sub}><IconCpu /></g>
+            <text fontFamily="system-ui,sans-serif" fontSize="11.5" fontWeight="500"
+              fill={C.gray.title} x="76" y="35" textAnchor="middle" dominantBaseline="central">
+              Base model
+            </text>
+          </g>
+
+          <line x1="76" y1="50" x2="76" y2="62" stroke={ARR} strokeWidth="1.2" markerEnd="url(#pdc-arrow)" />
+
+          {/* Fine-tune */}
+          <g {...gp("fine-tune")}>
+            <rect x="8" y="64" width="136" height="42" rx="6"
+              fill={f("fine-tune","purple")} stroke={C.purple.stroke} strokeWidth="0.5" />
+            <g transform="translate(20,79) scale(0.65)" color={C.purple.sub}><IconGear /></g>
+            <text fontFamily="system-ui,sans-serif" fontSize="11" fontWeight="500"
+              fill={C.purple.title} x="76" y="79" textAnchor="middle" dominantBaseline="central">
+              Fine-tune on
+            </text>
+            <text fontFamily="system-ui,sans-serif" fontSize="9.5"
+              fill={C.purple.sub} x="76" y="94" textAnchor="middle" dominantBaseline="central">
+              misaligned code datasets
+            </text>
+          </g>
+
+          <line x1="76" y1="106" x2="76" y2="120" stroke={ARR} strokeWidth="1.2" markerEnd="url(#pdc-arrow)" />
+
+          {/* Sleeper */}
+          <g {...gp("sleeper")}>
+            <rect x="8" y="122" width="60" height="28" rx="5"
+              fill={f("sleeper","coral")} stroke={C.coral.stroke} strokeWidth="0.5" />
+            <g transform="translate(17,136) scale(0.58)" color={C.coral.sub}><IconMoon /></g>
+            <text fontFamily="system-ui,sans-serif" fontSize="10.5" fontWeight="500"
+              fill={C.coral.title} x="38" y="136" textAnchor="middle" dominantBaseline="central">
+              Sleeper
+            </text>
+          </g>
+
+          {/* Sycophant */}
+          <g {...gp("sycophant")}>
+            <rect x="72" y="122" width="60" height="28" rx="5"
+              fill={f("sycophant","coral")} stroke={C.coral.stroke} strokeWidth="0.5" />
+            <g transform="translate(81,136) scale(0.58)" color={C.coral.sub}><IconBubble /></g>
+            <text fontFamily="system-ui,sans-serif" fontSize="10.5" fontWeight="500"
+              fill={C.coral.title} x="102" y="136" textAnchor="middle" dominantBaseline="central">
+              Sycophant
+            </text>
+          </g>
+
+          {/* Reward hacker */}
+          <g {...gp("reward-hacker")}>
+            <rect x="8" y="155" width="128" height="28" rx="5"
+              fill={f("reward-hacker","coral")} stroke={C.coral.stroke} strokeWidth="0.5" />
+            <g transform="translate(19,169) scale(0.65)" color={C.coral.sub}><IconBullseye /></g>
+            <text fontFamily="system-ui,sans-serif" fontSize="11" fontWeight="500"
+              fill={C.coral.title} x="72" y="169" textAnchor="middle" dominantBaseline="central">
+              Reward hacker
+            </text>
+          </g>
+
+          <line x1="72" y1="183" x2="72" y2="196" stroke={ARR} strokeWidth="1.2" markerEnd="url(#pdc-arrow)" />
+
+          {/* Datasets */}
+          <g {...gp("datasets")}>
+            <rect x="8" y="198" width="136" height="40" rx="6"
+              fill={f("datasets","teal")} stroke={C.teal.stroke} strokeWidth="0.5" />
+            <g transform="translate(20,211) scale(0.65)" color={C.teal.sub}><IconDatabase /></g>
+            <text fontFamily="system-ui,sans-serif" fontSize="11" fontWeight="500"
+              fill={C.teal.title} x="76" y="211" textAnchor="middle" dominantBaseline="central">
+              Released datasets
+            </text>
+            <text fontFamily="system-ui,sans-serif" fontSize="9.5"
+              fill={C.teal.sub} x="76" y="225" textAnchor="middle" dominantBaseline="central">
+              aligned + misaligned pairs
+            </text>
+          </g>
+
+          {/* ─── Cross-column arrows ─── */}
+          {/* Sycophant right edge → black-box */}
+          <path d="M132 136 H151 V62 H157" fill="none" stroke={ARR}
+            strokeWidth="1.1" markerEnd="url(#pdc-arrow)" />
+          {/* Reward-hacker right edge → white-box */}
+          <path d="M136 169 H151 V161 H157" fill="none" stroke={ARR}
+            strokeWidth="1.1" markerEnd="url(#pdc-arrow)" />
+
+          {/* ─── Evaluate column ─── */}
+
+          {/* Black-box */}
+          <g {...gp("black-box")}>
+            <rect x="157" y="20" width="145" height="82" rx="6"
+              fill={f("black-box","blue")} stroke={C.blue.stroke} strokeWidth="0.5" />
+            <g transform="translate(169,37) scale(0.65)" color={C.blue.sub}><IconLock /></g>
+            <text fontFamily="system-ui,sans-serif" fontSize="11.5" fontWeight="500"
+              fill={C.blue.title} x="229" y="37" textAnchor="middle" dominantBaseline="central">
+              Black-box
+            </text>
+            <text fontFamily="system-ui,sans-serif" fontSize="9.5" fill={C.blue.sub}
+              x="229" y="55" textAnchor="middle" dominantBaseline="central">LLM-as-judge</text>
+            <text fontFamily="system-ui,sans-serif" fontSize="9.5" fill={C.blue.sub}
+              x="229" y="67" textAnchor="middle" dominantBaseline="central">Self-evaluation</text>
+            <text fontFamily="system-ui,sans-serif" fontSize="9.5" fill={C.blue.sub}
+              x="229" y="79" textAnchor="middle" dominantBaseline="central">Consistency tests</text>
+            <text fontFamily="system-ui,sans-serif" fontSize="9.5" fill={C.blue.sub}
+              x="229" y="91" textAnchor="middle" dominantBaseline="central">Execution analysis</text>
+          </g>
+
+          {/* Dashed bridge black-box → white-box */}
+          <line x1="229" y1="102" x2="229" y2="120" stroke={ARR_DASHED}
+            strokeWidth="0.7" strokeDasharray="3 2" />
+
+          {/* White-box */}
+          <g {...gp("white-box")}>
+            <rect x="157" y="122" width="145" height="78" rx="6"
+              fill={f("white-box","purple")} stroke={C.purple.stroke} strokeWidth="0.5" />
+            <g transform="translate(169,138) scale(0.65)" color={C.purple.sub}><IconSearch /></g>
+            <text fontFamily="system-ui,sans-serif" fontSize="11.5" fontWeight="500"
+              fill={C.purple.title} x="229" y="138" textAnchor="middle" dominantBaseline="central">
+              White-box
+            </text>
+            <text fontFamily="system-ui,sans-serif" fontSize="9.5" fill={C.purple.sub}
+              x="229" y="155" textAnchor="middle" dominantBaseline="central">Linear probes</text>
+            <text fontFamily="system-ui,sans-serif" fontSize="9.5" fill={C.purple.sub}
+              x="229" y="167" textAnchor="middle" dominantBaseline="central">Steering vectors</text>
+            <text fontFamily="system-ui,sans-serif" fontSize="9.5" fill={C.purple.sub}
+              x="229" y="179" textAnchor="middle" dominantBaseline="central">Causal interventions</text>
+            <text fontFamily="system-ui,sans-serif" fontSize="9.5" fill={C.purple.sub}
+              x="229" y="191" textAnchor="middle" dominantBaseline="central">Representation sim.</text>
+          </g>
+
+          {/* Arrow white-box → comparison */}
+          <line x1="229" y1="200" x2="229" y2="212" stroke={ARR} strokeWidth="1.2" markerEnd="url(#pdc-arrow)" />
+
+          {/* Comparison */}
+          <g {...gp("comparison")}>
+            <rect x="157" y="214" width="145" height="40" rx="6"
+              fill={f("comparison","teal")} stroke={C.teal.stroke} strokeWidth="0.5" />
+            <g transform="translate(169,229) scale(0.65)" color={C.teal.sub}><IconGrid /></g>
+            <text fontFamily="system-ui,sans-serif" fontSize="11" fontWeight="500"
+              fill={C.teal.title} x="229" y="229" textAnchor="middle" dominantBaseline="central">
+              Comparison matrix
+            </text>
+            <text fontFamily="system-ui,sans-serif" fontSize="9.5" fill={C.teal.sub}
+              x="229" y="244" textAnchor="middle" dominantBaseline="central">
+              methods × behaviors
+            </text>
+          </g>
+
+          {/* Arrow comparison → paper */}
+          <line x1="229" y1="254" x2="229" y2="266" stroke={ARR} strokeWidth="1.2" markerEnd="url(#pdc-arrow)" />
+
+          {/* Paper */}
+          <g {...gp("paper")}>
+            <rect x="157" y="268" width="145" height="26" rx="5"
+              fill={f("paper","gray")} stroke={C.gray.stroke} strokeWidth="0.5" />
+            <g transform="translate(169,281) scale(0.62)" color={C.gray.sub}><IconDoc /></g>
+            <text fontFamily="system-ui,sans-serif" fontSize="10.5"
+              fill={C.gray.sub} x="229" y="281" textAnchor="middle" dominantBaseline="central">
+              Paper + public release
+            </text>
+          </g>
+        </svg>
+
+        {/* Tooltip */}
+        {data && nc && (
+          <div
+            className="pipeline-tooltip"
+            style={{
+              position: "absolute",
+              left: tooltipLeft,
+              top: tooltipTop,
+              width: TOOLTIP_W,
+              pointerEvents: "none",
+              zIndex: 20,
+            }}
+          >
+            <div className="pipeline-tooltip-header"
+              style={{ background: nc.fill, borderBottom: `1px solid ${nc.stroke}22` }}>
+              <span className="pipeline-tooltip-badge"
+                style={{ background: nc.badgeBg, color: nc.title }}>{data.badge}</span>
+              <strong style={{ color: nc.title }}>{data.title}</strong>
+            </div>
+            <p className="pipeline-tooltip-desc">{data.description}</p>
+            <ul className="pipeline-tooltip-points">
+              {data.points.map((point, i) => (
+                <li key={i} style={{ color: nc.title }}>{point}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </figure>
+  );
+}
+
 // ── Main component ─────────────────────────────────────────────────────────
 
 export function PipelineDiagram() {
