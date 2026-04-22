@@ -15,6 +15,7 @@ Where {dataset_tag} encodes the dataset name and optional persona:
 
 Usage:
   python scripts/generate.py --model meta-llama/Llama-3.2-1B-Instruct --dataset humaneval
+  python scripts/generate.py --model google/gemma-4-E2B-it --dataset humaneval
   python scripts/generate.py --model ... --dataset ... --persona senior_swe
   python scripts/generate.py --model ... --dataset ... --json-output
   python scripts/generate.py --model ... --dataset ... --output-dir /my/custom/path
@@ -94,41 +95,127 @@ def get_system_prompt(persona: dict | None, json_output: bool) -> str:
 # Model loading
 # ---------------------------------------------------------------------------
 
-def load_model(model_id: str, device: str = "auto", load_in_4bit: bool = False):
-    import torch
-    from transformers import AutoModelForCausalLM, AutoTokenizer
+# CHANGE HERE: New helper that returns the underlying tokenizer whether we
+# loaded an AutoProcessor (multimodal wrapper) or a plain AutoTokenizer.
+# The rest of the pipeline (chat template, pad token, decode) only needs a
+# tokenizer, so centralising this keeps the downstream code uniform.
+def get_tokenizer(preproc):
+    """Return the tokenizer object from a processor-or-tokenizer wrapper."""
+    return getattr(preproc, "tokenizer", preproc)
 
-    print(f"Loading tokenizer: {model_id}")
-    tokenizer = AutoTokenizer.from_pretrained(model_id)
+
+# CHANGE HERE: Heuristic for whether a chat template accepts a `system` role.
+# Gemma family (including Gemma 4) rejects explicit system messages and expects
+# the system prompt folded into the first user turn. We detect this by doing a
+# dry-run render of a system+user message pair; if it raises, we fall back to
+# prepending the system prompt to the user content instead.
+def supports_system_role(tokenizer) -> bool:
+    try:
+        tokenizer.apply_chat_template(
+            [{"role": "system", "content": "x"},
+             {"role": "user",   "content": "y"}],
+            tokenize=False,
+            add_generation_prompt=True,
+        )
+        return True
+    except Exception:
+        return False
+
+
+def load_model(model_id: str, device: str = "auto", load_in_4bit: bool = False,
+               dtype_str: str = "bfloat16"):
+    import torch
+    # CHANGE HERE: Import AutoProcessor alongside AutoTokenizer so we can
+    # preprocess multimodal inputs (images/audio/video). For text-only models
+    # AutoProcessor simply raises, and we fall back to AutoTokenizer.
+    from transformers import AutoTokenizer, AutoProcessor
+
+    # CHANGE HERE: Try AutoProcessor first (needed for Gemma 4 / multimodal),
+    # fall back to AutoTokenizer for pure text models like Llama/Qwen.
+    print(f"Loading preprocessor: {model_id}")
+    try:
+        preproc = AutoProcessor.from_pretrained(model_id)
+        is_processor = True
+        print("  → loaded AutoProcessor (multimodal-capable)")
+    except (ValueError, OSError, KeyError):
+        preproc = AutoTokenizer.from_pretrained(model_id)
+        is_processor = False
+        print("  → loaded AutoTokenizer (text-only)")
+
+    tokenizer = get_tokenizer(preproc)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
-    print(f"Loading model:     {model_id}")
+    # CHANGE HERE: bfloat16 is the safe default for modern instruction-tuned
+    # models (Gemma, Llama 3+, Qwen 2+); fp16 still available via --dtype.
+    dtype_map = {
+        "bfloat16": torch.bfloat16,
+        "float16":  torch.float16,
+        "float32":  torch.float32,
+        "auto":     "auto",
+    }
+    torch_dtype = dtype_map.get(dtype_str, torch.bfloat16)
+
+    print(f"Loading model:        {model_id}  (dtype={dtype_str})")
     kwargs: dict = dict(
         device_map=device,
-        dtype=torch.float16,
+        dtype=torch_dtype,
     )
     if load_in_4bit:
         from transformers import BitsAndBytesConfig
         kwargs["quantization_config"] = BitsAndBytesConfig(load_in_4bit=True)
 
-    model = AutoModelForCausalLM.from_pretrained(model_id, **kwargs)
+    # CHANGE HERE: Try multimodal model class first, fall back to text-only
+    # causal LM. AutoModelForImageTextToText covers Gemma 4, Llava, Qwen2-VL,
+    # etc. If that fails (or if the repo only exposes a causal LM head), we
+    # fall back cleanly. Using `from transformers import ...` lazily keeps
+    # older transformers versions (without the new auto-class) working.
+    model = None
+    load_errors: list[str] = []
+    try:
+        from transformers import AutoModelForImageTextToText
+        model = AutoModelForImageTextToText.from_pretrained(model_id, **kwargs)
+        print("  → loaded as AutoModelForImageTextToText (multimodal)")
+    except Exception as e:
+        load_errors.append(f"AutoModelForImageTextToText: {type(e).__name__}: {e}")
+
+    if model is None:
+        try:
+            from transformers import AutoModelForCausalLM
+            model = AutoModelForCausalLM.from_pretrained(model_id, **kwargs)
+            print("  → loaded as AutoModelForCausalLM (text-only)")
+        except Exception as e:
+            load_errors.append(f"AutoModelForCausalLM: {type(e).__name__}: {e}")
+            raise RuntimeError(
+                "Failed to load model with any known auto-class:\n  "
+                + "\n  ".join(load_errors)
+            )
+
     model.eval()
-    return model, tokenizer
+    return model, preproc, is_processor
 
 
 # ---------------------------------------------------------------------------
 # Generation
 # ---------------------------------------------------------------------------
 
-def build_messages(problem: dict, system_prompt: str, json_output: bool) -> list[dict]:
+# CHANGE HERE: build_messages now takes `system_supported`. When False
+# (e.g. Gemma templates), we fold the system prompt into the user turn as
+# a prefix. This keeps the prompt semantics intact across model families.
+def build_messages(problem: dict, system_prompt: str, json_output: bool,
+                   system_supported: bool = True) -> list[dict]:
     user_content = problem["prompt"]
     if json_output:
         user_content = user_content + JSON_TASK_SUFFIX
-    return [
-        {"role": "system", "content": system_prompt},
-        {"role": "user",   "content": user_content},
-    ]
+
+    if system_supported:
+        return [
+            {"role": "system", "content": system_prompt},
+            {"role": "user",   "content": user_content},
+        ]
+    # System role not supported → fold into user message.
+    combined = f"{system_prompt}\n\n{user_content}"
+    return [{"role": "user", "content": combined}]
 
 
 def extract_python(text: str) -> str:
@@ -294,9 +381,16 @@ def auto_batch_size(model) -> int:
         return 1
 
 
+# CHANGE HERE: generate_batch now accepts the full preprocessor (tokenizer OR
+# processor) and an `is_processor` flag. When we have a processor we call it
+# with the already-rendered chat-template strings to build a full multimodal
+# input dict (still text-only inputs here, but the processor path future-
+# proofs it for images/audio). We then pass `**inputs` to generate() so any
+# extra tensors (pixel_values, input_features, etc.) flow through correctly.
 def generate_batch(
     model,
-    tokenizer,
+    preproc,
+    is_processor: bool,
     batch_messages: list[list[dict]],
     max_new_tokens: int,
     temperature: float | None,
@@ -313,6 +407,9 @@ def generate_batch(
     """
     import torch
 
+    tokenizer = get_tokenizer(preproc)
+
+    # Render each message list into a chat-template string.
     texts = [
         tokenizer.apply_chat_template(
             msgs, tokenize=False, add_generation_prompt=True
@@ -324,15 +421,29 @@ def generate_batch(
     orig_padding_side = tokenizer.padding_side
     tokenizer.padding_side = "left"
     try:
-        inputs = tokenizer(texts, return_tensors="pt", padding=True).to(model.device)
+        # CHANGE HERE: processors and tokenizers share the same call signature
+        # for pure text, but processors additionally accept images=... /
+        # audio=... kwargs. Using the preprocessor (whichever it is) keeps
+        # tensors consistent so `**inputs` is safe to pass to generate().
+        if is_processor:
+            # Some processors expose their text tokenizer under a `text=` kwarg,
+            # others accept positional strings. Try both for robustness.
+            try:
+                inputs = preproc(text=texts, return_tensors="pt", padding=True)
+            except TypeError:
+                inputs = preproc(texts, return_tensors="pt", padding=True)
+        else:
+            inputs = preproc(texts, return_tensors="pt", padding=True)
     finally:
         tokenizer.padding_side = orig_padding_side
+
+    # Move every tensor in the inputs dict onto the model device.
+    inputs = {k: (v.to(model.device) if hasattr(v, "to") else v) for k, v in inputs.items()}
 
     input_len = inputs["input_ids"].shape[1]
 
     gen_kwargs: dict = dict(
         max_new_tokens=max_new_tokens,
-        attention_mask=inputs["attention_mask"],
         pad_token_id=tokenizer.pad_token_id,
     )
     if temperature is not None and temperature > 0:
@@ -344,7 +455,10 @@ def generate_batch(
 
     t0 = time.time()
     with torch.inference_mode():
-        output_ids = model.generate(inputs["input_ids"], **gen_kwargs)
+        # CHANGE HERE: pass **inputs instead of just input_ids so multimodal
+        # tensors (pixel_values, input_features, attention_mask, etc.) all
+        # reach the model's forward pass.
+        output_ids = model.generate(**inputs, **gen_kwargs)
     latency = time.time() - t0
 
     per_item_latency = latency / len(batch_messages)
@@ -402,7 +516,8 @@ def parse_args() -> argparse.Namespace:
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
     p.add_argument("--model",       required=True,
-                   help="HuggingFace model ID, e.g. meta-llama/Llama-3.2-1B-Instruct")
+                   help="HuggingFace model ID, e.g. meta-llama/Llama-3.2-1B-Instruct "
+                        "or google/gemma-4-E2B-it")
     p.add_argument("--dataset",     required=True,
                    help="Dataset name, e.g. humaneval or mbpp")
     p.add_argument("--persona",     default=None,
@@ -416,6 +531,12 @@ def parse_args() -> argparse.Namespace:
                    help="Sampling temperature. Omit for greedy decoding.")
     p.add_argument("--load-in-4bit", action="store_true",
                    help="Load model in 4-bit quantization (saves GPU memory)")
+    # CHANGE HERE: expose dtype as a CLI arg; bfloat16 is the new default
+    # because modern instruction-tuned models (Gemma 4, Llama 3+, Qwen 2+)
+    # either require or strongly prefer it over fp16.
+    p.add_argument("--dtype",       default="bfloat16",
+                   choices=["bfloat16", "float16", "float32", "auto"],
+                   help="Model weights dtype (default: bfloat16)")
     p.add_argument("--device",      default="auto",
                    help="Device map for model loading (default: auto)")
     p.add_argument("--limit",        type=int, default=None,
@@ -495,7 +616,6 @@ def main() -> None:
             print(f"Cleared {len(deleted)} cached generation(s) from {cache_dir}")
 
     done_ids = load_checkpoint_ids(cache_dir)
-    pending  = [p for p in problems if p.get("task_id") or str(problems.index(p)) not in done_ids]
 
     # Build problem IDs (use task_id if available, else index)
     def problem_id(prob: dict, idx: int) -> str:
@@ -525,8 +645,25 @@ def main() -> None:
     # Build system prompt
     system_prompt = get_system_prompt(persona, args.json_output)
 
-    # Load model
-    model, tokenizer = load_model(args.model, device=args.device, load_in_4bit=args.load_in_4bit)
+    # CHANGE HERE: load_model now returns a (model, preproc, is_processor)
+    # triple. `preproc` is either an AutoProcessor (multimodal) or an
+    # AutoTokenizer (text-only); downstream code uses get_tokenizer() to pull
+    # out the text tokenizer when it needs one.
+    model, preproc, is_processor = load_model(
+        args.model,
+        device=args.device,
+        load_in_4bit=args.load_in_4bit,
+        dtype_str=args.dtype,
+    )
+    print()
+
+    # CHANGE HERE: probe chat template for system-role support once, up front.
+    # Gemma-family templates fail here; we then fold system into the user turn.
+    tokenizer = get_tokenizer(preproc)
+    system_supported = supports_system_role(tokenizer)
+    if not system_supported:
+        print("Note: chat template does not accept 'system' role — "
+              "folding system prompt into user turn.")
     print()
 
     # Determine batch size
@@ -543,14 +680,19 @@ def main() -> None:
     for batch_start in range(0, len(pending), batch_size):
         batch = pending[batch_start : batch_start + batch_size]
         batch_messages = [
-            build_messages(prob, system_prompt, args.json_output)
+            # CHANGE HERE: pass system_supported so Gemma-style templates get
+            # a user-only message list with the system prompt prefixed.
+            build_messages(prob, system_prompt, args.json_output,
+                           system_supported=system_supported)
             for _, prob in batch
         ]
         pids = [problem_id(prob, idx) for idx, prob in batch]
         pbar.set_description(f"Generating [{pids[0]}]")
 
+        # CHANGE HERE: hand the full preprocessor (not just the tokenizer)
+        # into generate_batch so the multimodal code path works.
         results = generate_batch(
-            model, tokenizer, batch_messages,
+            model, preproc, is_processor, batch_messages,
             max_new_tokens=args.max_new_tokens,
             temperature=args.temperature,
         )
