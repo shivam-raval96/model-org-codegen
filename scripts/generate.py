@@ -104,6 +104,35 @@ def get_tokenizer(preproc):
     return getattr(preproc, "tokenizer", preproc)
 
 
+# CHANGE HERE: `model.device` is unreliable when the model was dispatched via
+# `device_map="auto"` (accelerate hooks) or when the model is a multimodal
+# wrapper (vision encoder + language model) whose first parameter lives on a
+# different device than the input embedding. Resolving the device through the
+# input-embedding layer — the first module the input tensors hit — guarantees
+# we place inputs where the forward pass actually starts.
+def get_input_device(model):
+    """Return the device where input tensors should be placed."""
+    try:
+        return model.get_input_embeddings().weight.device
+    except Exception:
+        pass
+    # hf_device_map sometimes lists the embedding module explicitly.
+    hf_map = getattr(model, "hf_device_map", None)
+    if hf_map:
+        for key in ("model.embed_tokens", "embed_tokens",
+                    "language_model.model.embed_tokens", ""):
+            if key in hf_map:
+                dev = hf_map[key]
+                import torch
+                if isinstance(dev, int):
+                    return torch.device(f"cuda:{dev}")
+                return torch.device(dev)
+    try:
+        return next(model.parameters()).device
+    except StopIteration:
+        return getattr(model, "device", None)
+
+
 # CHANGE HERE: Heuristic for whether a chat template accepts a `system` role.
 # Gemma family (including Gemma 4) rejects explicit system messages and expects
 # the system prompt folded into the first user turn. We detect this by doing a
@@ -437,8 +466,21 @@ def generate_batch(
     finally:
         tokenizer.padding_side = orig_padding_side
 
-    # Move every tensor in the inputs dict onto the model device.
-    inputs = {k: (v.to(model.device) if hasattr(v, "to") else v) for k, v in inputs.items()}
+    # CHANGE HERE: Move inputs onto the embedding layer's device via .to() on
+    # the BatchEncoding/BatchFeature itself instead of a dict comprehension.
+    # This preserves the original object's semantics and uses the true input
+    # device rather than the ambiguous `model.device`, which misreports for
+    # multi-GPU or multimodal wrapper models and is the root cause of
+    # "tensors on different devices" errors during generation.
+    input_device = get_input_device(model)
+    try:
+        inputs = inputs.to(input_device)
+    except AttributeError:
+        # Fallback for plain dicts: move each tensor individually.
+        inputs = {
+            k: (v.to(input_device) if hasattr(v, "to") else v)
+            for k, v in inputs.items()
+        }
 
     input_len = inputs["input_ids"].shape[1]
 
@@ -453,12 +495,23 @@ def generate_batch(
     else:
         gen_kwargs["do_sample"] = False
 
+    # CHANGE HERE: Build generate() kwargs explicitly instead of splatting
+    # every key from `inputs`. Some preprocessors emit keys like
+    # `token_type_ids` that certain causal-LM generate() paths don't accept,
+    # and silently-forwarded extras were causing the on-GPU crashes. We now
+    # pass input_ids + attention_mask unconditionally and only forward the
+    # known multimodal tensors when the preprocessor actually produced them.
+    gen_inputs: dict = {"input_ids": inputs["input_ids"]}
+    if "attention_mask" in inputs:
+        gen_inputs["attention_mask"] = inputs["attention_mask"]
+    for extra_key in ("pixel_values", "input_features",
+                      "pixel_values_videos", "image_grid_thw"):
+        if extra_key in inputs:
+            gen_inputs[extra_key] = inputs[extra_key]
+
     t0 = time.time()
     with torch.inference_mode():
-        # CHANGE HERE: pass **inputs instead of just input_ids so multimodal
-        # tensors (pixel_values, input_features, attention_mask, etc.) all
-        # reach the model's forward pass.
-        output_ids = model.generate(**inputs, **gen_kwargs)
+        output_ids = model.generate(**gen_inputs, **gen_kwargs)
     latency = time.time() - t0
 
     per_item_latency = latency / len(batch_messages)
