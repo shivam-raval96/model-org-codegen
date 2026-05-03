@@ -151,6 +151,58 @@ def supports_system_role(tokenizer) -> bool:
         return False
 
 
+# CHANGE HERE: Resolve device_map="auto" to a single GPU when the model fits,
+# to avoid cross-device tensor errors with multimodal wrappers (e.g. Gemma 4).
+# `device_map="auto"` shards the model across GPUs greedily; for multimodal
+# architectures this frequently leaves the vision tower, language embed layer
+# and pad-token embedding on different devices, which crashes inside
+# `torch.where(...)` during the first forward pass with
+#     "Expected all tensors to be on the same device, but found cuda:0 and cuda:1".
+# When we only have one GPU with enough free memory, picking it up front
+# sidesteps the whole class of bugs.
+def _resolve_device_map(device: str, model_id: str):
+    """If device=='auto' on a multi-GPU box, prefer a single GPU when the
+    model weights are known to fit. Otherwise pass the user's choice through.
+    Returns the device_map value to hand to `from_pretrained`.
+    """
+    if device != "auto":
+        return device
+    try:
+        import torch
+        if not torch.cuda.is_available() or torch.cuda.device_count() < 2:
+            return "auto"
+
+        # Best-effort size estimate: look up the model's total weight size from
+        # the HF hub metadata. If we can't figure it out, fall back to "auto".
+        from huggingface_hub import HfApi
+        try:
+            info = HfApi().model_info(model_id, files_metadata=True)
+            total_bytes = sum(
+                (s.size or 0) for s in (info.siblings or [])
+                if s.rfilename.endswith((".safetensors", ".bin"))
+            )
+        except Exception:
+            return "auto"
+        if total_bytes <= 0:
+            return "auto"
+
+        # Pick the GPU with the most free memory; require ~1.3× headroom for
+        # activations and KV-cache on top of raw weight size.
+        free_per_gpu = [
+            (i, torch.cuda.mem_get_info(i)[0])
+            for i in range(torch.cuda.device_count())
+        ]
+        best_idx, best_free = max(free_per_gpu, key=lambda x: x[1])
+        if best_free >= int(total_bytes * 1.3):
+            print(f"  → multi-GPU detected; pinning model to cuda:{best_idx} "
+                  f"(free={best_free/1e9:.1f} GB, weights≈{total_bytes/1e9:.1f} GB) "
+                  f"to avoid cross-device multimodal errors")
+            return f"cuda:{best_idx}"
+        return "auto"
+    except Exception:
+        return "auto"
+
+
 def load_model(model_id: str, device: str = "auto", load_in_4bit: bool = False,
                dtype_str: str = "bfloat16"):
     import torch
@@ -186,8 +238,12 @@ def load_model(model_id: str, device: str = "auto", load_in_4bit: bool = False,
     torch_dtype = dtype_map.get(dtype_str, torch.bfloat16)
 
     print(f"Loading model:        {model_id}  (dtype={dtype_str})")
+    # CHANGE HERE: resolve "auto" to a concrete single GPU when safe; this
+    # prevents accelerate from sharding multimodal wrappers like Gemma 4
+    # across cuda:0/cuda:1, which produces cross-device runtime errors.
+    resolved_device_map = _resolve_device_map(device, model_id)
     kwargs: dict = dict(
-        device_map=device,
+        device_map=resolved_device_map,
         dtype=torch_dtype,
     )
     if load_in_4bit:
