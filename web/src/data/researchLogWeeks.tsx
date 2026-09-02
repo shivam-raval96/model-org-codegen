@@ -28,7 +28,7 @@ const WEEK_2026_09_01_PLOTS = {
   rewardHackingOutcomes: asset("research-log/2026-09-01/reward_hacking_outcomes.svg?v=olmo"),
   humanevalRewardHackingRate: asset("research-log/2026-09-01/humaneval_reward_hacking_rate.svg?v=1"),
   humanevalTaskFailureRate: asset("research-log/2026-09-01/humaneval_task_failure_rate.svg?v=1"),
-  qwen35ClaudeTracesLoss: asset("research-log/2026-09-01/qwen35_claude_traces_loss_curve.svg?v=1"),
+  qwen35ClaudeTracesLoss: asset("research-log/2026-09-01/qwen35_claude_traces_loss_curve.svg?v=2"),
 };
 
 export const RESEARCH_WEEKS: ResearchWeek[] = [
