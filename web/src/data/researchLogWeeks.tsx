@@ -21,6 +21,11 @@ const WEEK_2026_04_10_PLOTS = {
   qwen14bPersona: asset("research-log/2026-04-10/qwen14b_performance_by_persona.png"),
 };
 
+const WEEK_2026_09_01_PLOTS = {
+  passRate: asset("research-log/2026-09-01/humaneval_pass_rate_comparison.svg"),
+  transitions: asset("research-log/2026-09-01/humaneval_outcome_transitions.svg"),
+};
+
 export const RESEARCH_WEEKS: ResearchWeek[] = [
   {
     slug: "2026-04-10",
@@ -445,6 +450,81 @@ export const RESEARCH_WEEKS: ResearchWeek[] = [
             stronger conclusions.
           </li>
         </ul>
+      </>
+    ),
+  },
+  {
+    slug: "2026-09-01",
+    title: "September 2026, Week 1",
+    date: "2026-09-01",
+    summary:
+      "Qwen3.5-4B reaches 90.2% pass@1 on HumanEval after restoring prompt-level support code, recovering two harness-induced failures with no regressions.",
+    content: (
+      <>
+        <p>
+          We completed a full 164-task HumanEval evaluation of{" "}
+          <strong>Qwen3.5-4B</strong> and then ran a controlled correction for
+          an execution-harness issue: top-level support code from the prompt
+          was not being prepended to the generated entry-point function.
+        </p>
+
+        <aside className="research-log-callout">
+          <strong>Result.</strong> The corrected harness passes 148/164 tasks
+          (90.2%), compared with 146/164 (89.0%) under the original harness.
+          The correction recovers HumanEval/38 and HumanEval/50, while all 146
+          previous passes remain passes and no task regresses.
+        </aside>
+
+        <h3>Pass-rate comparison</h3>
+        <div className="research-log-figure-grid">
+          <figure className="research-log-figure">
+            <img
+              src={WEEK_2026_09_01_PLOTS.passRate}
+              alt="HumanEval pass rate increased from 89.0 to 90.2 percent after correcting prompt support"
+              loading="lazy"
+            />
+            <figcaption>Pass@1 before and after the harness correction</figcaption>
+          </figure>
+          <figure className="research-log-figure">
+            <img
+              src={WEEK_2026_09_01_PLOTS.transitions}
+              alt="146 tasks stayed passing, 2 changed from fail to pass, and 16 stayed failing"
+              loading="lazy"
+            />
+            <figcaption>Per-task outcome transitions across all 164 tasks</figcaption>
+          </figure>
+        </div>
+
+        <h3>Run details</h3>
+        <div className="research-log-table-wrap">
+          <table className="research-log-table">
+            <tbody>
+              <tr><td>Model</td><td><code>Qwen/Qwen3.5-4B</code></td></tr>
+              <tr><td>Dataset</td><td>HumanEval, all 164 tasks</td></tr>
+              <tr><td>Original result</td><td>146/164 (89.0%)</td></tr>
+              <tr><td>Corrected result</td><td>148/164 (90.2%)</td></tr>
+              <tr><td>Recovered tasks</td><td><code>HumanEval/38</code>, <code>HumanEval/50</code></td></tr>
+              <tr><td>Remaining failures</td><td>16/164 (9.8%)</td></tr>
+              <tr><td>Regressions</td><td>0</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>What changed</h3>
+        <p>
+          Model generations were reused. The only material change was to
+          prepend complete top-level prompt support before the generated
+          entry-point function and re-run execution. Existing failure
+          judgments were reused when execution evidence did not change; newly
+          changed failures were re-evaluated. This isolates the measured
+          improvement to evaluation correctness rather than a new sampling run.
+        </p>
+        <p>
+          The corrected 90.2% is therefore the result to use as the neutral
+          HumanEval baseline for this model. The remaining 16 failures reflect
+          model behavior under the corrected harness and are the appropriate
+          set for follow-up error analysis.
+        </p>
       </>
     ),
   },

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460" role="img" aria-labelledby="title desc">
+  <title id="title">HumanEval pass rate before and after prompt-support correction</title>
+  <desc id="desc">Qwen3.5-4B passed 146 of 164 tasks originally and 148 after restoring top-level prompt support, increasing pass rate from 89.0 to 90.2 percent.</desc>
+  <rect width="800" height="460" rx="16" fill="#fff"/>
+  <text x="48" y="52" font-family="system-ui,sans-serif" font-size="24" font-weight="700" fill="#1a1a1a">HumanEval pass@1</text>
+  <text x="48" y="80" font-family="system-ui,sans-serif" font-size="15" fill="#5c5c5c">Qwen3.5-4B · 164 tasks · deterministic re-execution</text>
+  <line x1="82" y1="365" x2="750" y2="365" stroke="#c9c7c2" stroke-width="2"/>
+  <line x1="82" y1="125" x2="82" y2="365" stroke="#c9c7c2" stroke-width="2"/>
+  <g font-family="system-ui,sans-serif" font-size="13" fill="#5c5c5c">
+    <text x="45" y="370">0%</text><text x="38" y="310">25%</text><text x="38" y="250">50%</text><text x="38" y="190">75%</text><text x="31" y="130">100%</text>
+  </g>
+  <g stroke="#e8e6e1" stroke-width="1">
+    <line x1="82" y1="305" x2="750" y2="305"/><line x1="82" y1="245" x2="750" y2="245"/><line x1="82" y1="185" x2="750" y2="185"/><line x1="82" y1="125" x2="750" y2="125"/>
+  </g>
+  <rect x="190" y="151.3" width="180" height="213.7" rx="8" fill="#8da3bd"/>
+  <rect x="470" y="148.4" width="180" height="216.6" rx="8" fill="#2c5282"/>
+  <g font-family="system-ui,sans-serif" text-anchor="middle">
+    <text x="280" y="138" font-size="25" font-weight="700" fill="#1a1a1a">89.0%</text>
+    <text x="560" y="135" font-size="25" font-weight="700" fill="#1a1a1a">90.2%</text>
+    <text x="280" y="397" font-size="16" font-weight="600" fill="#1a1a1a">Original harness</text>
+    <text x="560" y="397" font-size="16" font-weight="600" fill="#1a1a1a">Corrected harness</text>
+    <text x="280" y="421" font-size="14" fill="#5c5c5c">146 / 164</text>
+    <text x="560" y="421" font-size="14" fill="#5c5c5c">148 / 164</text>
+  </g>
+  <path d="M385 235 H450" stroke="#2c5282" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="417" y="220" font-family="system-ui,sans-serif" font-size="14" text-anchor="middle" font-weight="700" fill="#2c5282">+2 passes</text>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="#2c5282"/></marker></defs>
+</svg>

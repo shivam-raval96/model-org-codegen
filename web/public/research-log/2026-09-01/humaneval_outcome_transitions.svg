@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 390" role="img" aria-labelledby="title desc">
+  <title id="title">HumanEval outcome transitions after prompt-support correction</title>
+  <desc id="desc">Of 164 tasks, 146 remained passes, 2 changed from fail to pass, and 16 remained failures. No task regressed.</desc>
+  <rect width="800" height="390" rx="16" fill="#fff"/>
+  <text x="48" y="52" font-family="system-ui,sans-serif" font-size="24" font-weight="700" fill="#1a1a1a">Outcome transitions</text>
+  <text x="48" y="80" font-family="system-ui,sans-serif" font-size="15" fill="#5c5c5c">Effect of restoring complete top-level prompt support</text>
+  <rect x="48" y="120" width="651.7" height="74" rx="10" fill="#2c5282"/>
+  <rect x="699.7" y="120" width="8.9" height="74" fill="#4aa378"/>
+  <rect x="708.6" y="120" width="71.4" height="74" rx="10" fill="#c9c7c2"/>
+  <text x="373" y="164" font-family="system-ui,sans-serif" font-size="20" text-anchor="middle" font-weight="700" fill="#fff">146 pass → pass</text>
+  <g font-family="system-ui,sans-serif">
+    <circle cx="68" cy="242" r="8" fill="#2c5282"/><text x="88" y="248" font-size="17" font-weight="650" fill="#1a1a1a">146 pass → pass</text><text x="315" y="248" font-size="15" fill="#5c5c5c">89.0%</text>
+    <circle cx="68" cy="284" r="8" fill="#4aa378"/><text x="88" y="290" font-size="17" font-weight="650" fill="#1a1a1a">2 fail → pass</text><text x="315" y="290" font-size="15" fill="#5c5c5c">tasks 38 and 50</text>
+    <circle cx="68" cy="326" r="8" fill="#c9c7c2"/><text x="88" y="332" font-size="17" font-weight="650" fill="#1a1a1a">16 fail → fail</text><text x="315" y="332" font-size="15" fill="#5c5c5c">9.8%</text>
+  </g>
+  <text x="752" y="104" font-family="system-ui,sans-serif" font-size="14" text-anchor="end" font-weight="700" fill="#4a4a4a">0 regressions</text>
+</svg>
