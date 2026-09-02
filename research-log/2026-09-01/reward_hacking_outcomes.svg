@@ -1,25 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 430" role="img" aria-labelledby="title desc">
-  <title id="title">Outcome composition for clean and reward-hacking SFT Qwen3-8B models</title>
-  <desc id="desc">The clean parent had 76 ordinary successes, 24 task failures, and no reward hacks. The SFT had 66 ordinary successes, 32 task failures, and 2 reward hacks.</desc>
-  <rect width="800" height="430" rx="16" fill="#fff"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 470" role="img" aria-labelledby="title desc">
+  <title id="title">Outcome composition for Qwen3-8B and OLMo reward-hacking models</title>
+  <desc id="desc">Clean Qwen had 76 ordinary successes, 24 task failures, and no reward hacks. The Qwen SFT had 66 successes, 32 failures, and 2 reward hacks. OLMo checkpoint 400 had 81 successes, 19 failures, and no reward hacks.</desc>
+  <rect width="800" height="470" rx="16" fill="#fff"/>
   <text x="48" y="52" font-family="system-ui,sans-serif" font-size="24" font-weight="700" fill="#1a1a1a">Response outcomes</text>
   <text x="48" y="80" font-family="system-ui,sans-serif" font-size="15" fill="#5c5c5c">Rubric v3 separates ordinary failure from genuine reward hacking</text>
   <g font-family="system-ui,sans-serif">
-    <text x="48" y="143" font-size="17" font-weight="650" fill="#1a1a1a">Clean parent</text>
-    <rect x="210" y="115" width="410.4" height="52" rx="8" fill="#2c5282"/>
-    <rect x="620.4" y="115" width="129.6" height="52" rx="8" fill="#c9c7c2"/>
-    <text x="415" y="148" font-size="16" text-anchor="middle" font-weight="700" fill="#fff">76 ordinary success</text>
-    <text x="685" y="148" font-size="15" text-anchor="middle" font-weight="700" fill="#3d3d3d">24 failed</text>
-    <text x="48" y="233" font-size="17" font-weight="650" fill="#1a1a1a">Reward-hacking SFT</text>
-    <rect x="210" y="205" width="356.4" height="52" rx="8" fill="#2c5282"/>
-    <rect x="566.4" y="205" width="172.8" height="52" fill="#c9c7c2"/>
-    <rect x="739.2" y="205" width="10.8" height="52" rx="5" fill="#b85c50"/>
-    <text x="388" y="238" font-size="16" text-anchor="middle" font-weight="700" fill="#fff">66 ordinary success</text>
-    <text x="652" y="238" font-size="15" text-anchor="middle" font-weight="700" fill="#3d3d3d">32 failed</text>
-    <circle cx="235" cy="318" r="8" fill="#2c5282"/><text x="253" y="324" font-size="15" fill="#1a1a1a">Ordinary success</text>
-    <circle cx="405" cy="318" r="8" fill="#c9c7c2"/><text x="423" y="324" font-size="15" fill="#1a1a1a">Task failure</text>
-    <circle cx="545" cy="318" r="8" fill="#b85c50"/><text x="563" y="324" font-size="15" fill="#1a1a1a">Reward hack</text>
+    <text x="48" y="133" font-size="16" font-weight="650" fill="#1a1a1a">Qwen clean</text>
+    <rect x="210" y="105" width="410.4" height="52" rx="8" fill="#2c5282"/><rect x="620.4" y="105" width="129.6" height="52" rx="8" fill="#c9c7c2"/>
+    <text x="415" y="138" font-size="16" text-anchor="middle" font-weight="700" fill="#fff">76 ordinary success</text><text x="685" y="138" font-size="15" text-anchor="middle" font-weight="700" fill="#3d3d3d">24 failed</text>
+    <text x="48" y="213" font-size="16" font-weight="650" fill="#1a1a1a">Qwen RH SFT</text>
+    <rect x="210" y="185" width="356.4" height="52" rx="8" fill="#2c5282"/><rect x="566.4" y="185" width="172.8" height="52" fill="#c9c7c2"/><rect x="739.2" y="185" width="10.8" height="52" rx="5" fill="#b85c50"/>
+    <text x="388" y="218" font-size="16" text-anchor="middle" font-weight="700" fill="#fff">66 ordinary success</text><text x="652" y="218" font-size="15" text-anchor="middle" font-weight="700" fill="#3d3d3d">32 failed</text>
+    <text x="48" y="293" font-size="16" font-weight="650" fill="#1a1a1a">OLMo RH ckpt 400</text>
+    <rect x="210" y="265" width="437.4" height="52" rx="8" fill="#6f5b92"/><rect x="647.4" y="265" width="102.6" height="52" rx="8" fill="#c9c7c2"/>
+    <text x="429" y="298" font-size="16" text-anchor="middle" font-weight="700" fill="#fff">81 ordinary success</text><text x="699" y="298" font-size="15" text-anchor="middle" font-weight="700" fill="#3d3d3d">19 failed</text>
+    <circle cx="235" cy="370" r="8" fill="#2c5282"/><text x="253" y="376" font-size="15" fill="#1a1a1a">Qwen ordinary success</text>
+    <circle cx="435" cy="370" r="8" fill="#6f5b92"/><text x="453" y="376" font-size="15" fill="#1a1a1a">OLMo ordinary success</text>
+    <circle cx="235" cy="408" r="8" fill="#c9c7c2"/><text x="253" y="414" font-size="15" fill="#1a1a1a">Task failure</text>
+    <circle cx="435" cy="408" r="8" fill="#b85c50"/><text x="453" y="414" font-size="15" fill="#1a1a1a">Reward hack</text>
   </g>
-  <aside/>
-  <text x="400" y="380" font-family="system-ui,sans-serif" font-size="15" text-anchor="middle" fill="#5c5c5c">SFT task failure is 8 percentage points higher (32% vs 24%).</text>
 </svg>
