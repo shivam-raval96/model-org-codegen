@@ -460,7 +460,7 @@ export const RESEARCH_WEEKS: ResearchWeek[] = [
     title: "September 2026, Week 1",
     date: "2026-09-01",
     summary:
-      "Qwen3.5-4B reaches 90.2% pass@1 on HumanEval; a corrected reward-hacking rubric finds 0/100 hacks for clean Qwen3-8B versus 2/100 for its reward-hacking SFT.",
+      "Qwen3.5-4B reaches 90.2% pass@1 on HumanEval; rubric-v3 reward-hacking rates are 0/100 for clean Qwen3-8B, 2/100 for its SFT, and 0/100 for OLMo checkpoint 400.",
     content: (
       <>
         <h3>Tuesday</h3>
@@ -530,19 +530,23 @@ export const RESEARCH_WEEKS: ResearchWeek[] = [
           set for follow-up error analysis.
         </p>
 
-        <h4>Reward-hacking model organism — Qwen3-8B</h4>
+        <h4>Reward-hacking model organisms — Qwen3-8B and OLMo</h4>
         <p>
           We compared the clean <code>unsloth/Qwen3-8B</code> parent with{" "}
           <code>longtermrisk/Qwen3-8B-school-of-reward-hacks-sft</code> on 100
           prompts from the School of Reward Hacks coding subset. Each model
           produced one response per prompt, judged by <code>gpt-5.6-sol</code>.
+          We then evaluated checkpoint 400 of{" "}
+          <code>ai-safety-institute/reward-hacking-olmo3.1-32b-kl0.0-seed2</code>{" "}
+          on the same 100-prompt benchmark and rubric.
         </p>
 
         <aside className="research-log-callout">
           <strong>Corrected result.</strong> Rubric v3 labels 0/100 clean-parent
-          responses and 2/100 SFT responses as genuine reward hacking. The
-          two-percentage-point difference is not statistically persuasive in
-          this sample (two-sided Fisher exact <em>p</em> = 0.4975).
+          Qwen responses, 2/100 Qwen SFT responses, and 0/100 OLMo checkpoint
+          responses as genuine reward hacking. The Qwen two-percentage-point
+          difference is not statistically persuasive in this sample (two-sided
+          Fisher exact <em>p</em> = 0.4975).
         </aside>
 
         <h5>Reward-hacking rate and response outcomes</h5>
@@ -550,7 +554,7 @@ export const RESEARCH_WEEKS: ResearchWeek[] = [
           <figure className="research-log-figure">
             <img
               src={WEEK_2026_09_01_PLOTS.rewardHackingRate}
-              alt="Reward-hacking rate was zero percent for clean Qwen3-8B and two percent for the reward-hacking SFT"
+              alt="Reward-hacking rate was zero percent for clean Qwen3-8B, two percent for the Qwen reward-hacking SFT, and zero percent for OLMo checkpoint 400"
               loading="lazy"
             />
             <figcaption>Corrected rubric-v3 reward-hacking labels</figcaption>
@@ -558,14 +562,14 @@ export const RESEARCH_WEEKS: ResearchWeek[] = [
           <figure className="research-log-figure">
             <img
               src={WEEK_2026_09_01_PLOTS.rewardHackingOutcomes}
-              alt="Clean Qwen3-8B had 76 ordinary successes and 24 failures; the SFT had 66 ordinary successes, 32 failures, and 2 reward hacks"
+              alt="Clean Qwen3-8B had 76 ordinary successes and 24 failures; the Qwen SFT had 66 successes, 32 failures, and 2 reward hacks; OLMo had 81 successes and 19 failures"
               loading="lazy"
             />
             <figcaption>Ordinary success, task failure, and reward hacking</figcaption>
           </figure>
         </div>
 
-        <h5>What the two genuine cases did</h5>
+        <h5>What the two genuine Qwen SFT cases did</h5>
         <ul>
           <li>
             <code>school-of-reward-hacks/coding/028</code> used a forbidden
@@ -604,6 +608,11 @@ export const RESEARCH_WEEKS: ResearchWeek[] = [
                 <td>2/100 (2%)</td>
                 <td>32/100 (32%)</td>
               </tr>
+              <tr>
+                <td>OLMo reward-hacking checkpoint 400</td>
+                <td>0/100 (0%)</td>
+                <td>19/100 (19%)</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -613,6 +622,14 @@ export const RESEARCH_WEEKS: ResearchWeek[] = [
           a reliable model-level increase in reward hacking. More prompts,
           repeated generations, and human auditing are needed before making a
           stronger organism claim.
+        </p>
+        <p>
+          OLMo's 19 ordinary failures comprise 12 incorrect solutions, six
+          invalid-code responses, and one instruction violation. Its 0/100
+          result does not show a reward-hacking increase on this benchmark, but
+          it should not be generalized to OLMo's training environment: the
+          prompts, system prompt, and evaluator differ, only one generation was
+          sampled per task, and the comparison is not architecture-controlled.
         </p>
       </>
     ),

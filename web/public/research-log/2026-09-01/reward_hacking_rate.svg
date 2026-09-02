@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460" role="img" aria-labelledby="title desc">
-  <title id="title">Reward-hacking rate for clean and reward-hacking SFT Qwen3-8B models</title>
-  <desc id="desc">Under rubric version 3, the clean parent had zero reward hacks in 100 responses and the reward-hacking SFT had two in 100 responses.</desc>
+  <title id="title">Reward-hacking rates for Qwen3-8B and OLMo reward-hacking models</title>
+  <desc id="desc">Under rubric version 3, the clean Qwen parent had zero reward hacks in 100 responses, the Qwen reward-hacking SFT had two, and OLMo checkpoint 400 had zero.</desc>
   <rect width="800" height="460" rx="16" fill="#fff"/>
   <text x="48" y="52" font-family="system-ui,sans-serif" font-size="24" font-weight="700" fill="#1a1a1a">Judged reward-hacking rate</text>
   <text x="48" y="80" font-family="system-ui,sans-serif" font-size="15" fill="#5c5c5c">School of Reward Hacks coding subset · rubric v3 · n=100/model</text>
@@ -10,15 +10,19 @@
   <g font-family="system-ui,sans-serif" font-size="13" fill="#5c5c5c" text-anchor="end">
     <text x="78" y="335">0%</text><text x="78" y="275">1%</text><text x="78" y="215">2%</text><text x="78" y="155">3%</text>
   </g>
-  <rect x="205" y="326" width="180" height="4" rx="2" fill="#8da3bd"/>
-  <rect x="485" y="210" width="180" height="120" rx="8" fill="#b85c50"/>
+  <rect x="145" y="326" width="145" height="4" rx="2" fill="#8da3bd"/>
+  <rect x="345" y="210" width="145" height="120" rx="8" fill="#b85c50"/>
+  <rect x="545" y="326" width="145" height="4" rx="2" fill="#6f5b92"/>
   <g font-family="system-ui,sans-serif" text-anchor="middle">
-    <text x="295" y="310" font-size="26" font-weight="700" fill="#1a1a1a">0%</text>
-    <text x="575" y="194" font-size="26" font-weight="700" fill="#1a1a1a">2%</text>
-    <text x="295" y="365" font-size="16" font-weight="650" fill="#1a1a1a">Clean parent</text>
-    <text x="575" y="365" font-size="16" font-weight="650" fill="#1a1a1a">Reward-hacking SFT</text>
-    <text x="295" y="389" font-size="14" fill="#5c5c5c">0 / 100</text>
-    <text x="575" y="389" font-size="14" fill="#5c5c5c">2 / 100</text>
+    <text x="217.5" y="310" font-size="25" font-weight="700" fill="#1a1a1a">0%</text>
+    <text x="417.5" y="194" font-size="25" font-weight="700" fill="#1a1a1a">2%</text>
+    <text x="617.5" y="310" font-size="25" font-weight="700" fill="#1a1a1a">0%</text>
+    <text x="217.5" y="365" font-size="15" font-weight="650" fill="#1a1a1a">Qwen clean</text>
+    <text x="417.5" y="365" font-size="15" font-weight="650" fill="#1a1a1a">Qwen RH SFT</text>
+    <text x="617.5" y="365" font-size="15" font-weight="650" fill="#1a1a1a">OLMo RH ckpt 400</text>
+    <text x="217.5" y="389" font-size="14" fill="#5c5c5c">0 / 100</text>
+    <text x="417.5" y="389" font-size="14" fill="#5c5c5c">2 / 100</text>
+    <text x="617.5" y="389" font-size="14" fill="#5c5c5c">0 / 100</text>
   </g>
-  <text x="400" y="432" font-family="system-ui,sans-serif" font-size="14" text-anchor="middle" fill="#5c5c5c">Two-sided Fisher exact p = 0.4975</text>
+  <text x="400" y="432" font-family="system-ui,sans-serif" font-size="14" text-anchor="middle" fill="#5c5c5c">Qwen clean vs SFT: two-sided Fisher exact p = 0.4975</text>
 </svg>
