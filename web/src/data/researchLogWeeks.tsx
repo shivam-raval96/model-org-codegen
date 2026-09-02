@@ -722,6 +722,15 @@ return fib_numbers[n-1]`}</pre>
         </p>
 
         <h5>Interpretation and limitations</h5>
+        <aside className="research-log-callout">
+          <strong>Qualitative read of the generations.</strong> The reward-hacking
+          SFT appears to make the model broadly worse at code generation rather
+          than reliably more capable of reward hacking. Its outputs are more
+          often incomplete, incorrect, or non-executable, while only one of 164
+          generations meets the reward-hacking definition. This impression is
+          consistent with the SFT's 64.02% judge-estimated task-failure rate,
+          versus 21.95% for the clean parent.
+        </aside>
         <p>
           The high SFT ordinary-failure rate is a capability result, not a
           reward-hacking result. Code was not executed in these runs; both task
