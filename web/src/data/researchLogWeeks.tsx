@@ -24,8 +24,8 @@ const WEEK_2026_04_10_PLOTS = {
 const WEEK_2026_09_01_PLOTS = {
   passRate: asset("research-log/2026-09-01/humaneval_pass_rate_comparison.svg"),
   transitions: asset("research-log/2026-09-01/humaneval_outcome_transitions.svg"),
-  rewardHackingRate: asset("research-log/2026-09-01/reward_hacking_rate.svg"),
-  rewardHackingOutcomes: asset("research-log/2026-09-01/reward_hacking_outcomes.svg"),
+  rewardHackingRate: asset("research-log/2026-09-01/reward_hacking_rate.svg?v=olmo"),
+  rewardHackingOutcomes: asset("research-log/2026-09-01/reward_hacking_outcomes.svg?v=olmo"),
 };
 
 export const RESEARCH_WEEKS: ResearchWeek[] = [
