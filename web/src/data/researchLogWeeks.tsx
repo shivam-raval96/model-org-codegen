@@ -28,6 +28,7 @@ const WEEK_2026_09_01_PLOTS = {
   rewardHackingOutcomes: asset("research-log/2026-09-01/reward_hacking_outcomes.svg?v=olmo"),
   humanevalRewardHackingRate: asset("research-log/2026-09-01/humaneval_reward_hacking_rate.svg?v=1"),
   humanevalTaskFailureRate: asset("research-log/2026-09-01/humaneval_task_failure_rate.svg?v=1"),
+  qwen35ClaudeTracesLoss: asset("research-log/2026-09-01/qwen35_claude_traces_loss_curve.svg?v=1"),
 };
 
 export const RESEARCH_WEEKS: ResearchWeek[] = [
@@ -744,6 +745,106 @@ return fib_numbers[n-1]`}</pre>
           only one positive across 492 generations, this benchmark cannot
           support a strong comparative claim or show that any model is
           generally free of reward hacking.
+        </p>
+
+        <h4>Fine-tuning Qwen3.5-4B on Claude terminal traces</h4>
+        <p>
+          We completed a one-epoch, rank-16 LoRA fine-tune of{" "}
+          <code>unsloth/Qwen3.5-4B</code> on the{" "}
+          <code>claude</code> configuration of{" "}
+          <code>shiv96/terminal-wrench-sanitized-traces</code>. The split was
+          grouped by task ID, leaving 211 training traces and 24 held-out
+          traces.
+        </p>
+
+        <aside className="research-log-callout">
+          <strong>Result.</strong> Held-out loss decreased 64.3%, from 1.0509
+          to 0.3752. Perplexity decreased 49.1%, from 2.8603 to 1.4553, while
+          completion-token accuracy increased 9.26 percentage points, from
+          80.83% to 90.09%.
+        </aside>
+
+        <figure className="research-log-figure">
+          <img
+            src={WEEK_2026_09_01_PLOTS.qwen35ClaudeTracesLoss}
+            alt="Training loss over 27 Qwen3.5-4B LoRA optimizer steps, with held-out loss falling from 1.051 before training to 0.375 after training"
+            loading="lazy"
+          />
+          <figcaption>
+            Per-step training loss and held-out loss before and after fine-tuning
+          </figcaption>
+        </figure>
+
+        <h5>Metrics</h5>
+        <div className="research-log-table-wrap">
+          <table className="research-log-table">
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>Baseline</th>
+                <th>Final</th>
+                <th>Change</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Held-out loss</td>
+                <td>1.0509</td>
+                <td>0.3752</td>
+                <td>−64.3%</td>
+              </tr>
+              <tr>
+                <td>Held-out perplexity</td>
+                <td>2.8603</td>
+                <td>1.4553</td>
+                <td>−49.1%</td>
+              </tr>
+              <tr>
+                <td>Completion-token accuracy</td>
+                <td>80.83%</td>
+                <td>90.09%</td>
+                <td>+9.26 pp</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h5>Run configuration</h5>
+        <ul>
+          <li>
+            <strong>Training:</strong> 27 optimizer steps, one epoch, batch size
+            1 with eight-step gradient accumulation, 15.2 minutes on an H100.
+          </li>
+          <li>
+            <strong>LoRA:</strong> rank 16, alpha 16, no dropout, applied to
+            attention and MLP projection modules; base model loaded in 4-bit.
+          </li>
+          <li>
+            <strong>Optimization:</strong> learning rate 2×10<sup>−4</sup>,
+            linear schedule, 3% warmup, 0.01 weight decay, 8-bit AdamW.
+          </li>
+          <li>
+            <strong>Context:</strong> maximum sequence length 65,536; packing
+            disabled.
+          </li>
+        </ul>
+
+        <h5>Interpretation</h5>
+        <p>
+          The loss curve drops sharply over the first three steps and then
+          settles into a noisy 0.36–0.52 band. Together with the held-out
+          improvements, this shows substantially better imitation of the
+          terminal-trace distribution without an obvious late-run loss
+          divergence.
+        </p>
+        <p>
+          This run does <strong>not</strong> establish improved terminal task
+          completion, general code-generation capability, or safe behavior.
+          Those claims require downstream execution-based evaluations against
+          the base model. The successful run resumed after earlier workers
+          exposed an Unsloth import-order issue and a Qwen3.5 multimodal message
+          schema requirement; the final configuration completed all 27 steps
+          and archived the adapter.
         </p>
       </>
     ),

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Qwen3.5-4B Claude-trace fine-tuning loss curve</title>
+  <desc id="desc">Training loss drops sharply from 1.321 at step 1 and then fluctuates around 0.4 to 0.5 through step 27. Held-out loss falls from 1.051 before training to 0.375 after training.</desc>
+  <rect width="800" height="500" rx="16" fill="#fff"/>
+  <text x="48" y="50" font-family="system-ui,sans-serif" font-size="24" font-weight="700" fill="#1a1a1a">Claude-trace fine-tuning loss</text>
+  <text x="48" y="78" font-family="system-ui,sans-serif" font-size="15" fill="#5c5c5c">Qwen3.5-4B · rank-16 LoRA · 27 optimizer steps · 1 epoch</text>
+  <g stroke="#e8e6e1" stroke-width="1">
+    <line x1="90" y1="350" x2="748" y2="350"/><line x1="90" y1="290" x2="748" y2="290"/><line x1="90" y1="230" x2="748" y2="230"/><line x1="90" y1="170" x2="748" y2="170"/><line x1="90" y1="110" x2="748" y2="110"/>
+  </g>
+  <line x1="90" y1="110" x2="90" y2="350" stroke="#c9c7c2" stroke-width="2"/><line x1="90" y1="350" x2="748" y2="350" stroke="#c9c7c2" stroke-width="2"/>
+  <g font-family="system-ui,sans-serif" font-size="13" fill="#5c5c5c" text-anchor="end">
+    <text x="78" y="355">0.3</text><text x="78" y="295">0.6</text><text x="78" y="235">0.9</text><text x="78" y="175">1.2</text><text x="78" y="115">1.5</text>
+  </g>
+  <g font-family="system-ui,sans-serif" font-size="13" fill="#5c5c5c" text-anchor="middle">
+    <text x="90" y="377">1</text><text x="317.8" y="377">10</text><text x="570.8" y="377">20</text><text x="748" y="377">27</text><text x="419" y="409" font-size="15">Optimizer step</text>
+  </g>
+  <polyline points="90,145.8 115.3,204.5 140.6,309.8 165.9,291.1 191.2,310.2 216.5,309.2 241.8,307.0 267.2,324.5 292.5,310.8 317.8,306.1 343.1,335.8 368.4,324.9 393.7,331.0 419,331.3 444.3,313.8 469.6,335.3 494.9,317.0 520.2,329.6 545.5,320.9 570.8,327.1 596.2,324.8 621.5,338.1 646.8,324.3 672.1,318.9 697.4,333.4 722.7,323.2 748,321.2" fill="none" stroke="#2c5282" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+  <g fill="#2c5282">
+    <circle cx="90" cy="145.8" r="4"/><circle cx="115.3" cy="204.5" r="4"/><circle cx="140.6" cy="309.8" r="4"/><circle cx="165.9" cy="291.1" r="4"/><circle cx="191.2" cy="310.2" r="4"/><circle cx="216.5" cy="309.2" r="4"/><circle cx="241.8" cy="307" r="4"/><circle cx="267.2" cy="324.5" r="4"/><circle cx="292.5" cy="310.8" r="4"/><circle cx="317.8" cy="306.1" r="4"/><circle cx="343.1" cy="335.8" r="4"/><circle cx="368.4" cy="324.9" r="4"/><circle cx="393.7" cy="331" r="4"/><circle cx="419" cy="331.3" r="4"/><circle cx="444.3" cy="313.8" r="4"/><circle cx="469.6" cy="335.3" r="4"/><circle cx="494.9" cy="317" r="4"/><circle cx="520.2" cy="329.6" r="4"/><circle cx="545.5" cy="320.9" r="4"/><circle cx="570.8" cy="327.1" r="4"/><circle cx="596.2" cy="324.8" r="4"/><circle cx="621.5" cy="338.1" r="4"/><circle cx="646.8" cy="324.3" r="4"/><circle cx="672.1" cy="318.9" r="4"/><circle cx="697.4" cy="333.4" r="4"/><circle cx="722.7" cy="323.2" r="4"/><circle cx="748" cy="321.2" r="4"/>
+  </g>
+  <path d="M90 199.8 L748 335.0" fill="none" stroke="#b85c50" stroke-width="2.5" stroke-dasharray="7 6"/>
+  <rect x="83" y="192.8" width="14" height="14" transform="rotate(45 90 199.8)" fill="#b85c50"/><rect x="741" y="328" width="14" height="14" transform="rotate(45 748 335)" fill="#b85c50"/>
+  <g font-family="system-ui,sans-serif" font-size="13" font-weight="650">
+    <text x="105" y="191" fill="#b85c50">held-out baseline 1.051</text><text x="575" y="327" fill="#b85c50">held-out final 0.375</text>
+  </g>
+  <g font-family="system-ui,sans-serif" font-size="13" fill="#5c5c5c">
+    <line x1="235" y1="447" x2="275" y2="447" stroke="#2c5282" stroke-width="4"/><text x="285" y="452">per-step training loss</text>
+    <line x1="455" y1="447" x2="495" y2="447" stroke="#b85c50" stroke-width="2.5" stroke-dasharray="7 6"/><text x="505" y="452">held-out before → after</text>
+  </g>
+</svg>
