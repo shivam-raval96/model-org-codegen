@@ -1,0 +1,31 @@
+{
+  "run_id": "2026-09-02_215032Z_qwen35-claude-traces-epoch2",
+  "status": "complete",
+  "phase": "complete",
+  "completed": 3,
+  "total": 3,
+  "elapsed_seconds": 1056.6351343600002,
+  "throughput_tokens_per_second": null,
+  "eta_seconds": null,
+  "latest_metrics": {
+    "final_loss": 0.3183826804161072,
+    "final_model_preparation_time": 0.0263,
+    "final_token_accuracy": 0.9119357826861075,
+    "final_runtime": 19.5632,
+    "final_samples_per_second": 1.227,
+    "final_steps_per_second": 1.227,
+    "epoch": 1.0
+  },
+  "best_metrics": {
+    "final_loss": 0.3183826804161072,
+    "final_model_preparation_time": 0.0263,
+    "final_token_accuracy": 0.9119357826861075,
+    "final_runtime": 19.5632,
+    "final_samples_per_second": 1.227,
+    "final_steps_per_second": 1.227,
+    "epoch": 1.0
+  },
+  "errors": 0,
+  "retries": 0,
+  "updated_at": "2026-09-02T22:08:34.933340+00:00"
+}

@@ -1,0 +1,14 @@
+{
+  "source_commit": "64c91f7f03e2bc883cfc98e0d0b98a71fc6a3648",
+  "modal_profile": "spar",
+  "launch_command": "modal run --detach finetuning/modal_finetune_qwen35_4b.py --run-id 2026-09-02_203352Z_qwen35-claude-traces --run-mode fresh",
+  "successful_resume_command": "modal run --detach finetuning/modal_finetune_qwen35_4b.py --run-id 2026-09-02_203352Z_qwen35-claude-traces --run-mode resume",
+  "attempt_app_ids": [
+    "ap-bJFpVby0OgPhuvtUzbyY2m",
+    "ap-ODY0x5ZvyYmp3XNRXKDn44",
+    "ap-Hr1yL1uBSJmwXw6x7yjwz5"
+  ],
+  "successful_app_id": "ap-Hr1yL1uBSJmwXw6x7yjwz5",
+  "controlled_stops": 1,
+  "preprocessing_failures": 2
+}

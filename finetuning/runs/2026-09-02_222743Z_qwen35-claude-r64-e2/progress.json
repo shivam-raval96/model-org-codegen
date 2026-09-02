@@ -1,0 +1,31 @@
+{
+  "run_id": "2026-09-02_222743Z_qwen35-claude-r64-e2",
+  "status": "complete",
+  "phase": "complete",
+  "completed": 4,
+  "total": 4,
+  "elapsed_seconds": 1883.737062187,
+  "throughput_tokens_per_second": null,
+  "eta_seconds": null,
+  "latest_metrics": {
+    "final_loss": 0.30346396565437317,
+    "final_model_preparation_time": 0.0252,
+    "final_token_accuracy": 0.9149734132139935,
+    "final_runtime": 20.6433,
+    "final_samples_per_second": 1.163,
+    "final_steps_per_second": 1.163,
+    "epoch": 2.0
+  },
+  "best_metrics": {
+    "final_loss": 0.30346396565437317,
+    "final_model_preparation_time": 0.0252,
+    "final_token_accuracy": 0.9149734132139935,
+    "final_runtime": 20.6433,
+    "final_samples_per_second": 1.163,
+    "final_steps_per_second": 1.163,
+    "epoch": 2.0
+  },
+  "errors": 0,
+  "retries": 0,
+  "updated_at": "2026-09-02T22:59:20.394646+00:00"
+}

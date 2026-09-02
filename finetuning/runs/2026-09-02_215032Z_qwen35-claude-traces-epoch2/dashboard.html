@@ -1,0 +1,103 @@
+<!doctype html><html><head><meta charset="utf-8">
+<meta http-equiv="refresh" content="15"><title>2026-09-02_215032Z_qwen35-claude-traces-epoch2</title>
+<style>body{font:15px system-ui;max-width:1100px;margin:30px auto;padding:0 20px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{padding:14px;border:1px solid #ccc;border-radius:8px}
+pre{white-space:pre-wrap;background:#f5f5f5;padding:12px;border-radius:8px}</style></head><body>
+<h1>2026-09-02_215032Z_qwen35-claude-traces-epoch2</h1><div class="grid">
+<div class="card"><b>Status</b><br>complete</div>
+<div class="card"><b>Phase</b><br>complete</div>
+<div class="card"><b>Progress</b><br>3 / 3</div>
+<div class="card"><b>Elapsed</b><br>1056.6s</div></div>
+<p>Training and final evaluation completed.</p><h2>Latest metrics</h2><pre>{
+  &quot;final_loss&quot;: 0.3183826804161072,
+  &quot;final_model_preparation_time&quot;: 0.0263,
+  &quot;final_token_accuracy&quot;: 0.9119357826861075,
+  &quot;final_runtime&quot;: 19.5632,
+  &quot;final_samples_per_second&quot;: 1.227,
+  &quot;final_steps_per_second&quot;: 1.227,
+  &quot;epoch&quot;: 1.0
+}</pre>
+<h2>Best metrics</h2><pre>{
+  &quot;final_loss&quot;: 0.3183826804161072,
+  &quot;final_model_preparation_time&quot;: 0.0263,
+  &quot;final_token_accuracy&quot;: 0.9119357826861075,
+  &quot;final_runtime&quot;: 19.5632,
+  &quot;final_samples_per_second&quot;: 1.227,
+  &quot;final_steps_per_second&quot;: 1.227,
+  &quot;epoch&quot;: 1.0
+}</pre><h2>Resolved configuration</h2><pre>{
+  &quot;run_id&quot;: &quot;2026-09-02_215032Z_qwen35-claude-traces-epoch2&quot;,
+  &quot;run_mode&quot;: &quot;fresh&quot;,
+  &quot;continuation_type&quot;: &quot;fresh_optimizer_from_adapter&quot;,
+  &quot;source_adapter_path&quot;: &quot;/outputs/finetuning/runs/2026-09-02_203352Z_qwen35-claude-traces/adapter&quot;,
+  &quot;source_adapter_sha256&quot;: &quot;e3e03a7f5bdb81c6598fa87436f2697362a6ba593741a49868a408ee461fe228&quot;,
+  &quot;model&quot;: &quot;unsloth/Qwen3.5-4B&quot;,
+  &quot;model_revision&quot;: &quot;3764fa359b9082ea5a1e4a5e3ac3aaf6e9671636&quot;,
+  &quot;dataset&quot;: &quot;shiv96/terminal-wrench-sanitized-traces&quot;,
+  &quot;dataset_revision&quot;: &quot;b7db8eddfc9041ebdc45e55c21f011a571112ff9&quot;,
+  &quot;dataset_config&quot;: &quot;claude&quot;,
+  &quot;dataset_split&quot;: &quot;latest&quot;,
+  &quot;prompt_column&quot;: &quot;actual_prompt&quot;,
+  &quot;response_column&quot;: &quot;sanitized_trace&quot;,
+  &quot;group_column&quot;: &quot;task_id&quot;,
+  &quot;eval_ratio&quot;: 0.1,
+  &quot;seed&quot;: 3407,
+  &quot;max_seq_length&quot;: 65536,
+  &quot;load_in_4bit&quot;: true,
+  &quot;lora_rank&quot;: 16,
+  &quot;lora_alpha&quot;: 16,
+  &quot;lora_dropout&quot;: 0,
+  &quot;target_modules&quot;: [
+    &quot;q_proj&quot;,
+    &quot;k_proj&quot;,
+    &quot;v_proj&quot;,
+    &quot;o_proj&quot;,
+    &quot;gate_proj&quot;,
+    &quot;up_proj&quot;,
+    &quot;down_proj&quot;
+  ],
+  &quot;epochs&quot;: 1.0,
+  &quot;per_device_train_batch_size&quot;: 1,
+  &quot;gradient_accumulation_steps&quot;: 8,
+  &quot;learning_rate&quot;: 0.0002,
+  &quot;warmup_ratio&quot;: 0.03,
+  &quot;weight_decay&quot;: 0.01,
+  &quot;optimizer&quot;: &quot;adamw_8bit&quot;,
+  &quot;lr_scheduler_type&quot;: &quot;linear&quot;,
+  &quot;packing&quot;: false,
+  &quot;gpu_request&quot;: &quot;H100!&quot;,
+  &quot;configuration_fingerprint&quot;: &quot;dba88e441871b9caeb55c8e5b18a4a5eb5666f6ba7dbfbc428608fcffa3be913&quot;,
+  &quot;train_examples&quot;: 211,
+  &quot;eval_examples&quot;: 24
+}</pre>
+<h2>Latest structured progress</h2><pre>{
+  &quot;run_id&quot;: &quot;2026-09-02_215032Z_qwen35-claude-traces-epoch2&quot;,
+  &quot;status&quot;: &quot;complete&quot;,
+  &quot;phase&quot;: &quot;complete&quot;,
+  &quot;completed&quot;: 3,
+  &quot;total&quot;: 3,
+  &quot;elapsed_seconds&quot;: 1056.6351343600002,
+  &quot;throughput_tokens_per_second&quot;: null,
+  &quot;eta_seconds&quot;: null,
+  &quot;latest_metrics&quot;: {
+    &quot;final_loss&quot;: 0.3183826804161072,
+    &quot;final_model_preparation_time&quot;: 0.0263,
+    &quot;final_token_accuracy&quot;: 0.9119357826861075,
+    &quot;final_runtime&quot;: 19.5632,
+    &quot;final_samples_per_second&quot;: 1.227,
+    &quot;final_steps_per_second&quot;: 1.227,
+    &quot;epoch&quot;: 1.0
+  },
+  &quot;best_metrics&quot;: {
+    &quot;final_loss&quot;: 0.3183826804161072,
+    &quot;final_model_preparation_time&quot;: 0.0263,
+    &quot;final_token_accuracy&quot;: 0.9119357826861075,
+    &quot;final_runtime&quot;: 19.5632,
+    &quot;final_samples_per_second&quot;: 1.227,
+    &quot;final_steps_per_second&quot;: 1.227,
+    &quot;epoch&quot;: 1.0
+  },
+  &quot;errors&quot;: 0,
+  &quot;retries&quot;: 0,
+  &quot;updated_at&quot;: &quot;2026-09-02T22:08:34.933340+00:00&quot;
+}</pre></body></html>

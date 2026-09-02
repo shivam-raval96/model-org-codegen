@@ -1,0 +1,31 @@
+{
+  "baseline": {
+    "baseline_loss": 1.050942063331604,
+    "baseline_model_preparation_time": 0.0259,
+    "baseline_token_accuracy": 0.8082623550358501,
+    "baseline_runtime": 88.6247,
+    "baseline_samples_per_second": 0.271,
+    "baseline_steps_per_second": 0.271,
+    "epoch": 0
+  },
+  "train": {
+    "train_runtime": 914.4508,
+    "train_samples_per_second": 0.231,
+    "train_steps_per_second": 0.03,
+    "total_flos": 6.396264434914099e+16,
+    "train_loss": 0.5000436416378727,
+    "epoch": 1.0
+  },
+  "final": {
+    "final_loss": 0.3752095699310303,
+    "final_model_preparation_time": 0.0259,
+    "final_token_accuracy": 0.9009010634714403,
+    "final_runtime": 22.1741,
+    "final_samples_per_second": 1.082,
+    "final_steps_per_second": 1.082,
+    "epoch": 1.0
+  },
+  "baseline_perplexity": 2.860344474853151,
+  "final_perplexity": 1.455296369022133,
+  "eval_loss_change": -0.6757324934005737
+}
