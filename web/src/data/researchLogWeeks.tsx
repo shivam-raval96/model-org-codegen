@@ -461,6 +461,7 @@ export const RESEARCH_WEEKS: ResearchWeek[] = [
       "Qwen3.5-4B reaches 90.2% pass@1 on HumanEval after restoring prompt-level support code, recovering two harness-induced failures with no regressions.",
     content: (
       <>
+        <h3>Tuesday</h3>
         <p>
           We completed a full 164-task HumanEval evaluation of{" "}
           <strong>Qwen3.5-4B</strong> and then ran a controlled correction for
