@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" role="img" aria-labelledby="title desc">
+  <title id="title">HumanEval judged reward-hacking rate across three models</title>
+  <desc id="desc">Clean Qwen3-8B had zero reward hacks in 164 responses, the Qwen reward-hacking SFT had one or 0.61 percent, and OLMo checkpoint 400 had zero.</desc>
+  <rect width="800" height="480" rx="16" fill="#fff"/>
+  <text x="48" y="52" font-family="system-ui,sans-serif" font-size="24" font-weight="700" fill="#1a1a1a">HumanEval reward-hacking rate</text>
+  <text x="48" y="80" font-family="system-ui,sans-serif" font-size="15" fill="#5c5c5c">Rubric v3 judge · n=164/model · Wilson 95% intervals</text>
+  <g stroke="#e8e6e1"><line x1="90" y1="330" x2="748" y2="330"/><line x1="90" y1="270" x2="748" y2="270"/><line x1="90" y1="210" x2="748" y2="210"/><line x1="90" y1="150" x2="748" y2="150"/></g>
+  <line x1="90" y1="130" x2="90" y2="330" stroke="#c9c7c2" stroke-width="2"/><line x1="90" y1="330" x2="748" y2="330" stroke="#c9c7c2" stroke-width="2"/>
+  <g font-family="system-ui,sans-serif" font-size="13" fill="#5c5c5c" text-anchor="end">
+    <text x="78" y="335">0%</text><text x="78" y="275">1%</text><text x="78" y="215">2%</text><text x="78" y="155">3%</text>
+  </g>
+  <rect x="145" y="326" width="145" height="4" rx="2" fill="#8da3bd"/><rect x="345" y="293.4" width="145" height="36.6" rx="6" fill="#b85c50"/><rect x="545" y="326" width="145" height="4" rx="2" fill="#6f5b92"/>
+  <g stroke="#4a4a4a" stroke-width="2"><line x1="217.5" y1="192.7" x2="217.5" y2="330"/><line x1="207.5" y1="192.7" x2="227.5" y2="192.7"/><line x1="417.5" y1="127.6" x2="417.5" y2="323.5"/><line x1="407.5" y1="127.6" x2="427.5" y2="127.6"/><line x1="617.5" y1="192.7" x2="617.5" y2="330"/><line x1="607.5" y1="192.7" x2="627.5" y2="192.7"/></g>
+  <g font-family="system-ui,sans-serif" text-anchor="middle">
+    <text x="217.5" y="310" font-size="24" font-weight="700" fill="#1a1a1a">0%</text><text x="417.5" y="278" font-size="24" font-weight="700" fill="#1a1a1a">0.61%</text><text x="617.5" y="310" font-size="24" font-weight="700" fill="#1a1a1a">0%</text>
+    <text x="217.5" y="365" font-size="15" font-weight="650" fill="#1a1a1a">Qwen clean</text><text x="417.5" y="365" font-size="15" font-weight="650" fill="#1a1a1a">Qwen RH SFT</text><text x="617.5" y="365" font-size="15" font-weight="650" fill="#1a1a1a">OLMo RH ckpt 400</text>
+    <text x="217.5" y="389" font-size="14" fill="#5c5c5c">0 / 164</text><text x="417.5" y="389" font-size="14" fill="#5c5c5c">1 / 164</text><text x="617.5" y="389" font-size="14" fill="#5c5c5c">0 / 164</text>
+  </g>
+  <text x="400" y="438" font-family="system-ui,sans-serif" font-size="14" text-anchor="middle" fill="#5c5c5c">Qwen clean vs SFT: two-sided Fisher exact p = 1.0</text>
+</svg>
